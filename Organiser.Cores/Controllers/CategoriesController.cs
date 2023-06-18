@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Organiser.Cores.Entities;
 using Organiser.Cores.Models.ViewModels;
 
 namespace Organiser.Cores.Controllers
@@ -20,14 +21,14 @@ namespace Organiser.Cores.Controllers
         public List<CategoriesViewModel> Get()
         {
             //ToDo: fix where condition to accept current CUID instead of 1;
-
+            var  xd = context.Categories.ToList();
             var categories = context.Categories.Where(x => x.CUID == 1).ToList();
 
             var categoriesViewModel = new List<CategoriesViewModel>();
 
             categories.ForEach(x =>
             {
-                categoriesViewModel.Add(mapper.Map<CategoriesViewModel>(x));
+                categoriesViewModel.Add(mapper.Map<Categories, CategoriesViewModel>(x));
 
             });
 

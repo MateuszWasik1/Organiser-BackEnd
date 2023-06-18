@@ -1,6 +1,6 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Organiser.Cores;
 using Organiser.Cores.Entities;
 
@@ -13,7 +13,17 @@ builder.Services.AddDbContext<DataContext>(options =>
 });
 builder.Services.AddRazorPages();
 builder.Services.AddControllers();
+
+//mapper start
+var mapperConfig = new MapperConfiguration(mc =>
+{
+    mc.AddProfile(new MappingProfile());
+});
+
+IMapper mapper = mapperConfig.CreateMapper();
+builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+//mapper end
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

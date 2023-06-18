@@ -8,6 +8,6 @@
         public string? CName { get; set; }
         public DateTime CStartDate { get; set; }
         public DateTime CEndDate { get; set; }
-        public decimal CBudget { get; set; }
+        public int? CBudget { get; set; }
     }
 }
