@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Organiser.Core;
 
@@ -11,9 +12,11 @@ using Organiser.Core;
 namespace Organiser.Core.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230326184441_Roles")]
+    partial class Roles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,13 +54,13 @@ namespace Organiser.Core.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b5088d8d-9801-4430-a739-787ffbf88b72",
+                            Id = "f3a6643d-1c5f-4b80-b0bc-94f5132e5eb3",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "bf085f36-729b-47d3-bd82-3c4372ff55cc",
+                            Id = "5a757bb4-e52f-4a21-99a6-98ea9f0be243",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
