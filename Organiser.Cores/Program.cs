@@ -13,6 +13,8 @@ builder.Services.AddDbContext<DataContext>(options =>
 });
 builder.Services.AddRazorPages();
 builder.Services.AddControllers();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -24,6 +26,7 @@ builder.Services.AddCors(options =>
         policy.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
     })
 );
+
 builder.Services.AddIdentity<Users, IdentityRole>(config =>
 {
     config.SignIn.RequireConfirmedEmail = true;

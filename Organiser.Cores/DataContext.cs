@@ -9,6 +9,7 @@ namespace Organiser.Cores
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
         public DbSet<TestDB> TestDBs => Set<TestDB>();
+        public DbSet<Categories> Categories => Set<Categories>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
