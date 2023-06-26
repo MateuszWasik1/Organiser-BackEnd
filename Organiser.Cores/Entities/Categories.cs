@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Organiser.Cores.Entities
 {
     public class Categories
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CID { get; set; }
         public Guid CGID { get; set; }
         public int CUID { get; set; }

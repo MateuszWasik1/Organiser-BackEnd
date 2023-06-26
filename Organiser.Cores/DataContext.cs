@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Organiser.Cores.Entities;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection.Emit;
 
 namespace Organiser.Cores
 {
@@ -29,6 +31,7 @@ namespace Organiser.Cores
                     NormalizedName = "ADMINISTRATOR"
                 }
             );
+            builder.Entity<Categories>().Property(f => f.CID).ValueGeneratedOnAdd();
         }
     }
 }

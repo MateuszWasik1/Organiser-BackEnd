@@ -29,7 +29,6 @@ namespace Organiser.Cores.Controllers
             categories.ForEach(x =>
             {
                 categoriesViewModel.Add(mapper.Map<Categories, CategoriesViewModel>(x));
-
             });
 
             return categoriesViewModel;
@@ -42,11 +41,36 @@ namespace Organiser.Cores.Controllers
         //    return "value";
         //}
 
-        //// POST api/<TestController>
-        //[HttpPost]
-        //public void Post([FromBody] string value)
-        //{
-        //}
+        [HttpPost]
+        [Route("Save")]
+        public void Save(CategoriesViewModel model)
+        {
+            if (string.IsNullOrEmpty(model.CGID.ToString()))
+            {
+                var category = new Categories()
+                {
+                    CGID = Guid.NewGuid(),
+                    CUID = 1, //poprawić by przekazywało poprawny UID
+                    CName = model.CName,
+                    CStartDate = model.CStartDate,
+                    CEndDate = model.CEndDate,
+                    CBudget = model.CBudget,
+                };
+
+                context.Categories.Add(category);
+            }
+            else
+            {
+                var category = context.Categories.FirstOrDefault(x => x.CGID == model.CGID);
+
+                category.CName = model.CName;
+                category.CStartDate = model.CStartDate;
+                category.CEndDate = model.CEndDate;
+                category.CBudget = model.CBudget;
+            }
+
+            context.SaveChanges();
+        }
 
         //// PUT api/<TestController>/5
         //[HttpPut("{id}")]

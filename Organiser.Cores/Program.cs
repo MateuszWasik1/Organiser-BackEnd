@@ -18,6 +18,7 @@ builder.Services.AddControllers();
 var mapperConfig = new MapperConfiguration(mc =>
 {
     mc.AddProfile(new MappingProfile());
+    mc.DestinationMemberNamingConvention = ExactMatchNamingConvention.Instance;
 });
 
 IMapper mapper = mapperConfig.CreateMapper();
