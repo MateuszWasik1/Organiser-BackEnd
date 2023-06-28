@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Organiser.Cores;
 using Organiser.Cores.Entities;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +13,24 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 builder.Services.AddRazorPages();
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.Suffix);
+//translations start
+builder.Services.AddLocalization(options =>
+{
+    options.ResourcesPath = "Resources";
+});
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = new[]
+    {
+        new CultureInfo("pl-PL"),
+        new CultureInfo("en-EN"),
+    };
+    options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("pl-PL");
+    options.SupportedUICultures = supportedCultures;
+});
+//translations end
 
 //mapper start
 var mapperConfig = new MapperConfiguration(mc =>
@@ -44,6 +62,8 @@ builder.Services.AddIdentity<Users, IdentityRole>(config =>
 }).AddEntityFrameworkStores<DataContext>()
   .AddDefaultTokenProviders();
 var app = builder.Build();
+
+app.UseRequestLocalization();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
