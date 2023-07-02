@@ -9,7 +9,7 @@ namespace Organiser.Cores
         public MappingProfile()
         {
             CreateMap<Categories, CategoriesViewModel>();
-            CreateMap<Task, TasksViewModel>();
+            CreateMap<Tasks, TasksViewModel>();
         }
     }
 }
