@@ -21,7 +21,6 @@ namespace Organiser.Cores.Controllers
         public List<CategoriesViewModel> Get()
         {
             //ToDo: fix where condition to accept current CUID instead of 1;
-            var  xd = context.Categories.ToList();
             var categories = context.Categories.Where(x => x.CUID == 1).ToList();
 
             var categoriesViewModel = new List<CategoriesViewModel>();
@@ -42,7 +41,7 @@ namespace Organiser.Cores.Controllers
             {
                 var category = new Categories()
                 {
-                    CGID = Guid.NewGuid(),
+                    CGID = model.CGID,
                     CUID = 1, //poprawić by przekazywało poprawny UID
                     CName = model.CName,
                     CStartDate = model.CStartDate,

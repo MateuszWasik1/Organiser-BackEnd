@@ -8,8 +8,8 @@ namespace Organiser.Cores
     {
         public MappingProfile()
         {
-            // Add as many of these lines as you need to map your objects
             CreateMap<Categories, CategoriesViewModel>();
+            CreateMap<Task, TasksViewModel>();
         }
     }
 }

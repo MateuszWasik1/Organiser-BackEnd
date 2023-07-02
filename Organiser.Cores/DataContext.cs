@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Organiser.Cores.Entities;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Reflection.Emit;
 
 namespace Organiser.Cores
 {
@@ -12,6 +10,7 @@ namespace Organiser.Cores
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
         public DbSet<TestDB> TestDBs => Set<TestDB>();
         public DbSet<Categories> Categories => Set<Categories>();
+        public DbSet<Tasks> Tasks => Set<Tasks>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
