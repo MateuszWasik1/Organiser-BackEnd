@@ -34,18 +34,11 @@ namespace Organiser.Cores.Controllers
             return categoriesViewModel;
         }
 
-        // GET api/<TestController>/5
-        //[HttpGet("{id}")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
-
         [HttpPost]
         [Route("Save")]
         public void Save(CategoriesViewModel model)
         {
-            if (string.IsNullOrEmpty(model.CGID.ToString()))
+            if (model.CID == 0)
             {
                 var category = new Categories()
                 {
@@ -71,17 +64,5 @@ namespace Organiser.Cores.Controllers
 
             context.SaveChanges();
         }
-
-        //// PUT api/<TestController>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
-
-        //// DELETE api/<TestController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
     }
 }
