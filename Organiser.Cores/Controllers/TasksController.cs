@@ -63,5 +63,15 @@ namespace Organiser.Cores.Controllers
 
             context.SaveChanges();
         }
+
+        [HttpDelete]
+        [Route("Delete/{tGID}")]
+        public void Delete(Guid tGID)
+        {
+            var task = context.Tasks.FirstOrDefault(x => x.TGID == tGID);
+
+            context.Remove(task);
+            context.SaveChanges();
+        }
     }
 }
