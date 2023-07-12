@@ -27,7 +27,11 @@ namespace Organiser.Cores.Controllers
 
             categories.ForEach(x =>
             {
-                categoriesViewModel.Add(mapper.Map<Categories, CategoriesViewModel>(x));
+                var cVM = mapper.Map<Categories, CategoriesViewModel>(x);
+                var tasksBudgetCount = context.Tasks.Where(task => task.TCGID == x.CGID).Sum(x => x.TBudget);
+                cVM.CBudgetCount = tasksBudgetCount;
+
+                categoriesViewModel.Add(cVM);
             });
 
             return categoriesViewModel;
