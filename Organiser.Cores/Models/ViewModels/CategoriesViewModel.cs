@@ -9,5 +9,7 @@
         public DateTime CStartDate { get; set; }
         public DateTime CEndDate { get; set; }
         public int? CBudget { get; set; }
+        public decimal CBudgetCount { get; set; }
+
     }
 }
