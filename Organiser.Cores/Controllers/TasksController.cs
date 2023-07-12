@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Organiser.Cores.Entities;
 using Organiser.Cores.Models.ViewModels;
+using System.Threading.Tasks;
 
 namespace Organiser.Cores.Controllers
 {
@@ -18,10 +19,16 @@ namespace Organiser.Cores.Controllers
         }
 
         [HttpGet]
-        public List<TasksViewModel> Get()
+        public List<TasksViewModel> Get(string cGID = "", int status = 0)
         {
             //ToDo: fix where condition to accept current CUID instead of 1;
             var tasks = context.Tasks.Where(x => x.TUID == 1).ToList();
+
+            if(!string.IsNullOrEmpty(cGID))
+                tasks = tasks.Where(x => x.TCGID == Guid.Parse(cGID)).ToList();
+
+            if(status != 0)
+                tasks = tasks.Where(x => (int) x.TStatus == status).ToList();
 
             var tasksViewModel = new List<TasksViewModel>();
 
@@ -43,10 +50,12 @@ namespace Organiser.Cores.Controllers
                 {
                     TGID = model.TGID,
                     TUID = 1, //poprawić by przekazywało poprawny UID
+                    TCGID = model.TCGID,
                     TName = model.TName,
                     TLocalization = model.TLocalization,
                     TTime = model.TTime,
                     TBudget = model.TBudget,
+                    TStatus = model.TStatus,
                 };
 
                 context.Tasks.Add(task);
@@ -55,10 +64,12 @@ namespace Organiser.Cores.Controllers
             {
                 var task = context.Tasks.FirstOrDefault(x => x.TGID == model.TGID);
 
+                task.TCGID = model.TCGID;
                 task.TName = model.TName;
                 task.TLocalization = model.TLocalization;
                 task.TTime = model.TTime;
                 task.TBudget = model.TBudget;
+                task.TStatus = model.TStatus;
             }
 
             context.SaveChanges();
