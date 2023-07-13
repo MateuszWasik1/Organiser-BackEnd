@@ -18,10 +18,16 @@ namespace Organiser.Cores.Controllers
         }
 
         [HttpGet]
-        public List<CategoriesViewModel> Get()
+        public List<CategoriesViewModel> Get(DateTime? date)
         {
             //ToDo: fix where condition to accept current CUID instead of 1;
             var categories = context.Categories.Where(x => x.CUID == 1).ToList();
+
+            if(date != null)
+            {
+                var endDate = date.Value.AddMonths(1).AddSeconds(-1);
+                categories = categories.Where(x => x.CStartDate >= date && x.CStartDate <= endDate).ToList();
+            }
 
             var categoriesViewModel = new List<CategoriesViewModel>();
 
