@@ -23,7 +23,7 @@ namespace Organiser.Cores.Controllers
             //ToDo: fix where condition to accept current CUID instead of 1;
             var categories = context.Categories.Where(x => x.CUID == 1).ToList();
 
-            if(date != null)
+            if (date != null)
             {
                 var endDate = date.Value.AddMonths(1).AddSeconds(-1);
                 categories = categories.Where(x => x.CStartDate >= date && x.CStartDate <= endDate).ToList();
@@ -65,12 +65,33 @@ namespace Organiser.Cores.Controllers
             {
                 var category = context.Categories.FirstOrDefault(x => x.CGID == model.CGID);
 
+                if (category == null)
+                    throw new Exception("Brak kategorii");
+
                 category.CName = model.CName;
                 category.CStartDate = model.CStartDate;
                 category.CEndDate = model.CEndDate;
                 category.CBudget = model.CBudget;
             }
 
+            context.SaveChanges();
+        }
+
+        [HttpDelete]
+        [Route("Delete/{cGID}")]
+        public void Delete(Guid cGID)
+        {
+            var category = context.Categories.FirstOrDefault(x => cGID == x.CGID);
+
+            if (category == null)
+                throw new Exception("Brak kategorii");
+
+            var tasksCount = context.Tasks.Where(x => x.TCGID == category.CGID).Count();
+
+            if (tasksCount > 0)
+                throw new Exception($"Nie można usunąć kategorii, do kategorii jest podpięte {tasksCount} tasków");
+
+            context.Remove(category);
             context.SaveChanges();
         }
     }
