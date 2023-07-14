@@ -21,7 +21,7 @@ namespace Organiser.Cores.Controllers
         public List<CategoriesViewModel> Get(DateTime? date)
         {
             //ToDo: fix where condition to accept current CUID instead of 1;
-            var categories = context.Categories.Where(x => x.CUID == 1).ToList();
+            var categories = context.Categories.Where(x => x.CUID == 1).OrderBy(x => x.CStartDate).ToList();
 
             if (date != null)
             {

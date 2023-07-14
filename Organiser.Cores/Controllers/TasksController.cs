@@ -22,7 +22,7 @@ namespace Organiser.Cores.Controllers
         public List<TasksViewModel> Get(string cGID = "", int status = 0)
         {
             //ToDo: fix where condition to accept current CUID instead of 1;
-            var tasks = context.Tasks.Where(x => x.TUID == 1).ToList();
+            var tasks = context.Tasks.Where(x => x.TUID == 1).OrderBy(x => x.TTime).ToList();
 
             if(!string.IsNullOrEmpty(cGID))
                 tasks = tasks.Where(x => x.TCGID == Guid.Parse(cGID)).ToList();
