@@ -89,7 +89,7 @@ namespace Organiser.Cores.Controllers
             var tasksCount = context.Tasks.Where(x => x.TCGID == category.CGID).Count();
 
             if (tasksCount > 0)
-                throw new Exception($"Nie można usunąć kategorii, do kategorii jest podpięte {tasksCount} tasków");
+                throw new Exception($"Nie można usunąć kategorii, do kategorii jest podpięte {tasksCount} zadań");
 
             context.Remove(category);
             context.SaveChanges();
