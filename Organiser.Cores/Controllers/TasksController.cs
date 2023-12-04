@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Organiser.Cores.Entities;
 using Organiser.Cores.Models.ViewModels;
-using System.Threading.Tasks;
 
 namespace Organiser.Cores.Controllers
 {
@@ -64,6 +63,9 @@ namespace Organiser.Cores.Controllers
             {
                 var task = context.Tasks.FirstOrDefault(x => x.TGID == model.TGID);
 
+                if (task == null)
+                    throw new Exception("Nie znaleziono zadania");
+
                 task.TCGID = model.TCGID;
                 task.TName = model.TName;
                 task.TLocalization = model.TLocalization;
@@ -80,6 +82,9 @@ namespace Organiser.Cores.Controllers
         public void Delete(Guid tGID)
         {
             var task = context.Tasks.FirstOrDefault(x => x.TGID == tGID);
+
+            if(task == null)
+                throw new Exception("Nie znaleziono zadania");
 
             context.Remove(task);
             context.SaveChanges();

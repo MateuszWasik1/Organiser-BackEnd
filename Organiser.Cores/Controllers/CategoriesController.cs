@@ -66,7 +66,7 @@ namespace Organiser.Cores.Controllers
                 var category = context.Categories.FirstOrDefault(x => x.CGID == model.CGID);
 
                 if (category == null)
-                    throw new Exception("Brak kategorii");
+                    throw new Exception("Nie znaleziono kategorii");
 
                 category.CName = model.CName;
                 category.CStartDate = model.CStartDate;
@@ -84,7 +84,7 @@ namespace Organiser.Cores.Controllers
             var category = context.Categories.FirstOrDefault(x => cGID == x.CGID);
 
             if (category == null)
-                throw new Exception("Brak kategorii");
+                throw new Exception("Nie znaleziono kategorii");
 
             var tasksCount = context.Tasks.Where(x => x.TCGID == category.CGID).Count();
 
