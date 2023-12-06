@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Moq;
+using Moq.EntityFrameworkCore;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using Organiser.Cores;
 using Organiser.Cores.Controllers;
 using Organiser.Cores.Entities;
@@ -74,7 +77,7 @@ namespace Organiser.UnitTests.Controllers
                 },
             };
 
-            context.Setup(x => x.Add(It.IsAny<Tasks>())).Callback<Tasks>(tasks.Add);
+            context.Setup<DbSet<Tasks>>(x => x.Tasks).ReturnsDbSet(tasks);
         }
 
         [Test]
@@ -87,9 +90,8 @@ namespace Organiser.UnitTests.Controllers
             var result = controller.Get();
 
             //Assert
-            NUnit.Framework.Assert.Equals(3, result.Count);
-            NUnit.Framework.Assert.That(result.All(x => x.TUID == 1));
-
+            ClassicAssert.AreEqual(3, result.Count);
+            Assert.That(result.All(x => x.TUID == 1));
         }
     }
 }
