@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Organiser.Cores.Context;
 using Organiser.Cores.Entities;
 using Organiser.Cores.Models.ViewModels;
 
@@ -9,9 +10,9 @@ namespace Organiser.Cores.Controllers
     [ApiController]
     public class TasksController : ControllerBase
     {
-        private readonly DataContext context;
+        private readonly IDataBaseContext context;
         private readonly IMapper mapper;
-        public TasksController(DataContext context, IMapper mapper)
+        public TasksController(IDataBaseContext context, IMapper mapper)
         {
             this.context = context;
             this.mapper = mapper;
@@ -57,7 +58,7 @@ namespace Organiser.Cores.Controllers
                     TStatus = model.TStatus,
                 };
 
-                context.Tasks.Add(task);
+                context.CreateOrUpdate(task);
             }
             else
             {
@@ -86,7 +87,7 @@ namespace Organiser.Cores.Controllers
             if(task == null)
                 throw new Exception("Nie znaleziono zadania");
 
-            context.Remove(task);
+            context.DeleteTask(task);
             context.SaveChanges();
         }
     }
