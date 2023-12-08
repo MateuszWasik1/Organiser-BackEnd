@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Organiser.Cores.Context;
 using Organiser.Cores.Entities;
 
 namespace Organiser.Cores.Controllers
@@ -7,28 +8,25 @@ namespace Organiser.Cores.Controllers
     [ApiController]
     public class TestController : ControllerBase
     {
-        private readonly DataContext context;
+        private readonly IDataBaseContext context;
 
-        public TestController(DataContext context)
-        {
-            this.context = context;
-        }
+        public TestController(IDataBaseContext context) => this.context = context;
 
         // GET: api/<TestController>
-        [HttpGet]
-        public List<TestDB> Get()
-        {
-            //return new List<TestDB>()
-            //{
-            //    new TestDB()
-            //    {
-            //        ID = 1,
-            //        Name = "test",
-            //        vary = true
-            //    }
-            //};
-            return context.TestDBs.ToList();
-        }
+        //[HttpGet]
+        //public List<TestDB> Get()
+        //{
+        //    //return new List<TestDB>()
+        //    //{
+        //    //    new TestDB()
+        //    //    {
+        //    //        ID = 1,
+        //    //        Name = "test",
+        //    //        vary = true
+        //    //    }
+        //    //};
+        //    return context.TestDBs.ToList();
+        //}
 
         // GET api/<TestController>/5
         //[HttpGet("{id}")]

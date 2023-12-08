@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Organiser.Cores.Context;
 using Organiser.Cores.Entities;
 using Organiser.Cores.Models.ViewModels;
 
@@ -9,9 +10,9 @@ namespace Organiser.Cores.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        private readonly DataContext context;
+        private readonly IDataBaseContext context;
         private readonly IMapper mapper;
-        public CategoriesController(DataContext context, IMapper mapper)
+        public CategoriesController(IDataBaseContext context, IMapper mapper)
         {
             this.context = context;
             this.mapper = mapper;
@@ -59,7 +60,7 @@ namespace Organiser.Cores.Controllers
                     CBudget = model.CBudget,
                 };
 
-                context.Categories.Add(category);
+                context.CreateOrUpdate(category);
             }
             else
             {
@@ -91,7 +92,7 @@ namespace Organiser.Cores.Controllers
             if (tasksCount > 0)
                 throw new Exception($"Nie można usunąć kategorii, do kategorii jest podpięte {tasksCount} zadań");
 
-            context.Remove(category);
+            context.DeleteCategory(category);
             context.SaveChanges();
         }
     }
