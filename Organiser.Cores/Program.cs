@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Organiser.Cores;
+using Organiser.Cores.Context;
 using Organiser.Cores.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -43,6 +44,10 @@ builder.Services.AddIdentity<Users, IdentityRole>(config =>
     config.SignIn.RequireConfirmedEmail = true;
 }).AddEntityFrameworkStores<DataContext>()
   .AddDefaultTokenProviders();
+
+builder.Services.AddScoped<IDataBaseContext, DataBaseContext>();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
