@@ -16,6 +16,12 @@ namespace Organiser.Cores.Context
         void DeleteTask(Tasks task);
         #endregion
 
+        #region Savings
+        IQueryable<Savings> Savings { get; }
+        void CreateOrUpdate(Savings saving);
+        void DeleteSaving(Savings saving);
+        #endregion
+
         void SaveChanges();
     }
 }
