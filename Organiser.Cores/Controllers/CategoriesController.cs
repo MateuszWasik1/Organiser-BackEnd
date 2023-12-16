@@ -19,6 +19,7 @@ namespace Organiser.Cores.Controllers
         }
 
         [HttpGet]
+        [Route("Get")]
         public List<CategoriesViewModel> Get(DateTime? date)
         {
             //ToDo: fix where condition to accept current CUID instead of 1;
@@ -42,6 +43,29 @@ namespace Organiser.Cores.Controllers
             });
 
             return categoriesViewModel;
+        }
+
+        [HttpGet]
+        [Route("GetCategoriesForFilter")]
+        public List<CategoriesForFiltersViewModel> GetCategoriesForFilter()
+        {
+            var categories = context.Categories.OrderBy(x => x.CStartDate).ToList();
+
+            var viewModel = new List<CategoriesForFiltersViewModel>();
+
+            categories.ForEach(x =>
+            {
+                var model = new CategoriesForFiltersViewModel()
+                {
+                    CID = x.CID,
+                    CGID = x.CGID,
+                    CName = x.CName,
+                };
+
+                viewModel.Add(model);
+            });
+
+            return viewModel;
         }
 
         [HttpPost]

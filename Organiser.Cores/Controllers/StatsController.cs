@@ -104,5 +104,58 @@ namespace Organiser.Cores.Controllers
 
             return data;
         }
+
+        [HttpGet]
+        [Route("GetMoneySpendedForCategoryBarChart")]
+        public StatsBarChartViewModel GetMoneySpendedForCategoryBarChart(DateTime startDate, DateTime endDate, Guid cGID)
+        {
+            if (cGID == Guid.Empty)
+                return new StatsBarChartViewModel();
+
+            var category = context.Categories.FirstOrDefault(x => x.CGID == cGID);
+
+            if (category == null)
+                throw new Exception("Nie znaleziono kategorii");
+
+            var tasksForPeriod = context.Tasks.Where(x => category.CGID == x.TCGID && startDate <= x.TTime && x.TTime <= endDate).OrderBy(x => x.TTime).ToList();
+
+            var timeSpanBetweenStartAndEndDate = MonthsBetweenDatesHelper.MonthsBetween(startDate, endDate);
+
+            var data = new StatsBarChartViewModel()
+            {
+                Labels = new List<string>(),
+                Datasets = new ChartDatasetViewModel(),
+            };
+
+            var model = new ChartDatasetViewModel()
+            {
+                Label = $"Wydane pieniądze na daną kategorię",
+                Data = new List<decimal>(),
+            };
+
+            foreach (var x in timeSpanBetweenStartAndEndDate)
+            {
+                var month = new DateTime(x.Year, x.Month, 1);
+                var nextMonth = month.AddMonths(1).AddSeconds(-1);
+
+                if (startDate.Year == x.Year && startDate.Month == x.Month)
+                {
+                    month = new DateTime(x.Year, x.Month, startDate.Day);
+                    nextMonth = month.AddMonths(1).AddDays(-startDate.Day + 1).AddSeconds(-1);
+                }
+                if (endDate.Year == x.Year && endDate.Month == x.Month)
+                    nextMonth = new DateTime(x.Year, x.Month, endDate.Day, 23, 59, 59);
+
+                var tasksMoneySpendedForMonth = tasksForPeriod.Where(x => month <= x.TTime && x.TTime <= nextMonth).Sum(x => x.TBudget);
+
+                model?.Data?.Add(tasksMoneySpendedForMonth);
+
+                data?.Labels?.Add($"{x.Year}-{x.Month}");
+            }
+
+            data.Datasets = model;
+
+            return data;
+        }
     }
 }
