@@ -4,6 +4,7 @@ using NUnit.Framework.Legacy;
 using Organiser.Cores.Context;
 using Organiser.Cores.Controllers;
 using Organiser.Cores.Entities;
+using Organiser.Cores.Models.Enums;
 using Organiser.Cores.Models.ViewModels;
 
 namespace Organiser.UnitTests.Controllers
@@ -40,9 +41,9 @@ namespace Organiser.UnitTests.Controllers
                     SGID = new Guid("10dacc1d-7bee-4635-9c4c-9404a4af80dd"),
                     SUID = 1,
                     SAmount = 2135.9M,
-                    SOnWhat = "OnWhat1",
+                    SOnWhat = "OnWhat2",
                     STime = new DateTime(2024, 1, 30, 23, 55, 1),
-                    SWhere = "Where1",
+                    SWhere = "Where2",
                 },
                 new Savings()
                 {
@@ -50,9 +51,46 @@ namespace Organiser.UnitTests.Controllers
                     SGID = new Guid("20dacc1d-7bee-4635-9c4c-9404a4af80dd"),
                     SUID = 1,
                     SAmount = 4455.1M,
-                    SOnWhat = "OnWhat1",
+                    SOnWhat = "OnWhat3",
                     STime = new DateTime(2023, 12, 15, 23, 55, 1),
-                    SWhere = "Where1",
+                    SWhere = "Where3",
+                },
+            };
+
+            tasks = new List<Tasks>()
+            {
+                new Tasks()
+                {
+                    TID = 1,
+                    TGID = new Guid("00dacc1d-7bee-4635-9c4c-9404a4af80dd"),
+                    TUID = 1,
+                    TBudget = 245,
+                    TName = "Name1",
+                    TTime = new DateTime(2024, 1, 5, 23, 55, 1),
+                    TLocalization = "Localization1",
+                    TStatus = TaskEnum.NotStarted,
+                },
+                new Tasks()
+                {
+                    TID = 2,
+                    TGID = new Guid("10dacc1d-7bee-4635-9c4c-9404a4af80dd"),
+                    TUID = 1,
+                    TBudget = 2135,
+                    TName = "Name2",
+                    TTime = new DateTime(2024, 1, 30, 23, 55, 1),
+                    TLocalization = "Localization2",
+                    TStatus = TaskEnum.OnGoing,
+                },
+                new Tasks()
+                {
+                    TID = 3,
+                    TGID = new Guid("20dacc1d-7bee-4635-9c4c-9404a4af80dd"),
+                    TUID = 1,
+                    TBudget = 4455,
+                    TName = "Name3",
+                    TTime = new DateTime(2023, 12, 15, 23, 55, 1),
+                    TLocalization = "Localization3",
+                    TStatus = TaskEnum.OnGoing,
                 },
             };
 
@@ -101,7 +139,7 @@ namespace Organiser.UnitTests.Controllers
             };
 
             context.Setup(x => x.Savings).Returns(savings.AsQueryable());
-            //context.Setup(x => x.Tasks).Returns(tasks.AsQueryable());
+            context.Setup(x => x.Tasks).Returns(tasks.AsQueryable());
             context.Setup(x => x.Categories).Returns(categories.AsQueryable());
         }
 
@@ -157,6 +195,60 @@ namespace Organiser.UnitTests.Controllers
             ClassicAssert.AreEqual("Oszczędności", result?.Datasets.Label);
             ClassicAssert.AreEqual(4455.1M, result?.Datasets?.Data[0]);
             ClassicAssert.AreEqual(2381.4M, result?.Datasets?.Data[1]);
+        }
+
+        //GetMoneySpendedFromTaskBarChart
+        [Test]
+        public void TestStatsController_GetMoneySpendedFromTaskBarChart_TakeSavingsOnlyFromJanuary2024_ShouldReturnDataFromSavingsFromJanuary2024()
+        {
+            //Arrange
+            var controller = new StatsController(context.Object);
+
+            //Act
+            var result = controller.GetMoneySpendedFromTaskBarChart(new DateTime(2024, 1, 1, 0, 0, 0), new DateTime(2024, 1, 31, 23, 59, 59));
+
+            //Assert
+            ClassicAssert.AreEqual(1, result?.Labels?.Count);
+            ClassicAssert.AreEqual("2024-1", result?.Labels[0]);
+
+            ClassicAssert.AreEqual("Wydane pieniądze na zadania", result?.Datasets.Label);
+            ClassicAssert.AreEqual(2380M, result?.Datasets?.Data[0]);
+        }
+
+        [Test]
+        public void TestStatsController_GetMoneySpendedFromTaskBarChart_TakeSavingsOnlyFromFirstHalfJanuary2024_ShouldReturnDataFromSavingsOnlyFromFirstHalfOfJanuary2024()
+        {
+            //Arrange
+            var controller = new StatsController(context.Object);
+
+            //Act
+            var result = controller.GetMoneySpendedFromTaskBarChart(new DateTime(2024, 1, 1, 0, 0, 0), new DateTime(2024, 1, 14, 23, 59, 59));
+
+            //Assert
+            ClassicAssert.AreEqual(1, result?.Labels?.Count);
+            ClassicAssert.AreEqual("2024-1", result?.Labels[0]);
+
+            ClassicAssert.AreEqual("Wydane pieniądze na zadania", result?.Datasets.Label);
+            ClassicAssert.AreEqual(245M, result?.Datasets?.Data[0]);
+        }
+
+        [Test]
+        public void TestStatsController_GetMoneySpendedFromTaskBarChart_TakeSavingsFromDecember2023AndJanuary2024_ShouldReturnDataFromSavingsFromFDecember2023AndJanuary2024()
+        {
+            //Arrange
+            var controller = new StatsController(context.Object);
+
+            //Act
+            var result = controller.GetMoneySpendedFromTaskBarChart(new DateTime(2023, 12, 1, 0, 0, 0), new DateTime(2024, 1, 31, 23, 59, 59));
+
+            //Assert
+            ClassicAssert.AreEqual(2, result?.Labels?.Count);
+            ClassicAssert.AreEqual("2023-12", result?.Labels[0]);
+            ClassicAssert.AreEqual("2024-1", result?.Labels[1]);
+
+            ClassicAssert.AreEqual("Wydane pieniądze na zadania", result?.Datasets.Label);
+            ClassicAssert.AreEqual(4455M, result?.Datasets?.Data[0]);
+            ClassicAssert.AreEqual(2380M, result?.Datasets?.Data[1]);
         }
 
         //[Test]
