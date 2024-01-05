@@ -1,9 +1,6 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Organiser.Cores.Context;
-using Organiser.Cores.Entities;
 using Organiser.Cores.Models.Helpers;
-using Organiser.Cores.Models.ViewModels;
 using Organiser.Cores.Models.ViewModels.StatsViewModels;
 
 namespace Organiser.Cores.Controllers
