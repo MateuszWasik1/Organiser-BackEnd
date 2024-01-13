@@ -5,7 +5,7 @@ CREATE TABLE Tasks (
 	TUID INT NOT NULL,
 	TName nvarchar(300) NOT NULL,
 	TLocalization nvarchar(300) NOT NULL,
-	TTime DATE NOT NULL,
+	TTime DATETIME2 NOT NULL,
 	TBudget INT,
 	TStatus int NOT NULL
 )
