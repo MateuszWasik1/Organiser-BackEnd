@@ -19,15 +19,14 @@ namespace Organiser.Cores.Controllers
         }
 
         [HttpGet]
-        public List<TasksViewModel> Get(string cGID = "", int status = 0)
+        public List<TasksViewModel> Get(string cGID = "", int status = 3)
         {
-            //ToDo: fix where condition to accept current CUID instead of 1;
-            var tasks = context.Tasks.Where(x => x.TUID == 1).OrderBy(x => x.TTime).ToList();
+            var tasks = context.Tasks.OrderBy(x => x.TTime).ToList();
 
             if(!string.IsNullOrEmpty(cGID))
                 tasks = tasks.Where(x => x.TCGID == Guid.Parse(cGID)).ToList();
 
-            if(status != 0)
+            if(status != 3)
                 tasks = tasks.Where(x => (int) x.TStatus == status).ToList();
 
             var tasksViewModel = new List<TasksViewModel>();
