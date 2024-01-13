@@ -3,7 +3,7 @@ CREATE TABLE Categories (
 	CGID uniqueidentifier NOT NULL,
 	CUID INT NOT NULL,
 	CName nvarchar(300) NOT NULL,
-	CStartDate DATE NOT NULL,
-	CEndDate DATE NOT NULL,
+	CStartDate DATETIME2 NOT NULL,
+	CEndDate DATETIME2 NOT NULL,
 	CBudget INT
 )
