@@ -33,6 +33,18 @@ namespace Organiser.Cores.Context
         public void DeleteTask(Tasks task) => dataContext.Tasks.Remove(task);
         #endregion
 
+        #region TasksNotes
+        public IQueryable<TasksNotes> TasksNotes => dataContext.TasksNotes.Where(x => x.TNUID == 1);
+        public void CreateOrUpdate(TasksNotes taskNotes)
+        {
+            if (taskNotes.TNID == default)
+                dataContext.TasksNotes.Add(taskNotes);
+            else
+                dataContext.Entry(taskNotes).State = EntityState.Modified;
+        }
+        public void DeleteTaskNotes(TasksNotes taskNotes) => dataContext.TasksNotes.Remove(taskNotes);
+        #endregion
+
         #region Savings
         public IQueryable<Savings> Savings => dataContext.Savings.Where(x => x.SUID == 1);
         public void CreateOrUpdate(Savings saving)

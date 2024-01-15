@@ -11,6 +11,7 @@ namespace Organiser.Cores
         public DbSet<TestDB> TestDBs => Set<TestDB>();
         public DbSet<Categories> Categories => Set<Categories>();
         public DbSet<Tasks> Tasks => Set<Tasks>();
+        public DbSet<TasksNotes> TasksNotes => Set<TasksNotes>();
         public DbSet<Savings> Savings => Set<Savings>();
 
         protected override void OnModelCreating(ModelBuilder builder)
