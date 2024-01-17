@@ -40,15 +40,11 @@ namespace Organiser.Cores.Controllers
 
         [HttpPost]
         [Route("AddTaskNote")]
-        public void AddTaskNote(TasksNotesViewModel model)
+        public void AddTaskNote(TasksNotesAddViewModel model)
         {
-            var tNote = context.TasksNotes.FirstOrDefault(x => x.TNGID == model.TNGID);
-                
-            if(tNote != null)
-                throw new Exception("Wystąpił błąd");
-
             var taskNote = new TasksNotes()
             {
+                TNGID = model.TNGID,
                 TNTGID = model.TNTGID,
                 TNUID = 1,
                 TNNote = model.TNNote,
@@ -57,28 +53,6 @@ namespace Organiser.Cores.Controllers
 
             context.CreateOrUpdate(taskNote);
             
-            context.SaveChanges();
-        }
-
-        [HttpPost]
-        [Route("EditTaskNote")]
-        public void EditTaskNote(TasksNotesViewModel model)
-        {
-            var tNote = context.TasksNotes.FirstOrDefault(x => x.TNGID == model.TNGID);
-
-            if (tNote == null)
-                throw new Exception("Nie znaleziono podanej notatki! Nie została zmodyfikowana. Spróbuj ponownie.");
-
-            var taskNote = new TasksNotes()
-            {
-                TNTGID = model.TNTGID,
-                TNUID = 1,
-                TNNote = model.TNNote,
-                TNEditDate = DateTime.Now,
-            };
-
-            context.CreateOrUpdate(taskNote);
-
             context.SaveChanges();
         }
 
