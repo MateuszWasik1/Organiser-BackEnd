@@ -8,6 +8,8 @@ namespace Organiser.Cores
     public class DataContext : IdentityDbContext<Users>
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
+        public DbSet<Users> Users => Set<Users>();
+        public DbSet<Roles> Roles => Set<Roles>();
         public DbSet<TestDB> TestDBs => Set<TestDB>();
         public DbSet<Categories> Categories => Set<Categories>();
         public DbSet<Tasks> Tasks => Set<Tasks>();
