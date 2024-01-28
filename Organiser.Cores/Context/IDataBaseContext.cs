@@ -4,6 +4,16 @@ namespace Organiser.Cores.Context
 {
     public interface IDataBaseContext : IDisposable
     {
+        #region Users
+        IQueryable<Users> Users { get; }
+        void CreateOrUpdate(Users user);
+        void DeleteUser(Users user);
+        #endregion
+
+        #region Roles
+        IQueryable<Roles> Roles { get; }
+        #endregion
+
         #region Categories
         IQueryable<Categories> Categories { get; }
         void CreateOrUpdate(Categories category);

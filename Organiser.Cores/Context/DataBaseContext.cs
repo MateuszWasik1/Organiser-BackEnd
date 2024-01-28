@@ -9,6 +9,22 @@ namespace Organiser.Cores.Context
 
         public DataBaseContext(DataContext dataContext) => this.dataContext = dataContext;
 
+        #region Users
+        public IQueryable<Users> Users => dataContext.Users;
+        public void CreateOrUpdate(Users user)
+        {
+            if (user.UID == default)
+                dataContext.Users.Add(user);
+            else
+                dataContext.Entry(user).State = EntityState.Modified;
+        }
+        public void DeleteUser(Users user) => dataContext.Users.Remove(user);
+        #endregion
+
+        #region Roles
+        public IQueryable<Roles> Roles => dataContext.Roles;
+        #endregion
+
         #region Categories
         public IQueryable<Categories> Categories => dataContext.Categories.Where(x => x.CUID == 1);
         public void CreateOrUpdate(Categories category)
