@@ -55,6 +55,8 @@ builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 var authenticationSettings = new AuthenticationSettings();
 builder.Configuration.GetSection("Authentication").Bind(authenticationSettings);
 
+builder.Services.AddSingleton(authenticationSettings);
+
 builder.Services.AddAuthentication(option =>
 {
     option.DefaultAuthenticateScheme = "Bearer";

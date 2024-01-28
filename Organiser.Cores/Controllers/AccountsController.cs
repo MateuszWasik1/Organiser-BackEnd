@@ -1,8 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Organiser.Cores.Context;
 using Organiser.Cores.Entities;
-using Organiser.Cores.Models.ViewModels;
+using Organiser.Cores.Models.ViewModels.AccountsViewModel;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace Organiser.Cores.Controllers
 {
@@ -12,10 +16,14 @@ namespace Organiser.Cores.Controllers
     {
         private readonly IDataBaseContext context;
         private readonly IPasswordHasher<User> hasher;
-        public AccountsController(IDataBaseContext context, IPasswordHasher<User> hasher)
+        private readonly AuthenticationSettings authenticationSettings;
+        public AccountsController(IDataBaseContext context, 
+            IPasswordHasher<User> hasher,
+            AuthenticationSettings authenticationSettings)
         {
             this.context = context;
             this.hasher = hasher;
+            this.authenticationSettings = authenticationSettings;
         }
 
         [HttpPost]
@@ -51,6 +59,46 @@ namespace Organiser.Cores.Controllers
 
             context.CreateOrUpdate(newUser);
             context.SaveChanges();
+        }
+
+        [HttpGet] //HttpPost ?
+        [Route("Login")]
+        public ActionResult Login(LoginViewModel model)
+        {
+            var token = GenerateJWTToken(model);
+
+            return Ok(token);
+        }
+
+        public string GenerateJWTToken(LoginViewModel model)
+        {
+            var user = context.User.FirstOrDefault(u => u.UUserName == model.UUserName);
+
+            if (user == null)
+                throw new Exception("Podany login lub hasło jest błędne!");
+
+            var result = hasher.VerifyHashedPassword(user, user.UPassword, model.UPassword);
+
+            if(result == PasswordVerificationResult.Failed)
+                throw new Exception("Podany login lub hasło jest błędne!");
+
+            var userRole = context.Roles.FirstOrDefault(x => x.RID == user.URID)?.RName ?? "User";
+
+            var claims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.UGID.ToString()),
+                new Claim(ClaimTypes.Name, $"{user.UFirstName} {user.ULastName}"),
+                new Claim(ClaimTypes.Role, $"{userRole}")
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JWTKey));
+            var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var expires = DateTime.Now.AddDays(authenticationSettings.JWTExpiredDays);
+
+            var token = new JwtSecurityToken(authenticationSettings.JWTIssuer, authenticationSettings.JWTIssuer, claims, expires: expires, signingCredentials: cred);
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            return tokenHandler.WriteToken(token);
         }
     }
 }
