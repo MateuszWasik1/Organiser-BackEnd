@@ -8,7 +8,7 @@ namespace Organiser.Cores
     public class DataContext : IdentityDbContext<Users>
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
-        public override DbSet<Users> Users => Set<Users>();
+        public DbSet<User> User => Set<User>();
         public DbSet<Roles> AppRoles => Set<Roles>();
         public DbSet<TestDB> TestDBs => Set<TestDB>();
         public DbSet<Categories> Categories => Set<Categories>();

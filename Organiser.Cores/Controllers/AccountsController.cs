@@ -27,19 +27,20 @@ namespace Organiser.Cores.Controllers
 
             var roleID = context.Roles.FirstOrDefault(x => x.RName == "user")?.RID ?? 1;
 
-            var newUser = new Users()
+            var newUser = new User()
             {
                 UGID = Guid.NewGuid(),
                 URID = roleID,
-                UFirstName = null,
-                ULastName = null,
+                UFirstName = "",
+                ULastName = "",
                 UUserName = model.UUserName,
                 UEmail = model.UEmail,
-                UPhone = null,
+                UPhone = "",
                 UPassword = model.UPassword,
             };
 
             context.CreateOrUpdate(newUser);
+            context.SaveChanges();
         }
     }
 }
