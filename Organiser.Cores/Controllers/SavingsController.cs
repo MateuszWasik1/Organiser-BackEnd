@@ -43,7 +43,7 @@ namespace Organiser.Cores.Controllers
                 var saving = new Savings()
                 {
                     SGID = model.SGID,
-                    SUID = 1,
+                    SUID = 1, //poprawić by przekazywało poprawny UID
                     SAmount = model.SAmount,
                     STime = model.STime,
                     SOnWhat = model.SOnWhat,
