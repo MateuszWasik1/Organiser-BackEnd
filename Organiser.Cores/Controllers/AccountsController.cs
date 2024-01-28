@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Organiser.Cores.Context;
 using Organiser.Cores.Entities;
 using Organiser.Cores.Models.ViewModels;
@@ -10,7 +11,12 @@ namespace Organiser.Cores.Controllers
     public class AccountsController : ControllerBase
     {
         private readonly IDataBaseContext context;
-        public AccountsController(IDataBaseContext context) => this.context = context;
+        private readonly IPasswordHasher<User> hasher;
+        public AccountsController(IDataBaseContext context, IPasswordHasher<User> hasher)
+        {
+            this.context = context;
+            this.hasher = hasher;
+        }
 
         [HttpPost]
         [Route("Register")]
@@ -38,6 +44,10 @@ namespace Organiser.Cores.Controllers
                 UPhone = "",
                 UPassword = model.UPassword,
             };
+
+            var hashedPassword = hasher.HashPassword(newUser, newUser.UPassword);
+
+            newUser.UPassword = hashedPassword;
 
             context.CreateOrUpdate(newUser);
             context.SaveChanges();

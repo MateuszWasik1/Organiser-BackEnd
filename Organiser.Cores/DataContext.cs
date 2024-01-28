@@ -5,7 +5,7 @@ using Organiser.Cores.Entities;
 
 namespace Organiser.Cores
 {
-    public class DataContext : IdentityDbContext<Users>
+    public class DataContext : IdentityDbContext<Users> //można zamienić po prostu na DBCONTEXT ???
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
         public DbSet<User> User => Set<User>();

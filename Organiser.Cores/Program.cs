@@ -47,6 +47,7 @@ builder.Services.AddIdentity<Users, IdentityRole>(config =>
 
 builder.Services.AddScoped<IDataBaseContext, DataBaseContext>();
 
+builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
 var app = builder.Build();
 
