@@ -61,13 +61,13 @@ namespace Organiser.Cores.Controllers
             context.SaveChanges();
         }
 
-        [HttpGet] //HttpPost ?
+        [HttpPost]
         [Route("Login")]
-        public ActionResult Login(LoginViewModel model)
+        public string Login(LoginViewModel model)
         {
             var token = GenerateJWTToken(model);
 
-            return Ok(token);
+            return token;
         }
 
         public string GenerateJWTToken(LoginViewModel model)
