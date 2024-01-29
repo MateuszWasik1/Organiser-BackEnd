@@ -7,6 +7,7 @@ using Organiser.Cores.Models.ViewModels.AccountsViewModel;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
 
 namespace Organiser.Cores.Controllers
 {
@@ -61,13 +62,19 @@ namespace Organiser.Cores.Controllers
             context.SaveChanges();
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("Login")]
-        public string Login(LoginViewModel model)
+        public string Login(string username, string password)
         {
+            var model = new LoginViewModel()
+            {
+                UUserName = username,
+                UPassword = password,
+            };
+
             var token = GenerateJWTToken(model);
 
-            return token;
+            return JsonSerializer.Serialize(token);
         }
 
         public string GenerateJWTToken(LoginViewModel model)
