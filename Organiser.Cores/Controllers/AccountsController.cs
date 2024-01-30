@@ -95,7 +95,9 @@ namespace Organiser.Cores.Controllers
             {
                 new Claim(ClaimTypes.NameIdentifier, user.UGID.ToString()),
                 new Claim(ClaimTypes.Name, $"{user.UFirstName} {user.ULastName}"),
-                new Claim(ClaimTypes.Role, $"{userRole}")
+                new Claim(ClaimTypes.Role, $"{userRole}"),
+                new Claim("UID", user.UID.ToString()),
+                new Claim("UGID", user.UGID.ToString()),
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JWTKey));

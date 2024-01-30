@@ -95,12 +95,13 @@ app.MapRazorPages();
 app.UseAuthentication();
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
-app.UseAuthentication();
+//app.UseAuthorization();
+//app.UseAuthentication();
 
 app.MapControllers();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseCors("OrganiserPolicy");
+app.UseAuthorization();
 app.Run();
 app.Services.GetRequiredService<DataContext>().Database.EnsureCreated();
