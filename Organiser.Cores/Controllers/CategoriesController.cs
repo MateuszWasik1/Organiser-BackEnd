@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Organiser.Cores.Context;
 using Organiser.Cores.Entities;
 using Organiser.Cores.Models.ViewModels;
+using Organiser.Cores.Services;
 
 namespace Organiser.Cores.Controllers
 {
@@ -13,10 +14,12 @@ namespace Organiser.Cores.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly IDataBaseContext context;
+        private readonly IUserContext user;
         private readonly IMapper mapper;
-        public CategoriesController(IDataBaseContext context, IMapper mapper)
+        public CategoriesController(IDataBaseContext context, IUserContext user, IMapper mapper)
         {
             this.context = context;
+            this.user = user;
             this.mapper = mapper;
         }
 

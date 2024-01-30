@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using Organiser.Cores;
 using Organiser.Cores.Context;
 using Organiser.Cores.Entities;
+using Organiser.Cores.Services;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -48,6 +49,8 @@ builder.Services.AddIdentity<Users, IdentityRole>(config =>
   .AddDefaultTokenProviders();
 
 builder.Services.AddScoped<IDataBaseContext, DataBaseContext>();
+builder.Services.AddScoped<IUserContext, UserContext>();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
