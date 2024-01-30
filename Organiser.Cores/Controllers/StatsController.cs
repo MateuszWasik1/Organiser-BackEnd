@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Organiser.Cores.Context;
 using Organiser.Cores.Models.Helpers;
 using Organiser.Cores.Models.ViewModels.StatsViewModels;
@@ -7,6 +8,7 @@ namespace Organiser.Cores.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class StatsController : ControllerBase
     {
         private readonly IDataBaseContext context;
