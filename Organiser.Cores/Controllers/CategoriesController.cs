@@ -1,20 +1,25 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Organiser.Cores.Context;
 using Organiser.Cores.Entities;
 using Organiser.Cores.Models.ViewModels;
+using Organiser.Cores.Services;
 
 namespace Organiser.Cores.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CategoriesController : ControllerBase
     {
         private readonly IDataBaseContext context;
+        private readonly IUserContext user;
         private readonly IMapper mapper;
-        public CategoriesController(IDataBaseContext context, IMapper mapper)
+        public CategoriesController(IDataBaseContext context, IUserContext user, IMapper mapper)
         {
             this.context = context;
+            this.user = user;
             this.mapper = mapper;
         }
 
@@ -77,7 +82,7 @@ namespace Organiser.Cores.Controllers
                 var category = new Categories()
                 {
                     CGID = model.CGID,
-                    CUID = 1, //poprawić by przekazywało poprawny UID
+                    CUID = user.UID,
                     CName = model.CName,
                     CStartDate = model.CStartDate,
                     CEndDate = model.CEndDate,

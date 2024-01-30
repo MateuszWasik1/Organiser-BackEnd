@@ -6,4 +6,4 @@ CREATE TABLE Savings (
 	STime DATETIME2 NOT NULL,
 	SOnWhat nvarchar(300),
 	SWhere nvarchar(300),
-)
+)	

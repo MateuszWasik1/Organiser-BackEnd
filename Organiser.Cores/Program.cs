@@ -1,9 +1,12 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Organiser.Cores;
 using Organiser.Cores.Context;
 using Organiser.Cores.Entities;
+using Organiser.Cores.Services;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,8 +49,35 @@ builder.Services.AddIdentity<Users, IdentityRole>(config =>
   .AddDefaultTokenProviders();
 
 builder.Services.AddScoped<IDataBaseContext, DataBaseContext>();
+builder.Services.AddScoped<IUserContext, UserContext>();
+builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
+//Authentications
+var authenticationSettings = new AuthenticationSettings();
+builder.Configuration.GetSection("Authentication").Bind(authenticationSettings);
+
+builder.Services.AddSingleton(authenticationSettings);
+
+builder.Services.AddAuthentication(option =>
+{
+    option.DefaultAuthenticateScheme = "Bearer";
+    option.DefaultScheme = "Bearer";
+    option.DefaultChallengeScheme = "Bearer";
+}).AddJwtBearer(configuration =>
+{
+    configuration.RequireHttpsMetadata = false;
+    configuration.SaveToken = true;
+    configuration.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidIssuer = authenticationSettings.JWTIssuer,
+        ValidAudience = authenticationSettings.JWTIssuer,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JWTKey)),
+    };
+});
+
+//Building
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -65,15 +95,16 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.MapRazorPages();
-
+app.UseAuthentication();
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
-app.UseAuthentication();
+//app.UseAuthorization();
+//app.UseAuthentication();
 
 app.MapControllers();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseCors("OrganiserPolicy");
+app.UseAuthorization();
 app.Run();
 app.Services.GetRequiredService<DataContext>().Database.EnsureCreated();

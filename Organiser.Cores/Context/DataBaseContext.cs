@@ -1,16 +1,38 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Organiser.Cores.Entities;
+using Organiser.Cores.Services;
 
 namespace Organiser.Cores.Context
 {
     public class DataBaseContext : IDataBaseContext
     {
         private DataContext dataContext;
+        private IUserContext user;
 
-        public DataBaseContext(DataContext dataContext) => this.dataContext = dataContext;
+        public DataBaseContext(DataContext dataContext, IUserContext user)
+        {
+            this.dataContext = dataContext;
+            this.user = user;
+        }
+
+        #region User
+        public IQueryable<User> User => dataContext.User;
+        public void CreateOrUpdate(User user)
+        {
+            if (user.UID == default)
+                dataContext.User.Add(user);
+            else
+                dataContext.Entry(user).State = EntityState.Modified;
+        }
+        public void DeleteUser(User user) => dataContext.User.Remove(user);
+        #endregion
+
+        #region Roles
+        public IQueryable<Roles> Roles => dataContext.AppRoles;
+        #endregion
 
         #region Categories
-        public IQueryable<Categories> Categories => dataContext.Categories.Where(x => x.CUID == 1);
+        public IQueryable<Categories> Categories => dataContext.Categories.Where(x => x.CUID == user.UID);
         public void CreateOrUpdate(Categories category)
         {
             if (category.CID == default)
@@ -22,7 +44,7 @@ namespace Organiser.Cores.Context
         #endregion
 
         #region Tasks
-        public IQueryable<Tasks> Tasks => dataContext.Tasks.Where(x => x.TUID == 1);
+        public IQueryable<Tasks> Tasks => dataContext.Tasks.Where(x => x.TUID == user.UID);
         public void CreateOrUpdate(Tasks task)
         {
             if (task.TID == default)
@@ -34,7 +56,7 @@ namespace Organiser.Cores.Context
         #endregion
 
         #region TasksNotes
-        public IQueryable<TasksNotes> TasksNotes => dataContext.TasksNotes.Where(x => x.TNUID == 1);
+        public IQueryable<TasksNotes> TasksNotes => dataContext.TasksNotes.Where(x => x.TNUID == user.UID);
         public void CreateOrUpdate(TasksNotes taskNotes)
         {
             if (taskNotes.TNID == default)
@@ -46,7 +68,7 @@ namespace Organiser.Cores.Context
         #endregion
 
         #region Savings
-        public IQueryable<Savings> Savings => dataContext.Savings.Where(x => x.SUID == 1);
+        public IQueryable<Savings> Savings => dataContext.Savings.Where(x => x.SUID == user.UID);
         public void CreateOrUpdate(Savings saving)
         {
             if (saving.SID == default)

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Organiser.Cores.Entities
 {
-    public class Users : IdentityUser
+    public class User
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
