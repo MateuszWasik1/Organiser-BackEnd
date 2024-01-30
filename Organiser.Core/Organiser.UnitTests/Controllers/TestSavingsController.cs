@@ -5,8 +5,8 @@ using NUnit.Framework.Legacy;
 using Organiser.Cores.Context;
 using Organiser.Cores.Controllers;
 using Organiser.Cores.Entities;
-using Organiser.Cores.Models.Enums;
 using Organiser.Cores.Models.ViewModels;
+using Organiser.Cores.Services;
 
 namespace Organiser.UnitTests.Controllers
 {
@@ -14,6 +14,7 @@ namespace Organiser.UnitTests.Controllers
     public class TestSavingsController
     {
         private Mock<IDataBaseContext>? context;
+        private Mock<IUserContext>? user;
         private Mock<IMapper>? mapper;
 
         private List<Savings>? savings;
@@ -22,6 +23,7 @@ namespace Organiser.UnitTests.Controllers
         public void SetUp()
         {
             context = new Mock<IDataBaseContext>();
+            user = new Mock<IUserContext>();
             mapper = new Mock<IMapper>();
 
             savings = new List<Savings>()
@@ -88,7 +90,7 @@ namespace Organiser.UnitTests.Controllers
         public void TestSavingsController_GetAllDataForUser_ShouldReturn3Savings()
         {
             //Arrange
-            var controller = new SavingsController(context.Object, mapper.Object);
+            var controller = new SavingsController(context.Object, user.Object, mapper.Object);
 
             //Act
             var result = controller.Get();
@@ -102,7 +104,7 @@ namespace Organiser.UnitTests.Controllers
         public void TestSavingsController_AddSaving_ShouldAddSaving()
         {
             //Arrange
-            var controller = new SavingsController(context.Object, mapper.Object);
+            var controller = new SavingsController(context.Object, user.Object, mapper.Object);
 
             var saving = new SavingsViewModel()
             {
@@ -130,7 +132,7 @@ namespace Organiser.UnitTests.Controllers
         public void TestSavingsController_AddSaving_SavingExistButErrorIsThrow_ShouldThrowException()
         {
             //Arrange
-            var controller = new SavingsController(context.Object, mapper.Object);
+            var controller = new SavingsController(context.Object, user.Object, mapper.Object);
 
             var saving = new SavingsViewModel()
             {
@@ -147,7 +149,7 @@ namespace Organiser.UnitTests.Controllers
         public void TestSavingsController_AddSaving_SavingExist_ShouldModifySaving()
         {
             //Arrange
-            var controller = new SavingsController(context.Object, mapper.Object);
+            var controller = new SavingsController(context.Object, user.Object, mapper.Object);
 
             var saving = new SavingsViewModel()
             {
@@ -176,7 +178,7 @@ namespace Organiser.UnitTests.Controllers
         public void TestSavingsController_DeleteSaving_SavingNotFound_ShouldThrowException()
         {
             //Arrange
-            var controller = new SavingsController(context.Object, mapper.Object);
+            var controller = new SavingsController(context.Object, user.Object, mapper.Object);
 
             //Act
             //Assert
@@ -187,7 +189,7 @@ namespace Organiser.UnitTests.Controllers
         public void TestSavingsController_DeleteSaving_SavingIsFound_ShouldDeleteSaving()
         {
             //Arrange
-            var controller = new SavingsController(context.Object, mapper.Object);
+            var controller = new SavingsController(context.Object, user.Object, mapper.Object);
 
             //Act
             controller.Delete(savings[2].SGID);

@@ -7,6 +7,7 @@ using Organiser.Cores.Controllers;
 using Organiser.Cores.Entities;
 using Organiser.Cores.Models.Enums;
 using Organiser.Cores.Models.ViewModels;
+using Organiser.Cores.Services;
 
 namespace Organiser.UnitTests.Controllers
 {
@@ -14,6 +15,7 @@ namespace Organiser.UnitTests.Controllers
     public class TestTasksController
     {
         private Mock<IDataBaseContext>? context;
+        private Mock<IUserContext>? user;
         private Mock<IMapper>? mapper;
 
         private List<Tasks>? tasks;
@@ -22,6 +24,7 @@ namespace Organiser.UnitTests.Controllers
         public void SetUp()
         {
             context = new Mock<IDataBaseContext>();
+            user = new Mock<IUserContext>();
             mapper = new Mock<IMapper>();
 
             tasks = new List<Tasks>()
@@ -109,16 +112,16 @@ namespace Organiser.UnitTests.Controllers
 
         //Get
         [Test]
-        public void TestTasksController_GetAllDataForUser_ShouldReturn3Tasks()
+        public void TestTasksController_GetAllDataForUser_ShouldReturn4Tasks()
         {
             //Arrange
-            var controller = new TasksController(context.Object, mapper.Object);
+            var controller = new TasksController(context.Object, user.Object, mapper.Object);
 
             //Act
             var result = controller.Get();
 
             //Assert
-            ClassicAssert.AreEqual(3, result.Count);
+            ClassicAssert.AreEqual(4, result.Count);
         }
 
         //Post
@@ -126,7 +129,7 @@ namespace Organiser.UnitTests.Controllers
         public void TestTasksController_AddTask_ShouldAddTask()
         {
             //Arrange
-            var controller = new TasksController(context.Object, mapper.Object);
+            var controller = new TasksController(context.Object, user.Object, mapper.Object);
 
             var task = new TasksViewModel()
             {
@@ -157,7 +160,7 @@ namespace Organiser.UnitTests.Controllers
         public void TestTasksController_AddTask_TaskExistButErrorIsThrow_ShouldThrowException()
         {
             //Arrange
-            var controller = new TasksController(context.Object, mapper.Object);
+            var controller = new TasksController(context.Object, user.Object, mapper.Object);
 
             var task = new TasksViewModel()
             {
@@ -174,7 +177,7 @@ namespace Organiser.UnitTests.Controllers
         public void TestTasksController_AddTask_TaskExist_ShouldModifyTask()
         {
             //Arrange
-            var controller = new TasksController(context.Object, mapper.Object);
+            var controller = new TasksController(context.Object, user.Object, mapper.Object);
 
             var task = new TasksViewModel()
             {
@@ -205,7 +208,7 @@ namespace Organiser.UnitTests.Controllers
         public void TestTasksController_DeleteTask_TaskNotFound_ShouldThrowException()
         {
             //Arrange
-            var controller = new TasksController(context.Object, mapper.Object);
+            var controller = new TasksController(context.Object, user.Object, mapper.Object);
 
             //Act
             //Assert
@@ -216,7 +219,7 @@ namespace Organiser.UnitTests.Controllers
         public void TestTasksController_DeleteTask_TaskIsFound_ShouldDeleteTask()
         {
             //Arrange
-            var controller = new TasksController(context.Object, mapper.Object);
+            var controller = new TasksController(context.Object, user.Object, mapper.Object);
 
             //Act
             controller.Delete(tasks[2].TGID);

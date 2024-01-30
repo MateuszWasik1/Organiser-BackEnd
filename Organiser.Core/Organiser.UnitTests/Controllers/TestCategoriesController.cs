@@ -7,6 +7,7 @@ using Organiser.Cores.Controllers;
 using Organiser.Cores.Entities;
 using Organiser.Cores.Models.Enums;
 using Organiser.Cores.Models.ViewModels;
+using Organiser.Cores.Services;
 
 namespace Organiser.UnitTests.Controllers
 {
@@ -14,6 +15,7 @@ namespace Organiser.UnitTests.Controllers
     public class TestCategoriesController
     {
         private Mock<IDataBaseContext>? context;
+        private Mock<IUserContext>? user;
         private Mock<IMapper>? mapper;
 
         private List<Categories>? categories;
@@ -22,6 +24,7 @@ namespace Organiser.UnitTests.Controllers
         public void SetUp()
         {
             context = new Mock<IDataBaseContext>();
+            user = new Mock<IUserContext>();
             mapper = new Mock<IMapper>();
 
             categories = new List<Categories>()
@@ -88,7 +91,7 @@ namespace Organiser.UnitTests.Controllers
         public void TestCategoriesController_AddCategory_ShouldAddCategory()
         {
             //Arrange
-            var controller = new CategoriesController(context.Object, mapper.Object);
+            var controller = new CategoriesController(context.Object, user.Object, mapper.Object);
 
             var category = new CategoriesViewModel()
             {
@@ -116,7 +119,7 @@ namespace Organiser.UnitTests.Controllers
         public void TestCategoriesController_AddCategory_CategoryExistButErrorIsThrow_ShouldThrowException()
         {
             //Arrange
-            var controller = new CategoriesController(context.Object, mapper.Object);
+            var controller = new CategoriesController(context.Object, user.Object, mapper.Object);
 
             var category = new CategoriesViewModel()
             {
@@ -133,7 +136,7 @@ namespace Organiser.UnitTests.Controllers
         public void TestCategoriesController_AddCategory_CategoryExist_ShouldModifyCategory()
         {
             //Arrange
-            var controller = new CategoriesController(context.Object, mapper.Object);
+            var controller = new CategoriesController(context.Object, user.Object, mapper.Object);
 
             var category = new CategoriesViewModel()
             {
@@ -162,7 +165,7 @@ namespace Organiser.UnitTests.Controllers
         public void TestCategoriesController_DeleteCategory_CategoryNotFound_ShouldThrowException()
         {
             //Arrange
-            var controller = new CategoriesController(context.Object, mapper.Object);
+            var controller = new CategoriesController(context.Object, user.Object, mapper.Object);
 
             //Act
             //Assert
@@ -173,7 +176,7 @@ namespace Organiser.UnitTests.Controllers
         public void TestCategoriesController_DeleteCategory_CategoryHasTasks_ShouldThrowException()
         {
             //Arrange
-            var controller = new CategoriesController(context.Object, mapper.Object);
+            var controller = new CategoriesController(context.Object, user.Object, mapper.Object);
 
             //Act
             //Assert
@@ -184,7 +187,7 @@ namespace Organiser.UnitTests.Controllers
         public void TestCategoriesController_DeleteCategory_CategoryIsFound_ShouldDeleteCategory()
         {
             //Arrange
-            var controller = new CategoriesController(context.Object, mapper.Object);
+            var controller = new CategoriesController(context.Object, user.Object, mapper.Object);
 
             //Act
             controller.Delete(categories[2].CGID);
