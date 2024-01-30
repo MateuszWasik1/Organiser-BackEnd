@@ -11,7 +11,7 @@ namespace Organiser.Cores.Services
         }
 
         public ClaimsPrincipal? User => httpContextAccessor.HttpContext?.User;
-        public int? UID => User == null ? null : int.Parse(User?.FindFirst(x => x.Type == "UID")?.Value);
+        public int UID => User == null ? 1 : int.Parse(User?.FindFirst(x => x.Type == "UID")?.Value);
         public string? GUID => User == null ? null : User?.FindFirst(x => x.Type == "GUID")?.Value;
     }
 }

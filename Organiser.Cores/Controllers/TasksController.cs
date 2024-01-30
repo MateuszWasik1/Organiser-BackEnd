@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Organiser.Cores.Context;
 using Organiser.Cores.Entities;
 using Organiser.Cores.Models.ViewModels;
+using Organiser.Cores.Services;
 
 namespace Organiser.Cores.Controllers
 {
@@ -13,10 +14,12 @@ namespace Organiser.Cores.Controllers
     public class TasksController : ControllerBase
     {
         private readonly IDataBaseContext context;
+        private readonly IUserContext user;
         private readonly IMapper mapper;
-        public TasksController(IDataBaseContext context, IMapper mapper)
+        public TasksController(IDataBaseContext context, IUserContext user, IMapper mapper)
         {
             this.context = context;
+            this.user = user;
             this.mapper = mapper;
         }
 
@@ -50,7 +53,7 @@ namespace Organiser.Cores.Controllers
                 var task = new Tasks()
                 {
                     TGID = model.TGID,
-                    TUID = 1, //poprawić by przekazywało poprawny UID
+                    TUID = user.UID,
                     TCGID = model.TCGID,
                     TName = model.TName,
                     TLocalization = model.TLocalization,

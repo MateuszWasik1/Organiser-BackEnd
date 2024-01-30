@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Organiser.Cores.Context;
 using Organiser.Cores.Entities;
 using Organiser.Cores.Models.ViewModels;
+using Organiser.Cores.Services;
 
 namespace Organiser.Cores.Controllers
 {
@@ -13,10 +14,12 @@ namespace Organiser.Cores.Controllers
     public class SavingsController : ControllerBase
     {
         private readonly IDataBaseContext context;
+        private readonly IUserContext user;
         private readonly IMapper mapper;
-        public SavingsController(IDataBaseContext context, IMapper mapper)
+        public SavingsController(IDataBaseContext context, IUserContext user, IMapper mapper)
         {
             this.context = context;
+            this.user = user;
             this.mapper = mapper;
         }
 
@@ -45,7 +48,7 @@ namespace Organiser.Cores.Controllers
                 var saving = new Savings()
                 {
                     SGID = model.SGID,
-                    SUID = 1,
+                    SUID = user.UID,
                     SAmount = model.SAmount,
                     STime = model.STime,
                     SOnWhat = model.SOnWhat,

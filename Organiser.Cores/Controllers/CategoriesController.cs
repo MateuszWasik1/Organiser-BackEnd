@@ -82,7 +82,7 @@ namespace Organiser.Cores.Controllers
                 var category = new Categories()
                 {
                     CGID = model.CGID,
-                    CUID = 1, //poprawić by przekazywało poprawny UID
+                    CUID = user.UID,
                     CName = model.CName,
                     CStartDate = model.CStartDate,
                     CEndDate = model.CEndDate,

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Organiser.Cores.Context;
 using Organiser.Cores.Entities;
 using Organiser.Cores.Models.ViewModels;
+using Organiser.Cores.Services;
 
 namespace Organiser.Cores.Controllers
 {
@@ -13,10 +14,12 @@ namespace Organiser.Cores.Controllers
     public class TasksNotesController : ControllerBase
     {
         private readonly IDataBaseContext context;
+        private readonly IUserContext user;
         private readonly IMapper mapper;
-        public TasksNotesController(IDataBaseContext context, IMapper mapper)
+        public TasksNotesController(IDataBaseContext context, IUserContext user, IMapper mapper)
         {
             this.context = context;
+            this.user = user;
             this.mapper = mapper;
         }
 
@@ -48,7 +51,7 @@ namespace Organiser.Cores.Controllers
             {
                 TNGID = model.TNGID,
                 TNTGID = model.TNTGID,
-                TNUID = 1,
+                TNUID = user.UID,
                 TNNote = model.TNNote,
                 TNDate = DateTime.Now,
             };
