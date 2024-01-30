@@ -2,13 +2,6 @@
 
 namespace Organiser.Cores.Services
 {
-    public interface IUserContext
-    {
-        ClaimsPrincipal? User { get; }
-        int? UID { get; }
-        string? GUID { get; }
-    }
-
     public class UserContext : IUserContext
     {
         private readonly IHttpContextAccessor httpContextAccessor;
