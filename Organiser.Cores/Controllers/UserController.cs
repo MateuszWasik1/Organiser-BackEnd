@@ -48,6 +48,11 @@ namespace Organiser.Cores.Controllers
             if (userData == null)
                 throw new Exception("Nie znaleziono użytkownika!");
 
+            userData.UFirstName = model.UFirstName;
+            userData.ULastName = model.ULastName;
+            userData.UUserName = model.UUserName;
+            userData.UPhone = model.UPhone;
+
             context.CreateOrUpdate(userData);
             context.SaveChanges();
         }
