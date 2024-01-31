@@ -51,6 +51,7 @@ namespace Organiser.Cores.Controllers
             userData.UFirstName = model.UFirstName;
             userData.ULastName = model.ULastName;
             userData.UUserName = model.UUserName;
+            userData.UEmail = model.UEmail;
             userData.UPhone = model.UPhone;
 
             context.CreateOrUpdate(userData);
