@@ -4,7 +4,7 @@ Instalacja:
 
 1. Należy pobrać repozytorium korzystając z gita.
 2. Należy otworzyć repozytorium przez IDE np.: VS 2022
-3. Należy przebudować Solucję np.: poprzez kombinację klawiszy CTRL + SHIT + B
+3. Należy przebudować Solucję np.: poprzez kombinację klawiszy CTRL + SHIFT + B
 4. Należy uruchomić Solucję poprzez kliknięcie zielonej strzałki u góry IDE z dopiskiem ISS Express - wymaga zainstalowanego ISS Express 
 
 UWAGA! 
