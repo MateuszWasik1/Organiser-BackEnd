@@ -6,6 +6,7 @@ using Organiser.Cores.Context;
 using Organiser.Cores.Controllers;
 using Organiser.Cores.Entities;
 using Organiser.Cores.Models.ViewModels;
+using Organiser.Cores.Models.ViewModels.UserViewModels;
 using Organiser.Cores.Services;
 
 namespace Organiser.UnitTests.Controllers
