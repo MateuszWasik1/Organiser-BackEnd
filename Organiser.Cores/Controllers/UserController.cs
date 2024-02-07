@@ -25,19 +25,39 @@ namespace Organiser.Cores.Controllers
 
         [HttpGet]
         [Route("GetAllUsers")]
-        [Authorize("Admin")]
-        public List<UserAdminViewModel> GetAllUsers(string text = "")
+        [Authorize(Roles = "Admin")]
+        public List<UsersAdminViewModel> GetAllUsers(string text = "")
         {
-            var userData = context.AllUsers.ToList();
+            var usersData = context.AllUsers.ToList();
 
-            var userAdmViewModel = new List<UserAdminViewModel>();
+            var usersAdmViewModel = new List<UsersAdminViewModel>();
 
-            userData.ForEach(x => {
-                var model = mapper.Map<User, UserAdminViewModel>(x);
-                userAdmViewModel.Add(model);
+            usersData.ForEach(x => {
+                var model = mapper.Map<User, UsersAdminViewModel>(x);
+                usersAdmViewModel.Add(model);
             });
 
-            return userAdmViewModel;
+            return usersAdmViewModel;
+        }
+
+        [HttpGet]
+        [Route("GetAllUsers/ugid")]
+        [Authorize(Roles = "Admin")]
+        public UserAdminViewModel GetUserByAdmin(Guid ugid)
+        {
+            var userData = context.AllUsers.FirstOrDefault(x => x.UGID == ugid);
+
+            if (userData == null)
+                throw new Exception("Nie znaleziono użytkownika!");
+            
+            var model = mapper.Map<User, UserAdminViewModel>(userData);
+
+            model.UCategoriesCount = context.AllCategories.Where(x => x.CUID == user.UID).Count();
+            model.UTasksCount = context.AllTasks.Where(x => x.TUID == user.UID).Count();
+            model.UTaskNotesCount = context.AllTasksNotes.Where(x => x.TNUID == user.UID).Count();
+            model.USavingsCount = context.AllSavings.Where(x => x.SUID == user.UID).Count();
+
+            return model;
         }
 
         [HttpGet]
