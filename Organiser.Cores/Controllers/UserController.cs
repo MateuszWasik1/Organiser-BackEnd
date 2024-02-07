@@ -41,7 +41,7 @@ namespace Organiser.Cores.Controllers
         }
 
         [HttpGet]
-        [Route("GetAllUsers/ugid")]
+        [Route("GetUserByAdmin/{ugid}")]
         [Authorize(Roles = "Admin")]
         public UserAdminViewModel GetUserByAdmin(Guid ugid)
         {
