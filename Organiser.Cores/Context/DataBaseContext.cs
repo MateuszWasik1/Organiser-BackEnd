@@ -79,6 +79,14 @@ namespace Organiser.Cores.Context
         public void DeleteSaving(Savings saving) => dataContext.Savings.Remove(saving);
         #endregion
 
+        #region Users
+        public IQueryable<User> AllUsers => dataContext.User;
+        public IQueryable<Categories> AllCategories => dataContext.Categories;
+        public IQueryable<Tasks> AllTasks => dataContext.Tasks;
+        public IQueryable<TasksNotes> AllTasksNotes => dataContext.TasksNotes;
+        public IQueryable<Savings> AllSavings => dataContext.Savings;
+        #endregion
+
         public void SaveChanges() => dataContext.SaveChanges();
         public void Dispose() => dataContext.Dispose();
     }

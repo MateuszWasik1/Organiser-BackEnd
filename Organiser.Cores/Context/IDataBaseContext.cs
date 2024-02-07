@@ -38,6 +38,14 @@ namespace Organiser.Cores.Context
         void DeleteSaving(Savings saving);
         #endregion
 
+        #region Users
+        IQueryable<User> AllUsers { get; }
+        IQueryable<Categories> AllCategories { get; }
+        IQueryable<Tasks> AllTasks { get; }
+        IQueryable<TasksNotes> AllTasksNotes { get; }
+        IQueryable<Savings> AllSavings { get; }
+        #endregion
+
         void SaveChanges();
     }
 }
