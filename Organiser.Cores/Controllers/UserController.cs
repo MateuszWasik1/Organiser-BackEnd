@@ -52,10 +52,10 @@ namespace Organiser.Cores.Controllers
             
             var model = mapper.Map<User, UserAdminViewModel>(userData);
 
-            model.UCategoriesCount = context.AllCategories.Where(x => x.CUID == user.UID).Count();
-            model.UTasksCount = context.AllTasks.Where(x => x.TUID == user.UID).Count();
-            model.UTaskNotesCount = context.AllTasksNotes.Where(x => x.TNUID == user.UID).Count();
-            model.USavingsCount = context.AllSavings.Where(x => x.SUID == user.UID).Count();
+            model.UCategoriesCount = context.AllCategories.Where(x => x.CUID == userData.UID).Count();
+            model.UTasksCount = context.AllTasks.Where(x => x.TUID == userData.UID).Count();
+            model.UTaskNotesCount = context.AllTasksNotes.Where(x => x.TNUID == userData.UID).Count();
+            model.USavingsCount = context.AllSavings.Where(x => x.SUID == userData.UID).Count();
 
             return model;
         }
