@@ -79,7 +79,7 @@ namespace Organiser.Cores.Controllers
 
         public string GenerateJWTToken(LoginViewModel model)
         {
-            var user = context.User.FirstOrDefault(u => u.UUserName == model.UUserName);
+            var user = context.AllUsers.FirstOrDefault(u => u.UUserName == model.UUserName);
 
             if (user == null)
                 throw new Exception("Podany login lub hasło jest błędne!");

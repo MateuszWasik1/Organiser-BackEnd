@@ -100,7 +100,7 @@ namespace Organiser.Cores.Controllers
         [Authorize(Roles = "Admin")]
         public void SaveUserByAdmin(UserAdminViewModel model)
         {
-            var userData = context.User.FirstOrDefault(x => x.UGID == model.UGID);
+            var userData = context.AllUsers.FirstOrDefault(x => x.UGID == model.UGID);
 
             if (userData == null)
                 throw new Exception("Nie znaleziono użytkownika!");
