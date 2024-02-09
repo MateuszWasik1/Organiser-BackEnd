@@ -94,5 +94,26 @@ namespace Organiser.Cores.Controllers
             context.CreateOrUpdate(userData);
             context.SaveChanges();
         }
+
+        [HttpPost]
+        [Route("SaveUserByAdmin")]
+        [Authorize(Roles = "Admin")]
+        public void SaveUserByAdmin(UserAdminViewModel model)
+        {
+            var userData = context.User.FirstOrDefault(x => x.UGID == model.UGID);
+
+            if (userData == null)
+                throw new Exception("Nie znaleziono użytkownika!");
+
+            userData.URID = model.URID;
+            userData.UFirstName = model.UFirstName;
+            userData.ULastName = model.ULastName;
+            userData.UUserName = model.UUserName;
+            userData.UEmail = model.UEmail;
+            userData.UPhone = model.UPhone;
+
+            context.CreateOrUpdate(userData);
+            context.SaveChanges();
+        }
     }
 }
