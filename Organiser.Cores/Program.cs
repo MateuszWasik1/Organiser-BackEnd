@@ -6,6 +6,7 @@ using Organiser.Cores;
 using Organiser.Cores.Context;
 using Organiser.Cores.Entities;
 using Organiser.Cores.Services;
+using Organiser.Cores.Services.EmailSender;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -53,6 +54,12 @@ builder.Services.AddScoped<IUserContext, UserContext>();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+
+//EmailSender
+var emailSenderSettings = new EmailSenderSettings();
+builder.Configuration.GetSection("EmailSender").Bind(emailSenderSettings);
+builder.Services.AddTransient<IEmailSender, EmailSender>();
+builder.Services.AddSingleton(emailSenderSettings);
 
 //Authentications
 var authenticationSettings = new AuthenticationSettings();
