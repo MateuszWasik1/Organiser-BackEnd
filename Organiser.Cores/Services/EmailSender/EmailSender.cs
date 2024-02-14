@@ -1,5 +1,5 @@
-﻿using System.Net.Mail;
-using System.Net;
+﻿using MimeKit;
+using MimeKit.Text;
 
 namespace Organiser.Cores.Services.EmailSender
 {
@@ -10,23 +10,26 @@ namespace Organiser.Cores.Services.EmailSender
 
         public void SendEmail(string email, string subject, string message)
         {
-            var client = new SmtpClient(settings.Host, settings.Port)
+            var mail = new MimeMessage();
+
+            mail.From.Add(new MailboxAddress("Sender Name", settings.Login));
+            mail.To.Add(new MailboxAddress("Receiver Name", email));
+
+            mail.Subject = subject;
+            mail.Body = new TextPart(TextFormat.Html)
             {
-                EnableSsl = false,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(settings.Login, settings.Password),
+                Text = $"<b>Hello all the way from the land of C# + {message}</b>"
             };
 
-            var mail = new MailMessage()
+            using (var smtp = new MailKit.Net.Smtp.SmtpClient())
             {
-                From = new MailAddress(settings.Login),
-                Subject = subject,
-                Body = message,
-            };
+                smtp.Connect(settings.Host, settings.Port, true);
 
-            mail.To.Add(email);
+                smtp.Authenticate(settings.Login, settings.Password);
 
-            client.Send(mail);
+                smtp.Send(mail);
+                smtp.Disconnect(true);
+            }
         }
     }
 }
