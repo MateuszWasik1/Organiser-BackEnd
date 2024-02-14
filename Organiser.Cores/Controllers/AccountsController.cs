@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Organiser.Cores.Context;
 using Organiser.Cores.Entities;
 using Organiser.Cores.Models.ViewModels.AccountsViewModel;
+using Organiser.Cores.Services.EmailSender;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -18,13 +19,16 @@ namespace Organiser.Cores.Controllers
         private readonly IDataBaseContext context;
         private readonly IPasswordHasher<User> hasher;
         private readonly AuthenticationSettings authenticationSettings;
+        private readonly IEmailSender emailSender;
         public AccountsController(IDataBaseContext context, 
             IPasswordHasher<User> hasher,
-            AuthenticationSettings authenticationSettings)
+            AuthenticationSettings authenticationSettings,
+            IEmailSender emailSender)
         {
             this.context = context;
             this.hasher = hasher;
             this.authenticationSettings = authenticationSettings;
+            this.emailSender = emailSender;
         }
 
         [HttpPost]
@@ -60,6 +64,8 @@ namespace Organiser.Cores.Controllers
 
             context.CreateOrUpdate(newUser);
             context.SaveChanges();
+
+            //emailSender.SendEmail(newUser.UEmail, "Witaj!", "Witaaaaj!");
         }
 
         [HttpGet]
