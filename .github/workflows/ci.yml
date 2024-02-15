@@ -8,6 +8,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Organiser.Cores/Organiser.Cores.csproj
     steps:
       - uses: actions/checkout@v3
       - name: Setup .NET
@@ -16,7 +19,6 @@ jobs:
           dotnet-version: 7.0.x
       - name: Restore dependencies
         run: dotnet restore
-        working-directory: Organiser.Cores/Organiser.Cores.csproj
       - name: Build
         run: dotnet build --no-restore
       - name: Test
