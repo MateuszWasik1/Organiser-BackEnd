@@ -16,6 +16,7 @@ jobs:
           dotnet-version: 7.0.x
       - name: Restore dependencies
         run: dotnet restore
+        working-directory: src/Organiser.Core/Organiser.Core.csproj
       - name: Build
         run: dotnet build --no-restore
       - name: Test
