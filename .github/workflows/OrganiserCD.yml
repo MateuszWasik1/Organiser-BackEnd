@@ -19,7 +19,7 @@ jobs:
         run: dotnet build --no-restore
         working-directory: Organiser.Core
       - name: Publish
-        run: dotnet publish ./Organiser.Core/Organiser.Core.csproj -c Release -o ${{ env.DOTNET_ROOT }}/api
+        run: dotnet publish Organiser.Core/Organiser.Core/Organiser.Core.csproj -c Release -o ${{ env.DOTNET_ROOT }}/api
       - name: upload artifact
         uses: actions/upload-artifact@v4.3.1
         with:
