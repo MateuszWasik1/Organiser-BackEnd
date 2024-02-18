@@ -19,5 +19,7 @@ jobs:
         working-directory: Organiser.Core
       - name: Build
         run: dotnet build --no-restore
+        working-directory: Organiser.Core
       - name: Test
         run: dotnet test
+        working-directory: Organiser.Core
