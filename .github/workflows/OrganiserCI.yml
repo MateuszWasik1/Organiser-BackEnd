@@ -1,7 +1,5 @@
 name: OrganiserCI
 on:
-  push:
-    branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
 
