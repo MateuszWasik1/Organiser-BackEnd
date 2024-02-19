@@ -15,3 +15,14 @@ https://github.com/MateuszWasik1/Organizer-Web
 
 Mobile: 
 https://github.com/MateuszWasik1/Organiser-Mobile
+
+
+# Dokumentacja 
+
+Dokumentacja dostępna jest pod linkiem: 
+https://github.com/MateuszWasik1/Organizer-Web/blob/master/Dokumentacja%20-%20Web.pdf
+
+
+# Aplikacja 
+
+Aplikacja również jest dostępna online, na portalu Azure: https://organiserweb.azurewebsites.net/login  
