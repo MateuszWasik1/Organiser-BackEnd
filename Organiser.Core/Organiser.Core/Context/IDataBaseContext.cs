@@ -46,6 +46,11 @@ namespace Organiser.Cores.Context
         IQueryable<Savings> AllSavings { get; }
         #endregion
 
+        #region Bugs
+        IQueryable<Bugs> Bugs { get; }
+        void CreateOrUpdate(Bugs bug);
+        #endregion
+
         void SaveChanges();
     }
 }

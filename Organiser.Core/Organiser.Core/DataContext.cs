@@ -13,6 +13,7 @@ namespace Organiser.Cores
         public DbSet<Tasks> Tasks => Set<Tasks>();
         public DbSet<TasksNotes> TasksNotes => Set<TasksNotes>();
         public DbSet<Savings> Savings => Set<Savings>();
+        public DbSet<Bugs> Bugs => Set<Bugs>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
