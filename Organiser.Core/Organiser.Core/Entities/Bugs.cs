@@ -12,5 +12,7 @@ namespace Organiser.Cores.Entities
         public int BUID { get; set; }
         public string? BAUIDS { get; set; }
         public DateTime CDate { get; set; }
+        public string? CTitle { get; set; }
+        public string? CText { get; set; }
     }
 }
