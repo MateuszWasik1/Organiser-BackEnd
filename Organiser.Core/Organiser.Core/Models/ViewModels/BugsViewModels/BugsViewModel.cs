@@ -1,6 +1,6 @@
 ﻿using Organiser.Cores.Models.Enums;
 
-namespace Organiser.Core.Models.ViewModels
+namespace Organiser.Core.Models.ViewModels.BugsViewModels
 {
     public class BugsViewModel
     {

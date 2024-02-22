@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Organiser.Core.Models.ViewModels;
+using Organiser.Core.Models.ViewModels.BugsViewModels;
 using Organiser.Cores.Context;
 using Organiser.Cores.Entities;
 using Organiser.Cores.Models.Enums;
@@ -48,6 +48,27 @@ namespace Organiser.Cores.Controllers
             });
 
             return bugsViewModel;
+        }
+
+        [HttpGet]
+        [Route("GetBug")]
+        public BugViewModel GetBug(Guid bgid)
+        {
+            var bug = new Bugs();
+            var currentUserRole = context.User.FirstOrDefault(x => x.UID == user.UID)?.URID ?? 1;
+
+            if (currentUserRole == (int)RoleEnum.Admin || currentUserRole == (int)RoleEnum.Support)
+                bug = context.AllBugs.FirstOrDefault(x => x.BGID == bgid);
+
+            else
+                bug = context.Bugs.FirstOrDefault(x => x.BGID == bgid);
+
+            if (bug == null)
+                throw new Exception("Nie znaleziono wskazanego błędu !");
+
+            var bugViewModel = mapper.Map<Bugs, BugViewModel>(bug);
+
+            return bugViewModel;
         }
 
         //[HttpPost]
