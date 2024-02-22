@@ -6,6 +6,7 @@ using Organiser.Cores.Context;
 using Organiser.Cores.Entities;
 using Organiser.Cores.Models.Enums;
 using Organiser.Cores.Services;
+using System;
 
 namespace Organiser.Cores.Controllers
 {
@@ -71,38 +72,49 @@ namespace Organiser.Cores.Controllers
             return bugViewModel;
         }
 
-        //[HttpPost]
-        //[Route("SaveBug")]
-        //public void SaveBug(BugsViewModel model)
-        //{
-        //    if (model.CID == 0)
-        //    {
-        //        var category = new Categories()
-        //        {
-        //            CGID = model.CGID,
-        //            CUID = user.UID,
-        //            CName = model.CName,
-        //            CStartDate = model.CStartDate,
-        //            CEndDate = model.CEndDate,
-        //            CBudget = model.CBudget,
-        //        };
+        [HttpPost]
+        [Route("SaveBug")]
+        public void SaveBug(BugViewModel model)
+        {
+            var bug = new Bugs()
+            {
+                BGID = Guid.NewGuid(),
+                BUID = user.UID,
+                BDate = DateTime.Now,
+                BTitle = model.BTitle,
+                BText = model.BText,
+                BStatus = model.BStatus,
+            };
 
-        //        context.CreateOrUpdate(category);
-        //    }
-        //    else
-        //    {
-        //        var category = context.Categories.FirstOrDefault(x => x.CGID == model.CGID);
+            context.CreateOrUpdate(bug);
+            //if (model.CID == 0)
+            //{
+            //    var category = new Categories()
+            //    {
+            //        CGID = model.CGID,
+            //        CUID = user.UID,
+            //        CName = model.CName,
+            //        CStartDate = model.CStartDate,
+            //        CEndDate = model.CEndDate,
+            //        CBudget = model.CBudget,
+            //    };
 
-        //        if (category == null)
-        //            throw new Exception("Nie znaleziono kategorii");
+            //    context.CreateOrUpdate(category);
+            //}
+            //else
+            //{
+            //    var category = context.Categories.FirstOrDefault(x => x.CGID == model.CGID);
 
-        //        category.CName = model.CName;
-        //        category.CStartDate = model.CStartDate;
-        //        category.CEndDate = model.CEndDate;
-        //        category.CBudget = model.CBudget;
-        //    }
+            //    if (category == null)
+            //        throw new Exception("Nie znaleziono kategorii");
 
-        //    context.SaveChanges();
-        //}
+            //    category.CName = model.CName;
+            //    category.CStartDate = model.CStartDate;
+            //    category.CEndDate = model.CEndDate;
+            //    category.CBudget = model.CBudget;
+            //}
+
+            context.SaveChanges();
+        }
     }
 }
