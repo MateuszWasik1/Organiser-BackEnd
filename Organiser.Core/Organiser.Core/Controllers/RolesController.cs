@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Organiser.Cores.Context;
+using Organiser.Cores.Models.Enums;
 using Organiser.Cores.Models.ViewModels;
 using Organiser.Cores.Services;
 
@@ -27,9 +28,9 @@ namespace Organiser.Cores.Controllers
 
             var model = new RolesViewModel()
             {
-                IsAdmin = userRole == 3,
-                IsSupport = userRole == 3 || userRole == 2,
-                IsUser = userRole == 3 || userRole == 2 || userRole == 1,
+                IsAdmin = userRole == (int) RoleEnum.Admin,
+                IsSupport = userRole == (int) RoleEnum.Admin || userRole == (int) RoleEnum.Support,
+                IsUser = userRole == (int) RoleEnum.Admin || userRole == (int) RoleEnum.Support || userRole == (int)RoleEnum.User,
             };
 
             return model;
@@ -37,10 +38,10 @@ namespace Organiser.Cores.Controllers
 
         [HttpGet]
         [Route("GetIsUserAdmin")]
-        public bool GetIsUserAdmin() => context.User.FirstOrDefault(x => x.UID == user.UID)?.URID == 3;
+        public bool GetIsUserAdmin() => context.User.FirstOrDefault(x => x.UID == user.UID)?.URID == (int) RoleEnum.Admin;
 
         [HttpGet]
         [Route("GetIsUserSupport")]
-        public bool GetIsUserSupport() => context.User.FirstOrDefault(x => x.UID == user.UID)?.URID == 2;
+        public bool GetIsUserSupport() => context.User.FirstOrDefault(x => x.UID == user.UID)?.URID == (int) RoleEnum.Support;
     }
 }

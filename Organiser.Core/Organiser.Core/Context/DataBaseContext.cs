@@ -89,6 +89,7 @@ namespace Organiser.Cores.Context
 
         #region Bugs
         public IQueryable<Bugs> Bugs => dataContext.Bugs.Where(x => x.BUID == user.UID);
+        public IQueryable<Bugs> AllBugs => dataContext.Bugs;
         public void CreateOrUpdate(Bugs bug)
         {
             if (bug.BID == default)

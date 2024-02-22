@@ -65,7 +65,8 @@ CREATE TABLE Bugs (
 	BGID uniqueidentifier NOT NULL,
 	BUID INT NOT NULL,
 	BAUIDS nvarchar(max) NULL,
-	CDate DATETIME2 NOT NULL,
-	CTitle nvarchar(200) NOT NULL,
-	CText nvarchar(4000) NOT NULL
+	BDate DATETIME2 NOT NULL,
+	BTitle nvarchar(200) NOT NULL,
+	BText nvarchar(4000) NOT NULL,
+	BStatus INT NOT NULL,
 );

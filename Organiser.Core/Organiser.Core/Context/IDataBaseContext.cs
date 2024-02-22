@@ -48,6 +48,7 @@ namespace Organiser.Cores.Context
 
         #region Bugs
         IQueryable<Bugs> Bugs { get; }
+        IQueryable<Bugs> AllBugs { get; }
         void CreateOrUpdate(Bugs bug);
         #endregion
 
