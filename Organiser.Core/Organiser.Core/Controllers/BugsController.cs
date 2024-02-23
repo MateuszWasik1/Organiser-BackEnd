@@ -60,7 +60,6 @@ namespace Organiser.Cores.Controllers
 
             if (currentUserRole == (int)RoleEnum.Admin || currentUserRole == (int)RoleEnum.Support)
                 bug = context.AllBugs.FirstOrDefault(x => x.BGID == bgid);
-
             else
                 bug = context.Bugs.FirstOrDefault(x => x.BGID == bgid);
 
@@ -78,7 +77,7 @@ namespace Organiser.Cores.Controllers
         {
             var bug = new Bugs()
             {
-                BGID = Guid.NewGuid(),
+                BGID = model.BGID,
                 BUID = user.UID,
                 BDate = DateTime.Now,
                 BTitle = model.BTitle,
@@ -87,33 +86,21 @@ namespace Organiser.Cores.Controllers
             };
 
             context.CreateOrUpdate(bug);
-            //if (model.CID == 0)
-            //{
-            //    var category = new Categories()
-            //    {
-            //        CGID = model.CGID,
-            //        CUID = user.UID,
-            //        CName = model.CName,
-            //        CStartDate = model.CStartDate,
-            //        CEndDate = model.CEndDate,
-            //        CBudget = model.CBudget,
-            //    };
+            context.SaveChanges();
+        }
 
-            //    context.CreateOrUpdate(category);
-            //}
-            //else
-            //{
-            //    var category = context.Categories.FirstOrDefault(x => x.CGID == model.CGID);
+        [HttpPost]
+        [Route("ChangeBugStatus")]
+        public void ChangeBugStatus(Guid bgid, BugStatusEnum status)
+        {
+            var bug = context.Bugs.FirstOrDefault(x => x.BGID == bgid);
 
-            //    if (category == null)
-            //        throw new Exception("Nie znaleziono kategorii");
+            if (bug == null)
+                throw new Exception("Nie udało się zaaktualizować statusu błędu!");
 
-            //    category.CName = model.CName;
-            //    category.CStartDate = model.CStartDate;
-            //    category.CEndDate = model.CEndDate;
-            //    category.CBudget = model.CBudget;
-            //}
+            bug.BStatus = status;
 
+            context.CreateOrUpdate(bug);
             context.SaveChanges();
         }
     }
