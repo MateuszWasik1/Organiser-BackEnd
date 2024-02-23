@@ -14,6 +14,7 @@ namespace Organiser.Cores
         public DbSet<TasksNotes> TasksNotes => Set<TasksNotes>();
         public DbSet<Savings> Savings => Set<Savings>();
         public DbSet<Bugs> Bugs => Set<Bugs>();
+        public DbSet<BugsNotes> BugsNotes => Set<BugsNotes>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

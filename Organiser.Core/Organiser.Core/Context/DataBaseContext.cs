@@ -99,6 +99,18 @@ namespace Organiser.Cores.Context
         }
         #endregion
 
+        #region BugsNotes
+        public IQueryable<BugsNotes> BugsNotes => dataContext.BugsNotes.Where(x => x.BNUID == user.UID);
+        public void CreateOrUpdate(BugsNotes bugNote)
+        {
+            if (bugNote.BNID == default)
+                dataContext.BugsNotes.Add(bugNote);
+            else
+                dataContext.Entry(bugNote).State = EntityState.Modified;
+        }
+        public void DeleteBugNote(BugsNotes bugNote) => dataContext.BugsNotes.Remove(bugNote);
+        #endregion
+
         public void SaveChanges() => dataContext.SaveChanges();
         public void Dispose() => dataContext.Dispose();
     }

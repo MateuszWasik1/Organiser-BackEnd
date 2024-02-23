@@ -52,6 +52,12 @@ namespace Organiser.Cores.Context
         void CreateOrUpdate(Bugs bug);
         #endregion
 
+        #region BugsNotes
+        IQueryable<BugsNotes> BugsNotes { get; }
+        void CreateOrUpdate(BugsNotes bugNote);
+        void DeleteBugNote(BugsNotes bugNote);
+        #endregion
+
         void SaveChanges();
     }
 }

@@ -6,7 +6,6 @@ using Organiser.Cores.Context;
 using Organiser.Cores.Entities;
 using Organiser.Cores.Models.Enums;
 using Organiser.Cores.Services;
-using System;
 
 namespace Organiser.Cores.Controllers
 {
