@@ -44,6 +44,11 @@ namespace Organiser.Cores.Controllers
             if (string.IsNullOrEmpty(model.UPassword))
                 throw new Exception("Hasło nie może być puste");
 
+            var userNameExist = context.AllUsers.Any(x => x.UUserName == model.UUserName);
+
+            if (userNameExist)
+                throw new Exception("Podana nazwa użytkownika występuje w systemie");
+
             var roleID = context.Roles.FirstOrDefault(x => x.RName == "user")?.RID ?? 1;
 
             var newUser = new User()
