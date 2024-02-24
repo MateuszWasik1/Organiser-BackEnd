@@ -19,6 +19,7 @@ namespace Organiser.Cores
             CreateMap<User, UserAdminViewModel>();
             CreateMap<Bugs, BugsViewModel>();
             CreateMap<Bugs, BugViewModel>();
+            CreateMap<BugsNotes, BugsNotesViewModel>();
         }
     }
 }

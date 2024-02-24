@@ -3,6 +3,7 @@
     public class BugsNotesViewModel
     {
         public Guid BNGID { get; set; }
+        public Guid BNBGID { get; set; }
         public DateTime BNDate { get; set; }
         public string? BNText { get; set; }
         public bool BNIsNewVerifier { get; set; }
