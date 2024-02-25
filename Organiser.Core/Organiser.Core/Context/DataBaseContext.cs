@@ -101,6 +101,7 @@ namespace Organiser.Cores.Context
 
         #region BugsNotes
         public IQueryable<BugsNotes> BugsNotes => dataContext.BugsNotes.Where(x => x.BNUID == user.UID);
+        public IQueryable<BugsNotes> AllBugsNotes => dataContext.BugsNotes;
         public void CreateOrUpdate(BugsNotes bugNote)
         {
             if (bugNote.BNID == default)

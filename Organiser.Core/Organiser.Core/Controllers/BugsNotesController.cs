@@ -26,16 +26,15 @@ namespace Organiser.Cores.Controllers
 
         [HttpGet]
         [Route("GetBugNotes")]
-        public List<BugsNotesViewModel> GetBugNotes()
+        public List<BugsNotesViewModel> GetBugNotes(Guid bgid)
         {
             var bugNotes = new List<BugsNotes>();
             var currentUserRole = context.User.FirstOrDefault(x => x.UID == user.UID)?.URID ?? 1;
 
             if (currentUserRole == (int) RoleEnum.Admin || currentUserRole == (int) RoleEnum.Support)
-                bugNotes = context.BugsNotes.OrderBy(x => x.BNDate).ToList();
+                bugNotes = context.AllBugsNotes.Where(x => x.BNBGID == bgid).OrderBy(x => x.BNDate).ToList();
             else
-                bugNotes = context.BugsNotes.Where(x => !x.BNIsNewVerifier).OrderBy(x => x.BNDate).ToList();
-
+                bugNotes = context.BugsNotes.Where(x => x.BNBGID == bgid && !x.BNIsNewVerifier).OrderBy(x => x.BNDate).ToList();
 
             var bugNotesViewModel = new List<BugsNotesViewModel>();
 
@@ -55,7 +54,7 @@ namespace Organiser.Cores.Controllers
         {
             var bugNote = new BugsNotes()
             {
-                BNGID = model.BNGID,
+                BNGID = Guid.NewGuid(),
                 BNBGID = model.BNBGID,
                 BNUID = user.UID,
                 BNDate = DateTime.Now,
@@ -75,16 +74,30 @@ namespace Organiser.Cores.Controllers
                 throw new Exception("Nie znaleziono wskazanego błędu!");
 
             var isUserVerifier = bug?.BAUIDS?.Contains(currentUser.UGID.ToString()) ?? false;
+            var isUserSupportOrAdmin = (currentUser?.URID == (int)RoleEnum.Admin || currentUser?.URID == (int)RoleEnum.Support);
 
-            if (!isUserVerifier)
+
+            if (!isUserVerifier && isUserSupportOrAdmin)
             {
-                bugNote.BNIsNewVerifier = true;
 
-                //bug.BAUIDS = String.Join(",", bug.BAUIDS, currentUser.UGID)
-                var strrring = String.Join(",", bug.BAUIDS, currentUser.UGID); //sprawdzić
-                var xd = strrring;
+                if (string.IsNullOrEmpty(bug?.BAUIDS))
+                    bug.BAUIDS = currentUser?.UGID.ToString();
+                else
+                    bug.BAUIDS = string.Join(",", bug.BAUIDS, currentUser?.UGID);
 
-                //context.CreateOrUpdate(bug);
+                context.CreateOrUpdate(bug);
+
+                var bugNoteIsVerifier = new BugsNotes()
+                {
+                    BNGID = Guid.NewGuid(),
+                    BNBGID = model.BNBGID,
+                    BNUID = user.UID,
+                    BNDate = DateTime.Now,
+                    BNText = $"Nowym weryfikującym jest: {currentUser?.UFirstName} {currentUser?.ULastName} {currentUser?.UGID}",
+                    BNIsNewVerifier = true,
+                    BNIsStatusChange = false,
+                };
+                context.CreateOrUpdate(bugNoteIsVerifier);
             }
 
             context.CreateOrUpdate(bugNote);

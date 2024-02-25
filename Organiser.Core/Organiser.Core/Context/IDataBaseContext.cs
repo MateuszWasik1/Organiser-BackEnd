@@ -54,6 +54,7 @@ namespace Organiser.Cores.Context
 
         #region BugsNotes
         IQueryable<BugsNotes> BugsNotes { get; }
+        IQueryable<BugsNotes> AllBugsNotes { get; }
         void CreateOrUpdate(BugsNotes bugNote);
         void DeleteBugNote(BugsNotes bugNote);
         #endregion

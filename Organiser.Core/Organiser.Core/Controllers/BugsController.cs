@@ -90,15 +90,29 @@ namespace Organiser.Cores.Controllers
 
         [HttpPost]
         [Route("ChangeBugStatus")]
-        public void ChangeBugStatus(Guid bgid, BugStatusEnum status)
+        public void ChangeBugStatus(ChangeBugStatusViewModel model)
         {
-            var bug = context.Bugs.FirstOrDefault(x => x.BGID == bgid);
+            var bug = context.Bugs.FirstOrDefault(x => x.BGID == model.BGID);
 
             if (bug == null)
                 throw new Exception("Nie udało się zaaktualizować statusu błędu!");
 
-            bug.BStatus = status;
+            bug.BStatus = model.Status;
 
+            var currentUser = context.User.FirstOrDefault(x => x.UID == user.UID);
+
+            var bugNote = new BugsNotes()
+            {
+                BNGID = Guid.NewGuid(),
+                BNBGID = bug.BGID,
+                BNUID = user.UID,
+                BNDate = DateTime.Now,
+                BNText = $"Status został zmieniony na: {model.Status} przez użytkownika: {currentUser?.UFirstName} {currentUser?.ULastName}",
+                BNIsNewVerifier = false,
+                BNIsStatusChange = true,
+            };
+
+            context.CreateOrUpdate(bugNote);
             context.CreateOrUpdate(bug);
             context.SaveChanges();
         }
