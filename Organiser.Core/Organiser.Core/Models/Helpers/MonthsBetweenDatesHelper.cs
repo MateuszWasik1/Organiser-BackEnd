@@ -6,9 +6,7 @@ namespace Organiser.Cores.Models.Helpers
     {
         public MonthsBetweenDatesHelper() { }
 
-        public static IEnumerable<(string MonthName, int Month, int Year)> MonthsBetween(
-        DateTime startDate,
-        DateTime endDate)
+        public static IEnumerable<(string MonthName, int Month, int Year)> MonthsBetween(DateTime startDate, DateTime endDate)
         {
             DateTime iterator;
             DateTime limit;

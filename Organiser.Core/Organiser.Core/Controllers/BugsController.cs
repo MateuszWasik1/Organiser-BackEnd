@@ -5,6 +5,7 @@ using Organiser.Core.Models.ViewModels.BugsViewModels;
 using Organiser.Cores.Context;
 using Organiser.Cores.Entities;
 using Organiser.Cores.Models.Enums;
+using Organiser.Cores.Models.Helpers;
 using Organiser.Cores.Services;
 
 namespace Organiser.Cores.Controllers
@@ -107,7 +108,7 @@ namespace Organiser.Cores.Controllers
                 BNBGID = bug.BGID,
                 BNUID = user.UID,
                 BNDate = DateTime.Now,
-                BNText = $"Status został zmieniony na: {model.Status} przez użytkownika: {currentUser?.UFirstName} {currentUser?.ULastName}",
+                BNText = $"Status został zmieniony na: \"{ChangeBugStatusToText.BugStatusText(model.Status)}\" przez użytkownika: {currentUser?.UFirstName} {currentUser?.ULastName}",
                 BNIsNewVerifier = false,
                 BNIsStatusChange = true,
             };
