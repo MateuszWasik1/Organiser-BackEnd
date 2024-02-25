@@ -111,6 +111,7 @@ namespace Organiser.Cores.Controllers
                 BNText = $"Status został zmieniony na: \"{ChangeBugStatusToText.BugStatusText(model.Status)}\" przez użytkownika: {currentUser?.UFirstName} {currentUser?.ULastName}",
                 BNIsNewVerifier = false,
                 BNIsStatusChange = true,
+                BNChangedStatus = model.Status,
             };
 
             context.CreateOrUpdate(bugNote);

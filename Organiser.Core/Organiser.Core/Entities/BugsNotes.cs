@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Organiser.Cores.Models.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Organiser.Cores.Entities
@@ -15,5 +16,6 @@ namespace Organiser.Cores.Entities
         public string? BNText { get; set; }
         public bool BNIsNewVerifier { get; set; }
         public bool BNIsStatusChange { get; set; }
+        public BugStatusEnum BNChangedStatus { get; set; }
     }
 }

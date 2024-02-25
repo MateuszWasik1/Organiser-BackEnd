@@ -1,4 +1,6 @@
-﻿namespace Organiser.Core.Models.ViewModels.BugsViewModels
+﻿using Organiser.Cores.Models.Enums;
+
+namespace Organiser.Core.Models.ViewModels.BugsViewModels
 {
     public class BugsNotesViewModel
     {
@@ -8,5 +10,6 @@
         public string? BNText { get; set; }
         public bool BNIsNewVerifier { get; set; }
         public bool BNIsStatusChange { get; set; }
+        public BugStatusEnum BNChangedStatus { get; set; }
     }
 }

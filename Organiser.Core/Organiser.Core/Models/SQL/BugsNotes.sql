@@ -7,4 +7,5 @@ CREATE TABLE BugsNotes (
 	BNText nvarchar(4000) NOT NULL,
 	BNIsNewVerifier BIT NOT NULL,
 	BNIsStatusChange BIT NOT NULL,
+	BNChangedStatus INT NOT NULL,
 )
