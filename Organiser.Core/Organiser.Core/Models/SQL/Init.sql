@@ -1,4 +1,4 @@
-﻿CREATE TABLE Users (
+﻿CREATE TABLE [User] (
 	UID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
 	UGID uniqueidentifier NOT NULL,
 	URID INT NOT NULL,
@@ -58,4 +58,27 @@ CREATE TABLE Savings (
 	STime DATETIME2 NOT NULL,
 	SOnWhat nvarchar(300),
 	SWhere nvarchar(300),
+);
+
+CREATE TABLE Bugs (
+	BID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	BGID uniqueidentifier NOT NULL,
+	BUID INT NOT NULL,
+	BAUIDS nvarchar(max) NULL,
+	BDate DATETIME2 NOT NULL,
+	BTitle nvarchar(200) NOT NULL,
+	BText nvarchar(4000) NOT NULL,
+	BStatus INT NOT NULL,
+);
+
+CREATE TABLE BugsNotes (
+	BNID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	BNGID uniqueidentifier NOT NULL,
+	BNBGID uniqueidentifier NOT NULL,
+	BNUID INT NOT NULL,
+	BNDate DATETIME2 NOT NULL,
+	BNText nvarchar(4000) NOT NULL,
+	BNIsNewVerifier BIT NOT NULL,
+	BNIsStatusChange BIT NOT NULL,
+	BNChangedStatus INT NOT NULL,
 );

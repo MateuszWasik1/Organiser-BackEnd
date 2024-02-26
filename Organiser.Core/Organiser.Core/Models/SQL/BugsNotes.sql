@@ -1,0 +1,11 @@
+CREATE TABLE BugsNotes (
+	BNID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	BNGID uniqueidentifier NOT NULL,
+	BNBGID uniqueidentifier NOT NULL,
+	BNUID INT NOT NULL,
+	BNDate DATETIME2 NOT NULL,
+	BNText nvarchar(4000) NOT NULL,
+	BNIsNewVerifier BIT NOT NULL,
+	BNIsStatusChange BIT NOT NULL,
+	BNChangedStatus INT NOT NULL,
+)

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Organiser.Core.Models.ViewModels.BugsViewModels;
 using Organiser.Cores.Entities;
 using Organiser.Cores.Models.ViewModels;
 using Organiser.Cores.Models.ViewModels.UserViewModels;
@@ -16,6 +17,9 @@ namespace Organiser.Cores
             CreateMap<User, UserViewModel>();
             CreateMap<User, UsersAdminViewModel>();
             CreateMap<User, UserAdminViewModel>();
+            CreateMap<Bugs, BugsViewModel>();
+            CreateMap<Bugs, BugViewModel>();
+            CreateMap<BugsNotes, BugsNotesViewModel>();
         }
     }
 }

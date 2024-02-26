@@ -87,6 +87,31 @@ namespace Organiser.Cores.Context
         public IQueryable<Savings> AllSavings => dataContext.Savings;
         #endregion
 
+        #region Bugs
+        public IQueryable<Bugs> Bugs => dataContext.Bugs.Where(x => x.BUID == user.UID);
+        public IQueryable<Bugs> AllBugs => dataContext.Bugs;
+        public void CreateOrUpdate(Bugs bug)
+        {
+            if (bug.BID == default)
+                dataContext.Bugs.Add(bug);
+            else
+                dataContext.Entry(bug).State = EntityState.Modified;
+        }
+        #endregion
+
+        #region BugsNotes
+        public IQueryable<BugsNotes> BugsNotes => dataContext.BugsNotes.Where(x => x.BNUID == user.UID);
+        public IQueryable<BugsNotes> AllBugsNotes => dataContext.BugsNotes;
+        public void CreateOrUpdate(BugsNotes bugNote)
+        {
+            if (bugNote.BNID == default)
+                dataContext.BugsNotes.Add(bugNote);
+            else
+                dataContext.Entry(bugNote).State = EntityState.Modified;
+        }
+        public void DeleteBugNote(BugsNotes bugNote) => dataContext.BugsNotes.Remove(bugNote);
+        #endregion
+
         public void SaveChanges() => dataContext.SaveChanges();
         public void Dispose() => dataContext.Dispose();
     }
