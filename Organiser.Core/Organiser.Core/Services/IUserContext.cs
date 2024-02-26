@@ -6,6 +6,6 @@ namespace Organiser.Cores.Services
     {
         ClaimsPrincipal? User { get; }
         int UID { get; }
-        string? GUID { get; }
+        string? UGID { get; }
     }
 }

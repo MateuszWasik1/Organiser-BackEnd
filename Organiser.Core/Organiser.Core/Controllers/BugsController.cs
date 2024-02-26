@@ -27,13 +27,25 @@ namespace Organiser.Cores.Controllers
 
         [HttpGet]
         [Route("GetBugs")]
-        public List<BugsViewModel> GetBugs()
+        public List<BugsViewModel> GetBugs(BugTypeEnum bugType)
         {
             var bugs = new List<Bugs>();
             var currentUserRole = context.User.FirstOrDefault(x => x.UID == user.UID)?.URID ?? 1;
 
-            if (currentUserRole == (int) RoleEnum.Admin || currentUserRole == (int) RoleEnum.Support)
-                bugs = context.AllBugs.OrderBy(x => x.BDate).ToList();
+            if (currentUserRole == (int) RoleEnum.Admin || currentUserRole == (int)RoleEnum.Support)
+            {
+                if(bugType == BugTypeEnum.My)
+                    bugs = context.AllBugs.Where(x => x.BUID == user.UID).OrderBy(x => x.BDate).ToList();
+
+                else if (bugType == BugTypeEnum.ImVerificator)
+                    bugs = context.AllBugs.Where(x => x.BAUIDS.Contains(user.UGID)).OrderBy(x => x.BDate).ToList();
+
+                else if (bugType == BugTypeEnum.Closed)
+                    bugs = context.AllBugs.Where(x => x.BStatus == BugStatusEnum.Rejected || x.BStatus == BugStatusEnum.Fixed).OrderBy(x => x.BDate).ToList();
+
+                else
+                    bugs = context.AllBugs.OrderBy(x => x.BDate).ToList();
+            }
 
             else
                 bugs = context.Bugs.ToList();
