@@ -115,5 +115,36 @@ namespace Organiser.Cores.Controllers
             context.CreateOrUpdate(userData);
             context.SaveChanges();
         }
+
+        [HttpDelete]
+        [Route("DeleteUser/{ugid}")]
+        [Authorize(Roles = "Admin")]
+        public void DeleteUser(Guid ugid)
+        {
+            var deletedUser = context.AllUsers.FirstOrDefault(x => x.UGID == ugid);
+
+            if (deletedUser == null)
+                throw new Exception("Nie znaleziono użytkownika!");
+
+            var categories = context.AllCategories.Where(x => x.CUID == deletedUser.UID);
+            var tasks = context.AllTasks.Where(x => x.TUID == deletedUser.UID);
+            var taskNotes = context.AllTasksNotes.Where(x => x.TNUID == deletedUser.UID);
+            var savings = context.AllSavings.Where(x => x.SUID == deletedUser.UID);
+
+            foreach ( var category in categories)
+                context.DeleteCategory(category);
+
+            foreach (var task in tasks)
+                context.DeleteTask(task);
+
+            foreach (var taskNote in taskNotes)
+                context.DeleteTaskNotes(taskNote);
+
+            foreach (var saving in savings)
+                context.DeleteSaving(saving);
+
+            context.DeleteUser(deletedUser);
+            context.SaveChanges();
+        }
     }
 }
