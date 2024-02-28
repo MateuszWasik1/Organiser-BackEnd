@@ -5,6 +5,8 @@ using Organiser.Cores.Context;
 using Organiser.Cores.Entities;
 using Organiser.Cores.Models.ViewModels;
 using Organiser.Cores.Services;
+using Organiser.CQRS.Resources.Categories.Handlers;
+using Organiser.CQRS.Resources.Categories.Queries;
 
 namespace Organiser.Cores.Controllers
 {

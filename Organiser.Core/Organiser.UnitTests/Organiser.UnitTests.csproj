@@ -17,7 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Organiser.API\Organiser.API.csproj" />
     <ProjectReference Include="..\Organiser.Core\Organiser.Core.csproj" />
+    <ProjectReference Include="..\Organiser.CQRS\Organiser.CQRS.csproj" />
   </ItemGroup>
 
 </Project>

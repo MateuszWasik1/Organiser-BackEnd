@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Organiser.Core\Organiser.Core.csproj" />
+    <ProjectReference Include="..\Organiser.CQRS\Organiser.CQRS.csproj" />
+  </ItemGroup>
+
 </Project>
