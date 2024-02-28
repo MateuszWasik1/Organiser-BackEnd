@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Organiser.Core", "Organiser
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Organiser.UnitTests", "Organiser.UnitTests\Organiser.UnitTests.csproj", "{2957290F-B88B-4A50-BEC7-65A914122BFE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Organiser.CQRS", "Organiser.CQRS\Organiser.CQRS.csproj", "{6BD29C9C-4F58-4B1C-A12E-725F7775BC05}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Organiser.API", "Organiser.API\Organiser.API.csproj", "{CB37C6E0-40C3-43C7-9E09-CE31C23D4298}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{2957290F-B88B-4A50-BEC7-65A914122BFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2957290F-B88B-4A50-BEC7-65A914122BFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2957290F-B88B-4A50-BEC7-65A914122BFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BD29C9C-4F58-4B1C-A12E-725F7775BC05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BD29C9C-4F58-4B1C-A12E-725F7775BC05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BD29C9C-4F58-4B1C-A12E-725F7775BC05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BD29C9C-4F58-4B1C-A12E-725F7775BC05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB37C6E0-40C3-43C7-9E09-CE31C23D4298}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB37C6E0-40C3-43C7-9E09-CE31C23D4298}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB37C6E0-40C3-43C7-9E09-CE31C23D4298}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB37C6E0-40C3-43C7-9E09-CE31C23D4298}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
