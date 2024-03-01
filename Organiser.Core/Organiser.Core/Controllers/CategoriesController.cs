@@ -30,26 +30,7 @@ namespace Organiser.Cores.Controllers
 
         [HttpGet]
         [Route("GetCategoriesForFilter")]
-        public List<CategoriesForFiltersViewModel> GetCategoriesForFilter()
-        {
-            var categories = context.Categories.OrderBy(x => x.CStartDate).ToList();
-
-            var viewModel = new List<CategoriesForFiltersViewModel>();
-
-            categories.ForEach(x =>
-            {
-                var model = new CategoriesForFiltersViewModel()
-                {
-                    CID = x.CID,
-                    CGID = x.CGID,
-                    CName = x.CName,
-                };
-
-                viewModel.Add(model);
-            });
-
-            return viewModel;
-        }
+        public List<CategoriesForFiltersViewModel> GetCategoriesForFilter() => dispatcher.DispatchQuery<GetCategoriesForFilterQuery, List<CategoriesForFiltersViewModel>>(new GetCategoriesForFilterQuery());
 
         [HttpPost]
         [Route("Save")]
