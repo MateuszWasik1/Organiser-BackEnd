@@ -2,11 +2,17 @@ using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Organiser.Core.CQRS.Dispatcher;
 using Organiser.Cores;
 using Organiser.Cores.Context;
 using Organiser.Cores.Entities;
+using Organiser.Cores.Models.ViewModels;
 using Organiser.Cores.Services;
 using Organiser.Cores.Services.EmailSender;
+using Organiser.CQRS.Abstraction.Commands;
+using Organiser.CQRS.Abstraction.Queries;
+using Organiser.CQRS.Resources.Categories.Handlers;
+using Organiser.CQRS.Resources.Categories.Queries;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -51,9 +57,58 @@ builder.Services.AddIdentity<Users, IdentityRole>(config =>
 
 builder.Services.AddScoped<IDataBaseContext, DataBaseContext>();
 builder.Services.AddScoped<IUserContext, UserContext>();
+builder.Services.AddScoped<IDispatcher, Dispatcher>();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+
+//CQRS
+#region CQRS
+builder.Services.AddScoped<IQueryHandler<GetCategoriesQuery, List<CategoriesViewModel>>, GetCategoriesQueryHandler>();
+
+
+//builder.Services.AddScoped<IQueryHandler<GetCategoriesQuery, List<CategoriesViewModel>>, GetCategoriesQuery>();
+//builder.Services.AddScoped<IQueryHandler<GetCategoriesQuery, List<CategoriesViewModel>>, GetCategoriesQuery>();
+
+//builder.Services.Scan(selector =>
+//{
+//    selector.FromCallingAssembly()
+//            .AddClasses(filter =>
+//            {
+//                filter.AssignableTo(typeof(IQueryHandler<,>));
+//            })
+//            .AsImplementedInterfaces()
+//            .WithSingletonLifetime();
+//});
+//builder.Services.Scan(selector =>
+//{
+//    selector.FromCallingAssembly()
+//            .AddClasses(filter =>
+//            {
+//                filter.AssignableTo(typeof(ICommandHandler<,>));
+//            })
+//            .AsImplementedInterfaces()
+//            .WithSingletonLifetime();
+//});
+
+//void AddCommandQueryHandlers(this IServiceCollection services, Type handlerInterface)
+//{
+//    var handlers = typeof(ServiceExtensions).Assembly.GetTypes()
+//        .Where(t => t.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == handlerInterface)
+//    );
+
+//    foreach (var handler in handlers)
+//    {
+//        services.AddScoped(handler.GetInterfaces().First(i => i.IsGenericType && i.GetGenericTypeDefinition() == handlerInterface), handler);
+//    }
+//}
+
+//void ConfigureServices(IServiceCollection services)
+//{
+//    services.AddCommandQueryHandlers(typeof(ICommandHandler<>));
+//    services.AddCommandQueryHandlers(typeof(IQueryHandler<,>));
+//}
+#endregion
 
 //EmailSender
 var emailSenderSettings = new EmailSenderSettings();

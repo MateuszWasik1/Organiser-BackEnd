@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Organiser.Core.CQRS.Dispatcher;
 using Organiser.Cores.Context;
 using Organiser.Cores.Entities;
 using Organiser.Cores.Models.ViewModels;
 using Organiser.Cores.Services;
+using Organiser.CQRS.Resources.Categories.Queries;
 
 namespace Organiser.Cores.Controllers
 {
@@ -16,38 +18,40 @@ namespace Organiser.Cores.Controllers
         private readonly IDataBaseContext context;
         private readonly IUserContext user;
         private readonly IMapper mapper;
-        public CategoriesController(IDataBaseContext context, IUserContext user, IMapper mapper)
+        private readonly IDispatcher dispatcher;
+        public CategoriesController(IDataBaseContext context, IUserContext user, IMapper mapper, IDispatcher dispatcher)
         {
             this.context = context;
             this.user = user;
             this.mapper = mapper;
+            this.dispatcher = dispatcher;
         }
 
         [HttpGet]
         [Route("Get")]
-        public List<CategoriesViewModel> Get(DateTime? date)
-        {
-            var categories = context.Categories.OrderBy(x => x.CStartDate).ToList();
+        public List<CategoriesViewModel> Get(DateTime? date) => dispatcher.DispatchQuery<GetCategoriesQuery, List<CategoriesViewModel>>(new GetCategoriesQuery() { Date = date });
+        //{
+        //    var categories = context.Categories.OrderBy(x => x.CStartDate).ToList();
 
-            if (date != null)
-            {
-                var endDate = date.Value.AddMonths(1).AddSeconds(-1);
-                categories = categories.Where(x => x.CStartDate >= date && x.CStartDate <= endDate).ToList();
-            }
+        //    if (date != null)
+        //    {
+        //        var endDate = date.Value.AddMonths(1).AddSeconds(-1);
+        //        categories = categories.Where(x => x.CStartDate >= date && x.CStartDate <= endDate).ToList();
+        //    }
 
-            var categoriesViewModel = new List<CategoriesViewModel>();
+        //    var categoriesViewModel = new List<CategoriesViewModel>();
 
-            categories.ForEach(x =>
-            {
-                var cVM = mapper.Map<Categories, CategoriesViewModel>(x);
-                var tasksBudgetCount = context.Tasks.Where(task => task.TCGID == x.CGID).Sum(x => x.TBudget);
-                cVM.CBudgetCount = tasksBudgetCount;
+        //    categories.ForEach(x =>
+        //    {
+        //        var cVM = mapper.Map<Categories, CategoriesViewModel>(x);
+        //        var tasksBudgetCount = context.Tasks.Where(task => task.TCGID == x.CGID).Sum(x => x.TBudget);
+        //        cVM.CBudgetCount = tasksBudgetCount;
 
-                categoriesViewModel.Add(cVM);
-            });
+        //        categoriesViewModel.Add(cVM);
+        //    });
 
-            return categoriesViewModel;
-        }
+        //    return categoriesViewModel;
+        //}
 
         [HttpGet]
         [Route("GetCategoriesForFilter")]
