@@ -65,49 +65,6 @@ builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 //CQRS
 #region CQRS
 builder.Services.AddScoped<IQueryHandler<GetCategoriesQuery, List<CategoriesViewModel>>, GetCategoriesQueryHandler>();
-
-
-//builder.Services.AddScoped<IQueryHandler<GetCategoriesQuery, List<CategoriesViewModel>>, GetCategoriesQuery>();
-//builder.Services.AddScoped<IQueryHandler<GetCategoriesQuery, List<CategoriesViewModel>>, GetCategoriesQuery>();
-
-//builder.Services.Scan(selector =>
-//{
-//    selector.FromCallingAssembly()
-//            .AddClasses(filter =>
-//            {
-//                filter.AssignableTo(typeof(IQueryHandler<,>));
-//            })
-//            .AsImplementedInterfaces()
-//            .WithSingletonLifetime();
-//});
-//builder.Services.Scan(selector =>
-//{
-//    selector.FromCallingAssembly()
-//            .AddClasses(filter =>
-//            {
-//                filter.AssignableTo(typeof(ICommandHandler<,>));
-//            })
-//            .AsImplementedInterfaces()
-//            .WithSingletonLifetime();
-//});
-
-//void AddCommandQueryHandlers(this IServiceCollection services, Type handlerInterface)
-//{
-//    var handlers = typeof(ServiceExtensions).Assembly.GetTypes()
-//        .Where(t => t.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == handlerInterface)
-//    );
-
-//    foreach (var handler in handlers)
-//    {
-//        services.AddScoped(handler.GetInterfaces().First(i => i.IsGenericType && i.GetGenericTypeDefinition() == handlerInterface), handler);
-//    }
-//}
-
-//void ConfigureServices(IServiceCollection services)
-//{
-//    services.AddCommandQueryHandlers(typeof(ICommandHandler<>));
-//    services.AddCommandQueryHandlers(typeof(IQueryHandler<,>));
-//}
 #endregion
 
 //EmailSender
