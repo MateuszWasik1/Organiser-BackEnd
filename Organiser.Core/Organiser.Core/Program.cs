@@ -11,6 +11,7 @@ using Organiser.Cores.Services;
 using Organiser.Cores.Services.EmailSender;
 using Organiser.CQRS.Abstraction.Commands;
 using Organiser.CQRS.Abstraction.Queries;
+using Organiser.CQRS.Resources.Categories.Commands;
 using Organiser.CQRS.Resources.Categories.Handlers;
 using Organiser.CQRS.Resources.Categories.Queries;
 using System.Text;
@@ -64,7 +65,12 @@ builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
 //CQRS
 #region CQRS
+//Categories
 builder.Services.AddScoped<IQueryHandler<GetCategoriesQuery, List<CategoriesViewModel>>, GetCategoriesQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetCategoriesForFilterQuery, List<CategoriesForFiltersViewModel>>, GetCategoriesForFilterQueryHandler>();
+
+builder.Services.AddScoped<ICommandHandler<SaveCategoriesCommand>, SaveCategoriesCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<DeleteCategoriesCommand>, DeleteCategoriesCommandHandler>();
 #endregion
 
 //EmailSender
