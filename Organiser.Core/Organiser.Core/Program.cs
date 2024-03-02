@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Organiser.Core.CQRS.Dispatcher;
+using Organiser.Core.CQRS.Resources.Accounts.Commands;
+using Organiser.Core.CQRS.Resources.Accounts.Handlers;
+using Organiser.Core.CQRS.Resources.Accounts.Queries;
 using Organiser.Cores;
 using Organiser.Cores.Context;
 using Organiser.Cores.Entities;
@@ -65,6 +68,11 @@ builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
 //CQRS
 #region CQRS
+//Accounts
+builder.Services.AddScoped<IQueryHandler<LoginQuery, string>, LoginQueryHandler>();
+
+builder.Services.AddScoped<ICommandHandler<RegisterUserCommand>, RegisterUserCommandHandler>();
+
 //Categories
 builder.Services.AddScoped<IQueryHandler<GetCategoriesQuery, List<CategoriesViewModel>>, GetCategoriesQueryHandler>();
 builder.Services.AddScoped<IQueryHandler<GetCategoriesForFilterQuery, List<CategoriesForFiltersViewModel>>, GetCategoriesForFilterQueryHandler>();
