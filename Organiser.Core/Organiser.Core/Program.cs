@@ -19,6 +19,9 @@ using Organiser.Core.CQRS.Resources.Savings.Handlers;
 using Organiser.Core.CQRS.Resources.Savings.Queries;
 using Organiser.Core.CQRS.Resources.Stats.Handlers;
 using Organiser.Core.CQRS.Resources.Stats.Queries;
+using Organiser.Core.CQRS.Resources.Tasks.Tasks.Commands;
+using Organiser.Core.CQRS.Resources.Tasks.Tasks.Handlers;
+using Organiser.Core.CQRS.Resources.Tasks.Tasks.Queries;
 using Organiser.Core.Models.ViewModels.BugsViewModels;
 using Organiser.Cores;
 using Organiser.Cores.Context;
@@ -122,6 +125,12 @@ builder.Services.AddScoped<ICommandHandler<DeleteSavingCommand>, DeleteSavingCom
 builder.Services.AddScoped<IQueryHandler<GetSavingBarChartQuery, StatsBarChartViewModel>, GetSavingBarChartQueryHandler>();
 builder.Services.AddScoped<IQueryHandler<GetMoneySpendedFromTaskBarChartQuery, StatsBarChartViewModel>, GetMoneySpendedFromTaskBarChartQueryHandler>();
 builder.Services.AddScoped<IQueryHandler<GetMoneySpendedForCategoryBarChartQuery, StatsBarChartViewModel>, GetMoneySpendedForCategoryBarChartQueryHandler>();
+
+//Tasks
+builder.Services.AddScoped<IQueryHandler<GetTasksQuery, List<TasksViewModel>>, GetTasksQueryHandler>();
+
+builder.Services.AddScoped<ICommandHandler<SaveTaskCommand>, SaveTaskCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<DeleteTaskCommand>, DeleteTaskCommandHandler>();
 #endregion
 
 //EmailSender
