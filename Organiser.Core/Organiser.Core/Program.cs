@@ -9,6 +9,9 @@ using Organiser.Core.CQRS.Resources.Accounts.Queries;
 using Organiser.Core.CQRS.Resources.Bugs.Bugs.Commands;
 using Organiser.Core.CQRS.Resources.Bugs.Bugs.Handlers;
 using Organiser.Core.CQRS.Resources.Bugs.Bugs.Queries;
+using Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Commands;
+using Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Handlers;
+using Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Queries;
 using Organiser.Core.Models.ViewModels.BugsViewModels;
 using Organiser.Cores;
 using Organiser.Cores.Context;
@@ -83,6 +86,11 @@ builder.Services.AddScoped<IQueryHandler<GetBugsQuery, List<BugsViewModel>>, Get
 
 builder.Services.AddScoped<ICommandHandler<SaveBugCommand>, SaveBugsCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<ChangeBugStatusCommand>, ChangeBugStatusCommandHandler>();
+
+//BugsNotes
+builder.Services.AddScoped<IQueryHandler<GetBugNotesQuery, List<BugsNotesViewModel>>, GetBugNotesQueryHandler>();
+
+builder.Services.AddScoped<ICommandHandler<SaveBugNoteCommand>, SaveBugNoteCommandHandler>();
 
 //Categories
 builder.Services.AddScoped<IQueryHandler<GetCategoriesQuery, List<CategoriesViewModel>>, GetCategoriesQueryHandler>();

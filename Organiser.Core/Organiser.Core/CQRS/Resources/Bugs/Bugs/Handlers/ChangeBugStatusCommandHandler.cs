@@ -1,6 +1,5 @@
 ﻿using Organiser.Core.CQRS.Resources.Bugs.Bugs.Commands;
 using Organiser.Cores.Context;
-using Organiser.Cores.Entities;
 using Organiser.Cores.Models.Helpers;
 using Organiser.Cores.Services;
 using Organiser.CQRS.Abstraction.Commands;
@@ -27,7 +26,7 @@ namespace Organiser.Core.CQRS.Resources.Bugs.Bugs.Handlers
 
             var currentUser = context.User.FirstOrDefault(x => x.UID == user.UID);
 
-            var bugNote = new BugsNotes()
+            var bugNote = new Cores.Entities.BugsNotes()
             {
                 BNGID = Guid.NewGuid(),
                 BNBGID = bug.BGID,
