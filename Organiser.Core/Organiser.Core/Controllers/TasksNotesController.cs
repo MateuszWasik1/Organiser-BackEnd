@@ -1,10 +1,9 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Organiser.Cores.Context;
-using Organiser.Cores.Entities;
+using Organiser.Core.CQRS.Dispatcher;
+using Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Commands;
+using Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Queries;
 using Organiser.Cores.Models.ViewModels;
-using Organiser.Cores.Services;
 
 namespace Organiser.Cores.Controllers
 {
@@ -13,65 +12,21 @@ namespace Organiser.Cores.Controllers
     [Authorize]
     public class TasksNotesController : ControllerBase
     {
-        private readonly IDataBaseContext context;
-        private readonly IUserContext user;
-        private readonly IMapper mapper;
-        public TasksNotesController(IDataBaseContext context, IUserContext user, IMapper mapper)
-        {
-            this.context = context;
-            this.user = user;
-            this.mapper = mapper;
-        }
+        private readonly IDispatcher dispatcher;
+        public TasksNotesController(IDispatcher dispatcher) => this.dispatcher = dispatcher;
 
         [HttpGet]
         public List<TasksNotesViewModel> Get(Guid tGID)
-        {
-            var task = context.Tasks.FirstOrDefault(x => x.TGID == tGID);
-
-            if (task == null)
-                throw new Exception("Nie znaleziono zadania. Nie można załadować notatek!");
-
-            var taskNotes = context.TasksNotes.Where(x => x.TNTGID == task.TGID).OrderBy(x => x.TNDate).ToList();
-
-            var taskNotesViewModel = new List<TasksNotesViewModel>();
-
-            taskNotes.ForEach(x =>
-            {
-                taskNotesViewModel.Add(mapper.Map<TasksNotes, TasksNotesViewModel>(x));
-            });
-
-            return taskNotesViewModel;
-        }
+            => dispatcher.DispatchQuery<GetTaskNoteQuery, List<TasksNotesViewModel>>(new GetTaskNoteQuery() { TGID = tGID });
 
         [HttpPost]
         [Route("AddTaskNote")]
         public void AddTaskNote(TasksNotesAddViewModel model)
-        {
-            var taskNote = new TasksNotes()
-            {
-                TNGID = model.TNGID,
-                TNTGID = model.TNTGID,
-                TNUID = user.UID,
-                TNNote = model.TNNote,
-                TNDate = DateTime.Now,
-            };
-
-            context.CreateOrUpdate(taskNote);
-            
-            context.SaveChanges();
-        }
+            => dispatcher.DispatchCommand(new AddTaskNoteCommand() { Model = model });
 
         [HttpDelete]
         [Route("DeleteTaskNote/{tNGID}")]
         public void DeleteTaskNote(Guid tNGID)
-        {
-            var taskNote = context.TasksNotes.FirstOrDefault(x => x.TNGID == tNGID);
-
-            if(taskNote == null)
-                throw new Exception("Nie znaleziono notatki do zadania! Notatka nie została usunięta.");
-
-            context.DeleteTaskNotes(taskNote);
-            context.SaveChanges();
-        }
+            => dispatcher.DispatchCommand(new DeleteTaskNoteCommand() { TNGID = tNGID });
     }
 }

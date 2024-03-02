@@ -22,6 +22,9 @@ using Organiser.Core.CQRS.Resources.Stats.Queries;
 using Organiser.Core.CQRS.Resources.Tasks.Tasks.Commands;
 using Organiser.Core.CQRS.Resources.Tasks.Tasks.Handlers;
 using Organiser.Core.CQRS.Resources.Tasks.Tasks.Queries;
+using Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Commands;
+using Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Handlers;
+using Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Queries;
 using Organiser.Core.Models.ViewModels.BugsViewModels;
 using Organiser.Cores;
 using Organiser.Cores.Context;
@@ -131,6 +134,12 @@ builder.Services.AddScoped<IQueryHandler<GetTasksQuery, List<TasksViewModel>>, G
 
 builder.Services.AddScoped<ICommandHandler<SaveTaskCommand>, SaveTaskCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<DeleteTaskCommand>, DeleteTaskCommandHandler>();
+
+//TaskNotes
+builder.Services.AddScoped<IQueryHandler<GetTaskNoteQuery, List<TasksNotesViewModel>>, GetTaskNoteQueryHandler>();
+
+builder.Services.AddScoped<ICommandHandler<AddTaskNoteCommand>, AddTaskNoteCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<DeleteTaskNoteCommand>, DeleteTaskNoteCommandHandler>();
 #endregion
 
 //EmailSender
