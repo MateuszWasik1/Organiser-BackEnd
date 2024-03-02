@@ -6,6 +6,10 @@ using Organiser.Core.CQRS.Dispatcher;
 using Organiser.Core.CQRS.Resources.Accounts.Commands;
 using Organiser.Core.CQRS.Resources.Accounts.Handlers;
 using Organiser.Core.CQRS.Resources.Accounts.Queries;
+using Organiser.Core.CQRS.Resources.Bugs.Bugs.Commands;
+using Organiser.Core.CQRS.Resources.Bugs.Bugs.Handlers;
+using Organiser.Core.CQRS.Resources.Bugs.Bugs.Queries;
+using Organiser.Core.Models.ViewModels.BugsViewModels;
 using Organiser.Cores;
 using Organiser.Cores.Context;
 using Organiser.Cores.Entities;
@@ -72,6 +76,13 @@ builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<IQueryHandler<LoginQuery, string>, LoginQueryHandler>();
 
 builder.Services.AddScoped<ICommandHandler<RegisterUserCommand>, RegisterUserCommandHandler>();
+
+//Bugs
+builder.Services.AddScoped<IQueryHandler<GetBugQuery, BugViewModel>, GetBugQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetBugsQuery, List<BugsViewModel>>, GetBugsQueryHandler>();
+
+builder.Services.AddScoped<ICommandHandler<SaveBugCommand>, SaveBugsCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<ChangeBugStatusCommand>, ChangeBugStatusCommandHandler>();
 
 //Categories
 builder.Services.AddScoped<IQueryHandler<GetCategoriesQuery, List<CategoriesViewModel>>, GetCategoriesQueryHandler>();
