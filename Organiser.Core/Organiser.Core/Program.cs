@@ -14,6 +14,9 @@ using Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Handlers;
 using Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Queries;
 using Organiser.Core.CQRS.Resources.Roles.Handlers;
 using Organiser.Core.CQRS.Resources.Roles.Queries;
+using Organiser.Core.CQRS.Resources.Savings.Commands;
+using Organiser.Core.CQRS.Resources.Savings.Handlers;
+using Organiser.Core.CQRS.Resources.Savings.Queries;
 using Organiser.Core.Models.ViewModels.BugsViewModels;
 using Organiser.Cores;
 using Organiser.Cores.Context;
@@ -105,6 +108,12 @@ builder.Services.AddScoped<ICommandHandler<DeleteCategoriesCommand>, DeleteCateg
 builder.Services.AddScoped<IQueryHandler<GetUserRolesQuery, RolesViewModel>, GetUserRolesQueryHandler>();
 builder.Services.AddScoped<IQueryHandler<GetIsUserAdminQuery, bool>, GetIsUserAdminQueryHandler>();
 builder.Services.AddScoped<IQueryHandler<GetIsUserSupportQuery, bool>, GetIsUserSupportQueryHandler>();
+
+//Savings
+builder.Services.AddScoped<IQueryHandler<GetSavingsQuery, List<SavingsViewModel>>, GetSavingsQueryHandler>();
+
+builder.Services.AddScoped<ICommandHandler<SaveSavingCommand>, SaveSavingCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<DeleteSavingCommand>, DeleteSavingCommandHandler>();
 #endregion
 
 //EmailSender
