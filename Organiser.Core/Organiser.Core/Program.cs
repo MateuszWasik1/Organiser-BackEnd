@@ -17,11 +17,14 @@ using Organiser.Core.CQRS.Resources.Roles.Queries;
 using Organiser.Core.CQRS.Resources.Savings.Commands;
 using Organiser.Core.CQRS.Resources.Savings.Handlers;
 using Organiser.Core.CQRS.Resources.Savings.Queries;
+using Organiser.Core.CQRS.Resources.Stats.Handlers;
+using Organiser.Core.CQRS.Resources.Stats.Queries;
 using Organiser.Core.Models.ViewModels.BugsViewModels;
 using Organiser.Cores;
 using Organiser.Cores.Context;
 using Organiser.Cores.Entities;
 using Organiser.Cores.Models.ViewModels;
+using Organiser.Cores.Models.ViewModels.StatsViewModels;
 using Organiser.Cores.Services;
 using Organiser.Cores.Services.EmailSender;
 using Organiser.CQRS.Abstraction.Commands;
@@ -114,6 +117,11 @@ builder.Services.AddScoped<IQueryHandler<GetSavingsQuery, List<SavingsViewModel>
 
 builder.Services.AddScoped<ICommandHandler<SaveSavingCommand>, SaveSavingCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<DeleteSavingCommand>, DeleteSavingCommandHandler>();
+
+//Stats
+builder.Services.AddScoped<IQueryHandler<GetSavingBarChartQuery, StatsBarChartViewModel>, GetSavingBarChartQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetMoneySpendedFromTaskBarChartQuery, StatsBarChartViewModel>, GetMoneySpendedFromTaskBarChartQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetMoneySpendedForCategoryBarChartQuery, StatsBarChartViewModel>, GetMoneySpendedForCategoryBarChartQueryHandler>();
 #endregion
 
 //EmailSender
