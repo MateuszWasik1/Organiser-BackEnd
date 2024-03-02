@@ -12,6 +12,8 @@ using Organiser.Core.CQRS.Resources.Bugs.Bugs.Queries;
 using Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Commands;
 using Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Handlers;
 using Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Queries;
+using Organiser.Core.CQRS.Resources.Roles.Handlers;
+using Organiser.Core.CQRS.Resources.Roles.Queries;
 using Organiser.Core.Models.ViewModels.BugsViewModels;
 using Organiser.Cores;
 using Organiser.Cores.Context;
@@ -98,6 +100,11 @@ builder.Services.AddScoped<IQueryHandler<GetCategoriesForFilterQuery, List<Categ
 
 builder.Services.AddScoped<ICommandHandler<SaveCategoriesCommand>, SaveCategoriesCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<DeleteCategoriesCommand>, DeleteCategoriesCommandHandler>();
+
+//Roles
+builder.Services.AddScoped<IQueryHandler<GetUserRolesQuery, RolesViewModel>, GetUserRolesQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetIsUserAdminQuery, bool>, GetIsUserAdminQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetIsUserSupportQuery, bool>, GetIsUserSupportQueryHandler>();
 #endregion
 
 //EmailSender
