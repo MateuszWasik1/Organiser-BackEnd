@@ -1,10 +1,9 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Organiser.Cores.Context;
-using Organiser.Cores.Entities;
+using Organiser.Core.CQRS.Dispatcher;
+using Organiser.Core.CQRS.Resources.User.Commands;
+using Organiser.Core.CQRS.Resources.User.Queries;
 using Organiser.Cores.Models.ViewModels.UserViewModels;
-using Organiser.Cores.Services;
 
 namespace Organiser.Cores.Controllers
 {
@@ -13,138 +12,43 @@ namespace Organiser.Cores.Controllers
     [Authorize]
     public class UserController : ControllerBase
     {
-        private readonly IDataBaseContext context;
-        private readonly IUserContext user;
-        private readonly IMapper mapper;
-        public UserController(IDataBaseContext context, IUserContext user, IMapper mapper)
-        {
-            this.context = context;
-            this.user = user;
-            this.mapper = mapper;
-        }
+        private readonly IDispatcher dispatcher;
+        public UserController(IDispatcher dispatcher) => this.dispatcher = dispatcher;
 
         [HttpGet]
         [Route("GetAllUsers")]
         [Authorize(Roles = "Admin")]
         public List<UsersAdminViewModel> GetAllUsers(string text = "")
-        {
-            var usersData = context.AllUsers.ToList();
-
-            var usersAdmViewModel = new List<UsersAdminViewModel>();
-
-            usersData.ForEach(x => {
-                var model = mapper.Map<User, UsersAdminViewModel>(x);
-                usersAdmViewModel.Add(model);
-            });
-
-            return usersAdmViewModel;
-        }
+            => dispatcher.DispatchQuery<GetAllUsersQuery, List<UsersAdminViewModel>>(new GetAllUsersQuery());
 
         [HttpGet]
         [Route("GetUserByAdmin/{ugid}")]
         [Authorize(Roles = "Admin")]
         public UserAdminViewModel GetUserByAdmin(Guid ugid)
-        {
-            var userData = context.AllUsers.FirstOrDefault(x => x.UGID == ugid);
-
-            if (userData == null)
-                throw new Exception("Nie znaleziono użytkownika!");
-            
-            var model = mapper.Map<User, UserAdminViewModel>(userData);
-
-            model.UCategoriesCount = context.AllCategories.Where(x => x.CUID == userData.UID).Count();
-            model.UTasksCount = context.AllTasks.Where(x => x.TUID == userData.UID).Count();
-            model.UTaskNotesCount = context.AllTasksNotes.Where(x => x.TNUID == userData.UID).Count();
-            model.USavingsCount = context.AllSavings.Where(x => x.SUID == userData.UID).Count();
-
-            return model;
-        }
+            => dispatcher.DispatchQuery<GetUserByAdminQuery, UserAdminViewModel>(new GetUserByAdminQuery() { UGID = ugid });
 
         [HttpGet]
         [Route("GetUser")]
         [Authorize]
         public UserViewModel GetUser()
-        {
-            var userData = context.User.FirstOrDefault(x => x.UID == user.UID);
-
-            if (userData == null)
-                throw new Exception("Nie znaleziono użytkownika!");
-
-            var model = mapper.Map<User, UserViewModel>(userData);
-            
-            return model;
-        }
+            => dispatcher.DispatchQuery<GetUserQuery, UserViewModel>(new GetUserQuery());
 
         [HttpPost]
         [Route("SaveUser")]
         [Authorize]
         public void SaveUser(UserViewModel model)
-        {
-           var userData = context.User.FirstOrDefault(x => x.UID == user.UID);
-
-            if (userData == null)
-                throw new Exception("Nie znaleziono użytkownika!");
-
-            userData.UFirstName = model.UFirstName;
-            userData.ULastName = model.ULastName;
-            userData.UUserName = model.UUserName;
-            userData.UEmail = model.UEmail;
-            userData.UPhone = model.UPhone;
-
-            context.CreateOrUpdate(userData);
-            context.SaveChanges();
-        }
+            => dispatcher.DispatchCommand(new SaveUserCommand() { Model = model });
 
         [HttpPost]
         [Route("SaveUserByAdmin")]
         [Authorize(Roles = "Admin")]
         public void SaveUserByAdmin(UserAdminViewModel model)
-        {
-            var userData = context.AllUsers.FirstOrDefault(x => x.UGID == model.UGID);
-
-            if (userData == null)
-                throw new Exception("Nie znaleziono użytkownika!");
-
-            userData.URID = model.URID;
-            userData.UFirstName = model.UFirstName;
-            userData.ULastName = model.ULastName;
-            userData.UUserName = model.UUserName;
-            userData.UEmail = model.UEmail;
-            userData.UPhone = model.UPhone;
-
-            context.CreateOrUpdate(userData);
-            context.SaveChanges();
-        }
+            => dispatcher.DispatchCommand(new SaveUserByAdminCommand() { Model = model });
 
         [HttpDelete]
         [Route("DeleteUser/{ugid}")]
         [Authorize(Roles = "Admin")]
         public void DeleteUser(Guid ugid)
-        {
-            var deletedUser = context.AllUsers.FirstOrDefault(x => x.UGID == ugid);
-
-            if (deletedUser == null)
-                throw new Exception("Nie znaleziono użytkownika!");
-
-            var categories = context.AllCategories.Where(x => x.CUID == deletedUser.UID);
-            var tasks = context.AllTasks.Where(x => x.TUID == deletedUser.UID);
-            var taskNotes = context.AllTasksNotes.Where(x => x.TNUID == deletedUser.UID);
-            var savings = context.AllSavings.Where(x => x.SUID == deletedUser.UID);
-
-            foreach ( var category in categories)
-                context.DeleteCategory(category);
-
-            foreach (var task in tasks)
-                context.DeleteTask(task);
-
-            foreach (var taskNote in taskNotes)
-                context.DeleteTaskNotes(taskNote);
-
-            foreach (var saving in savings)
-                context.DeleteSaving(saving);
-
-            context.DeleteUser(deletedUser);
-            context.SaveChanges();
-        }
+            => dispatcher.DispatchCommand(new DeleteUserCommand() { UGID = ugid });
     }
 }

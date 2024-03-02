@@ -25,12 +25,16 @@ using Organiser.Core.CQRS.Resources.Tasks.Tasks.Queries;
 using Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Commands;
 using Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Handlers;
 using Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Queries;
+using Organiser.Core.CQRS.Resources.User.Commands;
+using Organiser.Core.CQRS.Resources.User.Handlers;
+using Organiser.Core.CQRS.Resources.User.Queries;
 using Organiser.Core.Models.ViewModels.BugsViewModels;
 using Organiser.Cores;
 using Organiser.Cores.Context;
 using Organiser.Cores.Entities;
 using Organiser.Cores.Models.ViewModels;
 using Organiser.Cores.Models.ViewModels.StatsViewModels;
+using Organiser.Cores.Models.ViewModels.UserViewModels;
 using Organiser.Cores.Services;
 using Organiser.Cores.Services.EmailSender;
 using Organiser.CQRS.Abstraction.Commands;
@@ -140,6 +144,15 @@ builder.Services.AddScoped<IQueryHandler<GetTaskNoteQuery, List<TasksNotesViewMo
 
 builder.Services.AddScoped<ICommandHandler<AddTaskNoteCommand>, AddTaskNoteCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<DeleteTaskNoteCommand>, DeleteTaskNoteCommandHandler>();
+
+//User
+builder.Services.AddScoped<IQueryHandler<GetAllUsersQuery, List<UsersAdminViewModel>>, GetAllUsersQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetUserByAdminQuery, UserAdminViewModel>, GetUserByAdminQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetUserQuery, UserViewModel>, GetUserQueryHandler>();
+
+builder.Services.AddScoped<ICommandHandler<SaveUserCommand>, SaveUserCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<SaveUserByAdminCommand>, SaveUserByAdminCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<DeleteUserCommand>, DeleteUserCommandHandler>();
 #endregion
 
 //EmailSender

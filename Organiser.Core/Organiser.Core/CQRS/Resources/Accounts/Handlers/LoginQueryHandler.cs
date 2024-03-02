@@ -16,10 +16,10 @@ namespace Organiser.Core.CQRS.Resources.Accounts.Handlers
     public class LoginQueryHandler : IQueryHandler<LoginQuery, string>
     {
         private readonly IDataBaseContext context;
-        private readonly IPasswordHasher<User> hasher;
+        private readonly IPasswordHasher<Cores.Entities.User> hasher;
         private readonly AuthenticationSettings authenticationSettings;
         public LoginQueryHandler(IDataBaseContext context,
-            IPasswordHasher<User> hasher,
+            IPasswordHasher<Cores.Entities.User> hasher,
             AuthenticationSettings authenticationSettings)
         {
             this.context = context;

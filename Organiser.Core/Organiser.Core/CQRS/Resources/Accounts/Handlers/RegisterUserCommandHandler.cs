@@ -10,10 +10,10 @@ namespace Organiser.Core.CQRS.Resources.Accounts.Handlers
     public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand>
     {
         private readonly IDataBaseContext context;
-        private readonly IPasswordHasher<User> hasher;
+        private readonly IPasswordHasher<Cores.Entities.User> hasher;
         private readonly IEmailSender emailSender;
 
-        public RegisterUserCommandHandler(IDataBaseContext context, IPasswordHasher<User> hasher, IEmailSender emailSender) 
+        public RegisterUserCommandHandler(IDataBaseContext context, IPasswordHasher<Cores.Entities.User> hasher, IEmailSender emailSender) 
         {
             this.context = context;
             this.hasher = hasher;
@@ -38,7 +38,7 @@ namespace Organiser.Core.CQRS.Resources.Accounts.Handlers
 
             var roleID = context.Roles.FirstOrDefault(x => x.RName == "user")?.RID ?? 1;
 
-            var newUser = new User()
+            var newUser = new Cores.Entities.User()
             {
                 UGID = Guid.NewGuid(),
                 URID = roleID,
