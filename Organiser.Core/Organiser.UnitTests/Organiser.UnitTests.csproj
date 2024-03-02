@@ -14,10 +14,16 @@
     <PackageReference Include="NUnit" Version="4.0.1" />
     <PackageReference Include="NUnit.ConsoleRunner" Version="3.16.3" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+    <PackageReference Include="Scrutor" Version="4.2.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Organiser.Core\Organiser.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="CommandHandlers\" />
+    <Folder Include="QueryHandler\" />
   </ItemGroup>
 
 </Project>

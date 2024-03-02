@@ -2,11 +2,46 @@ using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Organiser.Core.CQRS.Dispatcher;
+using Organiser.Core.CQRS.Resources.Accounts.Commands;
+using Organiser.Core.CQRS.Resources.Accounts.Handlers;
+using Organiser.Core.CQRS.Resources.Accounts.Queries;
+using Organiser.Core.CQRS.Resources.Bugs.Bugs.Commands;
+using Organiser.Core.CQRS.Resources.Bugs.Bugs.Handlers;
+using Organiser.Core.CQRS.Resources.Bugs.Bugs.Queries;
+using Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Commands;
+using Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Handlers;
+using Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Queries;
+using Organiser.Core.CQRS.Resources.Roles.Handlers;
+using Organiser.Core.CQRS.Resources.Roles.Queries;
+using Organiser.Core.CQRS.Resources.Savings.Commands;
+using Organiser.Core.CQRS.Resources.Savings.Handlers;
+using Organiser.Core.CQRS.Resources.Savings.Queries;
+using Organiser.Core.CQRS.Resources.Stats.Handlers;
+using Organiser.Core.CQRS.Resources.Stats.Queries;
+using Organiser.Core.CQRS.Resources.Tasks.Tasks.Commands;
+using Organiser.Core.CQRS.Resources.Tasks.Tasks.Handlers;
+using Organiser.Core.CQRS.Resources.Tasks.Tasks.Queries;
+using Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Commands;
+using Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Handlers;
+using Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Queries;
+using Organiser.Core.CQRS.Resources.User.Commands;
+using Organiser.Core.CQRS.Resources.User.Handlers;
+using Organiser.Core.CQRS.Resources.User.Queries;
+using Organiser.Core.Models.ViewModels.BugsViewModels;
 using Organiser.Cores;
 using Organiser.Cores.Context;
 using Organiser.Cores.Entities;
+using Organiser.Cores.Models.ViewModels;
+using Organiser.Cores.Models.ViewModels.StatsViewModels;
+using Organiser.Cores.Models.ViewModels.UserViewModels;
 using Organiser.Cores.Services;
 using Organiser.Cores.Services.EmailSender;
+using Organiser.CQRS.Abstraction.Commands;
+using Organiser.CQRS.Abstraction.Queries;
+using Organiser.CQRS.Resources.Categories.Commands;
+using Organiser.CQRS.Resources.Categories.Handlers;
+using Organiser.CQRS.Resources.Categories.Queries;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -51,9 +86,74 @@ builder.Services.AddIdentity<Users, IdentityRole>(config =>
 
 builder.Services.AddScoped<IDataBaseContext, DataBaseContext>();
 builder.Services.AddScoped<IUserContext, UserContext>();
+builder.Services.AddScoped<IDispatcher, Dispatcher>();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+
+//CQRS
+#region CQRS
+//Accounts
+builder.Services.AddScoped<IQueryHandler<LoginQuery, string>, LoginQueryHandler>();
+
+builder.Services.AddScoped<ICommandHandler<RegisterUserCommand>, RegisterUserCommandHandler>();
+
+//Bugs
+builder.Services.AddScoped<IQueryHandler<GetBugQuery, BugViewModel>, GetBugQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetBugsQuery, List<BugsViewModel>>, GetBugsQueryHandler>();
+
+builder.Services.AddScoped<ICommandHandler<SaveBugCommand>, SaveBugsCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<ChangeBugStatusCommand>, ChangeBugStatusCommandHandler>();
+
+//BugsNotes
+builder.Services.AddScoped<IQueryHandler<GetBugNotesQuery, List<BugsNotesViewModel>>, GetBugNotesQueryHandler>();
+
+builder.Services.AddScoped<ICommandHandler<SaveBugNoteCommand>, SaveBugNoteCommandHandler>();
+
+//Categories
+builder.Services.AddScoped<IQueryHandler<GetCategoriesQuery, List<CategoriesViewModel>>, GetCategoriesQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetCategoriesForFilterQuery, List<CategoriesForFiltersViewModel>>, GetCategoriesForFilterQueryHandler>();
+
+builder.Services.AddScoped<ICommandHandler<SaveCategoriesCommand>, SaveCategoriesCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<DeleteCategoriesCommand>, DeleteCategoriesCommandHandler>();
+
+//Roles
+builder.Services.AddScoped<IQueryHandler<GetUserRolesQuery, RolesViewModel>, GetUserRolesQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetIsUserAdminQuery, bool>, GetIsUserAdminQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetIsUserSupportQuery, bool>, GetIsUserSupportQueryHandler>();
+
+//Savings
+builder.Services.AddScoped<IQueryHandler<GetSavingsQuery, List<SavingsViewModel>>, GetSavingsQueryHandler>();
+
+builder.Services.AddScoped<ICommandHandler<SaveSavingCommand>, SaveSavingCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<DeleteSavingCommand>, DeleteSavingCommandHandler>();
+
+//Stats
+builder.Services.AddScoped<IQueryHandler<GetSavingBarChartQuery, StatsBarChartViewModel>, GetSavingBarChartQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetMoneySpendedFromTaskBarChartQuery, StatsBarChartViewModel>, GetMoneySpendedFromTaskBarChartQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetMoneySpendedForCategoryBarChartQuery, StatsBarChartViewModel>, GetMoneySpendedForCategoryBarChartQueryHandler>();
+
+//Tasks
+builder.Services.AddScoped<IQueryHandler<GetTasksQuery, List<TasksViewModel>>, GetTasksQueryHandler>();
+
+builder.Services.AddScoped<ICommandHandler<SaveTaskCommand>, SaveTaskCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<DeleteTaskCommand>, DeleteTaskCommandHandler>();
+
+//TaskNotes
+builder.Services.AddScoped<IQueryHandler<GetTaskNoteQuery, List<TasksNotesViewModel>>, GetTaskNoteQueryHandler>();
+
+builder.Services.AddScoped<ICommandHandler<AddTaskNoteCommand>, AddTaskNoteCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<DeleteTaskNoteCommand>, DeleteTaskNoteCommandHandler>();
+
+//User
+builder.Services.AddScoped<IQueryHandler<GetAllUsersQuery, List<UsersAdminViewModel>>, GetAllUsersQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetUserByAdminQuery, UserAdminViewModel>, GetUserByAdminQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetUserQuery, UserViewModel>, GetUserQueryHandler>();
+
+builder.Services.AddScoped<ICommandHandler<SaveUserCommand>, SaveUserCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<SaveUserByAdminCommand>, SaveUserByAdminCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<DeleteUserCommand>, DeleteUserCommandHandler>();
+#endregion
 
 //EmailSender
 var emailSenderSettings = new EmailSenderSettings();
