@@ -22,9 +22,13 @@ namespace Organiser.Core.CQRS.Resources.Bugs.Bugs.Handlers
 
             if (bug == null)
                 throw new Exception("Nie udało się zaaktualizować statusu błędu!");
+
             bug.BStatus = command.Model.Status;
 
             var currentUser = context.User.FirstOrDefault(x => x.UID == user.UID);
+
+            if (currentUser == null)
+                throw new Exception("Nie udało się odnaleźć użytkownika! Aktualizacja błędu się nie powiodła.");
 
             var bugNote = new Cores.Entities.BugsNotes()
             {
