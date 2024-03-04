@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <Folder Include="CQRS\CommandHandlers\Bugs\BugsNotes\" />
-    <Folder Include="CQRS\QueryHandler\Bugs\Bugs\" />
     <Folder Include="CQRS\QueryHandler\Bugs\BugsNotes\" />
   </ItemGroup>
 
