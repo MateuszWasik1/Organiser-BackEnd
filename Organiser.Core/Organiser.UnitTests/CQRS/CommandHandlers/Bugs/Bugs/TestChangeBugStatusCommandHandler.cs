@@ -20,7 +20,7 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Bugs.Bugs
         private Mock<IUserContext> user;
 
         public List<Cores.Entities.Bugs> bugs;
-        public List<BugsNotes> bugsNotes;
+        public List<Cores.Entities.BugsNotes> bugsNotes;
         public List<User> users;
 
         [SetUp]
@@ -44,7 +44,7 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Bugs.Bugs
                 }
             };
 
-            bugsNotes = new List<BugsNotes>();
+            bugsNotes = new List<Cores.Entities.BugsNotes>();
 
             users = new List<User>()
             {
@@ -61,7 +61,7 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Bugs.Bugs
             context.Setup(x => x.User).Returns(users.AsQueryable());
 
             context.Setup(x => x.CreateOrUpdate(It.IsAny<Cores.Entities.Bugs>())).Callback<Cores.Entities.Bugs>(bug => bugs[0] = bug);
-            context.Setup(x => x.CreateOrUpdate(It.IsAny<BugsNotes>())).Callback<BugsNotes>(bugNote => bugsNotes.Add(bugNote));
+            context.Setup(x => x.CreateOrUpdate(It.IsAny<Cores.Entities.BugsNotes>())).Callback<Cores.Entities.BugsNotes>(bugNote => bugsNotes.Add(bugNote));
 
             user.Setup(x => x.UID).Returns(1);
         }

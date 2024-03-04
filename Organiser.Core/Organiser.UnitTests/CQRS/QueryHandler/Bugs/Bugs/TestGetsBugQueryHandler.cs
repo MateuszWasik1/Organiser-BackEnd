@@ -134,8 +134,6 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
             context.Setup(x => x.AllBugs).Returns(allBugs.AsQueryable());
             context.Setup(x => x.User).Returns(users.AsQueryable());
 
-            context.Setup(x => x.CreateOrUpdate(It.IsAny<Cores.Entities.Bugs>())).Callback<Cores.Entities.Bugs>(bug => bugs.Add(bug));
-
             user.Setup(x => x.UID).Returns(1);
 
             mapper.Setup(m => m.Map<Cores.Entities.Bugs, BugsViewModel>(It.IsAny<Cores.Entities.Bugs>())).
