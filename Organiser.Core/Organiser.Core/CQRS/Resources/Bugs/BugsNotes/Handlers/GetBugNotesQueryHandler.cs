@@ -25,7 +25,7 @@ namespace Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Handlers
             var bugNotes = new List<Cores.Entities.BugsNotes>();
             var currentUserRole = context.User.FirstOrDefault(x => x.UID == user.UID)?.URID ?? 1;
 
-            if (currentUserRole == (int)RoleEnum.Admin || currentUserRole == (int)RoleEnum.Support)
+            if (currentUserRole == (int) RoleEnum.Admin || currentUserRole == (int) RoleEnum.Support)
                 bugNotes = context.AllBugsNotes.Where(x => x.BNBGID == query.BGID).OrderBy(x => x.BNDate).ToList();
             else
                 bugNotes = context.BugsNotes.Where(x => x.BNBGID == query.BGID && !x.BNIsNewVerifier).OrderBy(x => x.BNDate).ToList();

@@ -7,7 +7,6 @@ using Organiser.Core.CQRS.Resources.Bugs.Bugs.Queries;
 using Organiser.Core.Models.ViewModels.BugsViewModels;
 using Organiser.Cores.Context;
 using Organiser.Cores.Models.Enums;
-using Organiser.Cores.Models.ViewModels.UserViewModels;
 using Organiser.Cores.Services;
 
 namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
