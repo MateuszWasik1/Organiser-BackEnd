@@ -17,6 +17,5 @@ namespace Organiser.Core.CQRS.Resources.Roles.Handlers
         }
 
         public bool Handle(GetIsUserSupportQuery query) => context.User.FirstOrDefault(x => x.UID == user.UID)?.URID == (int) RoleEnum.Support;
-
     }
 }
