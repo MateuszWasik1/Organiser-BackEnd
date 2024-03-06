@@ -21,19 +21,21 @@ namespace Organiser.Core.CQRS.Resources.Tasks.Tasks.Handlers
 
         public List<TasksViewModel> Handle(GetTasksQuery query)
         {
-            var tasks = context.Tasks.OrderBy(x => x.TTime).ToList();
+            List<Cores.Entities.Tasks> tasks = context.Tasks.OrderBy(x => x.TTime).ToList();
 
             if (!string.IsNullOrEmpty(query.CGID))
                 tasks = tasks.Where(x => x.TCGID == Guid.Parse(query.CGID)).ToList();
 
             if (query.Status != 3)
-                tasks = tasks.Where(x => (int)x.TStatus == query.Status).ToList();
+                tasks = tasks.Where(x => (int) x.TStatus == query.Status).ToList();
 
             var tasksViewModel = new List<TasksViewModel>();
 
             tasks.ForEach(x =>
             {
-                tasksViewModel.Add(mapper.Map<Cores.Entities.Tasks, TasksViewModel>(x));
+                var tVM = mapper.Map<Cores.Entities.Tasks, TasksViewModel>(x);
+
+                tasksViewModel.Add(tVM);
             });
 
             return tasksViewModel;

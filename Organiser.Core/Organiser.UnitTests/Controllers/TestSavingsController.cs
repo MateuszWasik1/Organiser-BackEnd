@@ -17,7 +17,7 @@ namespace Organiser.UnitTests.Controllers
         public void SetUp() => dispatcher = new Mock<IDispatcher>();
 
         [Test]
-        public void TestRolesController_Get_ShouldDispatch_GetSavingsQuery()
+        public void TestSavingsController_Get_ShouldDispatch_GetSavingsQuery()
         {
             //Arrange
             var controller = new SavingsController(dispatcher.Object);
@@ -30,7 +30,7 @@ namespace Organiser.UnitTests.Controllers
         }
 
         [Test]
-        public void TestRolesController_Save_ShouldDispatch_SaveSavingCommand()
+        public void TestSavingsController_Save_ShouldDispatch_SaveSavingCommand()
         {
             //Arrange
             var controller = new SavingsController(dispatcher.Object);
@@ -43,7 +43,7 @@ namespace Organiser.UnitTests.Controllers
         }
 
         [Test]
-        public void TestRolesController_Delete_ShouldDispatch_DeleteSavingCommand()
+        public void TestSavingsController_Delete_ShouldDispatch_DeleteSavingCommand()
         {
             //Arrange
             var controller = new SavingsController(dispatcher.Object);

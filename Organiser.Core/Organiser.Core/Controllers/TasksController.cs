@@ -14,6 +14,7 @@ namespace Organiser.Cores.Controllers
     {
         private readonly IDispatcher dispatcher;
         public TasksController(IDispatcher dispatcher) => this.dispatcher = dispatcher;
+
         [HttpGet]
         public List<TasksViewModel> Get(string cGID = "", int status = 3)
             => dispatcher.DispatchQuery<GetTasksQuery, List<TasksViewModel>>(new GetTasksQuery() { CGID = cGID, Status = status });
