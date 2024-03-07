@@ -1,261 +1,97 @@
-﻿//using AutoMapper;
-//using Moq;
-//using NUnit.Framework;
-//using NUnit.Framework.Legacy;
-//using Organiser.Cores.Context;
-//using Organiser.Cores.Controllers;
-//using Organiser.Cores.Entities;
-//using Organiser.Cores.Models.ViewModels;
-//using Organiser.Cores.Models.ViewModels.UserViewModels;
-//using Organiser.Cores.Services;
-//using System;
+﻿using Moq;
+using NUnit.Framework;
+using Organiser.Core.CQRS.Dispatcher;
+using Organiser.Core.CQRS.Resources.User.Commands;
+using Organiser.Core.CQRS.Resources.User.Queries;
+using Organiser.Cores.Controllers;
+using Organiser.Cores.Models.ViewModels.UserViewModels;
 
-//namespace Organiser.UnitTests.Controllers
-//{
-//    [TestFixture]
-//    public class TestUserController
-//    {
-//        private Mock<IDataBaseContext>? context;
-//        private Mock<IUserContext>? user;
-//        private Mock<IMapper>? mapper;
+namespace Organiser.UnitTests.Controllers
+{
+    [TestFixture]
+    public class TestUserController
+    {
+        private Mock<IDispatcher> dispatcher;
 
-//        private List<User>? users;
+        [SetUp]
+        public void SetUp() => dispatcher = new Mock<IDispatcher>();
 
-//        [SetUp]
-//        public void SetUp()
-//        {
-//            context = new Mock<IDataBaseContext>();
-//            user = new Mock<IUserContext>();
-//            mapper = new Mock<IMapper>();
+        [Test]
+        public void TestUserController_GetAllUsers_ShouldDispatch_GetAllUsersQuery()
+        {
+            //Arrange
+            var controller = new UserController(dispatcher.Object);
 
-//            users = new List<User>() 
-//            { 
-//                new User()
-//                {
-//                    UID = 1,
-//                    UGID = new Guid("b189857a-bf45-4c25-9644-f2408351d328"),
-//                    URID = 3,
-//                    UFirstName = "UFirstName1",
-//                    ULastName = "ULastName1",
-//                    UUserName = "UUserName1",
-//                    UEmail = "UEmail1",
-//                    UPhone = "UPhone1",
-//                },
-//                new User()
-//                {
-//                    UID = 2,
-//                    UGID = new Guid("c189857a-bf45-4c25-9644-f2408351d328"),
-//                    URID = 1,
-//                    UFirstName = "UFirstName2",
-//                    ULastName = "ULastName2",
-//                    UUserName = "UUserName2",
-//                    UEmail = "UEmail2",
-//                    UPhone = "UPhone2",
-//                },
-//            };
+            //Act
+            controller.GetAllUsers();
 
-//            context.Setup(x => x.User).Returns(users.AsQueryable());
-//            context.Setup(x => x.AllUsers).Returns(users.AsQueryable());
+            //Assert
+            dispatcher.Verify(x => x.DispatchQuery<GetAllUsersQuery, List<UsersAdminViewModel>>(It.IsAny<GetAllUsersQuery>()), Times.Once);
+        }
 
-//            context.Setup(x => x.CreateOrUpdate(It.IsAny<User>())).Callback<User>(user => 
-//            { 
-//                var currentUser = users.FirstOrDefault(x => x.UID == user.UID);
+        [Test]
+        public void TestUserController_GetUserByAdmin_ShouldDispatch_GetUserByAdminQuery()
+        {
+            //Arrange
+            var controller = new UserController(dispatcher.Object);
 
-//                users[users.FindIndex(x => x.UID == currentUser.UID)] = user;
-//            });
+            //Act
+            controller.GetUserByAdmin(new Guid());
 
-//            user.Setup(x => x.UID).Returns(1);
+            //Assert
+            dispatcher.Verify(x => x.DispatchQuery<GetUserByAdminQuery, UserAdminViewModel>(It.IsAny<GetUserByAdminQuery>()), Times.Once);
+        }
 
-//            mapper.Setup(m => m.Map<User, UserViewModel>(It.IsAny<User>())).Returns(new UserViewModel() {
-//                UFirstName = users[0].UFirstName,
-//                ULastName = users[0].ULastName,
-//                UUserName = users[0].UUserName,
-//                UEmail = users[0].UEmail,
-//                UPhone = users[0].UPhone,
-//            });
+        [Test]
+        public void TestUserController_GetUser_ShouldDispatch_GetUserQuery()
+        {
+            //Arrange
+            var controller = new UserController(dispatcher.Object);
 
-//            mapper.Setup(m => m.Map<User, UsersAdminViewModel>(It.IsAny<User>())).Returns(new UsersAdminViewModel()
-//            {
-//                UID = users[0].UID,
-//                UGID = users[0].UGID,
-//                URID = users[0].URID,
-//                UFirstName = users[0].UFirstName,
-//                ULastName = users[0].ULastName,
-//                UUserName = users[0].UUserName,
-//                UEmail = users[0].UEmail,
-//                UPhone = users[0].UPhone,
-//            });
+            //Act
+            controller.GetUser();
 
-//            mapper.Setup(m => m.Map<User, UserAdminViewModel>(It.IsAny<User>())).Returns(new UserAdminViewModel()
-//            {
-//                UID = users[0].UID,
-//                UGID = users[0].UGID,
-//                URID = users[0].URID,
-//                UFirstName = users[0].UFirstName,
-//                ULastName = users[0].ULastName,
-//                UUserName = users[0].UUserName,
-//                UEmail = users[0].UEmail,
-//                UPhone = users[0].UPhone,
-//                UCategoriesCount = 2,
-//                UTasksCount = 1,
-//                UTaskNotesCount = 4,
-//                USavingsCount = 9,
-//            });
-//        }
+            //Assert
+            dispatcher.Verify(x => x.DispatchQuery<GetUserQuery, UserViewModel>(It.IsAny<GetUserQuery>()), Times.Once);
+        }
 
-//        //Get
-//        [Test]
-//        public void TestTasksController_GetAllUser_ShouldReturnAll2User()
-//        {
-//            //Arrange
-//            var controller = new UserController(context.Object, user.Object, mapper.Object);
+        [Test]
+        public void TestUserController_SaveUser_ShouldDispatch_SaveUserCommand()
+        {
+            //Arrange
+            var controller = new UserController(dispatcher.Object);
 
-//            //Act
-//            var result = controller.GetAllUsers();
+            //Act
+            controller.SaveUser(new UserViewModel());
 
-//            //Assert
-//            ClassicAssert.AreEqual(2, result.Count);
-//        }
+            //Assert
+            dispatcher.Verify(x => x.DispatchCommand(It.IsAny<SaveUserCommand>()), Times.Once);
+        }
 
-//        [Test]
-//        public void TestTasksController_GetUserByAdmin_UserNotFound_ShouldThrowException()
-//        {
-//            //Arrange
-//            var controller = new UserController(context.Object, user.Object, mapper.Object);
+        [Test]
+        public void TestUserController_SaveUserByAdmin_ShouldDispatch_SaveUserByAdminCommand()
+        {
+            //Arrange
+            var controller = new UserController(dispatcher.Object);
 
-//            //Act
-//            //Assert
-//            Assert.Throws<Exception>(() => controller.GetUserByAdmin(new Guid("d189857a-bf45-4c25-9644-f2408351d328")));
-//        }
+            //Act
+            controller.SaveUserByAdmin(new UserAdminViewModel());
 
-//        [Test]
-//        public void TestTasksController_GetUserByAdmin_ShouldReturnUser()
-//        {
-//            //Arrange
-//            var controller = new UserController(context.Object, user.Object, mapper.Object);
+            //Assert
+            dispatcher.Verify(x => x.DispatchCommand(It.IsAny<SaveUserByAdminCommand>()), Times.Once);
+        }
 
-//            //Act
-//            var result = controller.GetUserByAdmin(new Guid("b189857a-bf45-4c25-9644-f2408351d328"));
+        [Test]
+        public void TestUserController_DeleteUser_ShouldDispatch_DeleteUserCommand()
+        {
+            //Arrange
+            var controller = new UserController(dispatcher.Object);
 
-//            //Assert
-//            ClassicAssert.AreEqual(1, result.UID);
-//            ClassicAssert.AreEqual(new Guid("b189857a-bf45-4c25-9644-f2408351d328"), result.UGID);
-//            ClassicAssert.AreEqual(3, result.URID);
-//            ClassicAssert.AreEqual("UFirstName1", result.UFirstName);
-//            ClassicAssert.AreEqual("ULastName1", result.ULastName);
-//            ClassicAssert.AreEqual("UUserName1", result.UUserName);
-//            ClassicAssert.AreEqual("UEmail1", result.UEmail);
-//            ClassicAssert.AreEqual("UPhone1", result.UPhone);
-//        }
+            //Act
+            controller.DeleteUser(new Guid());
 
-//        [Test]
-//        public void TestUserController_GetUser_UserNotFound_ShouldThrowException()
-//        {
-//            //Arrange
-//            var controller = new UserController(context.Object, user.Object, mapper.Object);
-//            user.Setup(x => x.UID).Returns(223);
-
-//            //Act
-//            //Assert
-//            Assert.Throws<Exception>(() => controller.GetUser());
-//        }
-
-//        [Test]
-//        public void TestTasksController_GetUser_ShouldReturnUser()
-//        {
-//            //Arrange
-//            var controller = new UserController(context.Object, user.Object, mapper.Object);
-
-//            //Act
-//            var result = controller.GetUser();
-
-//            //Assert
-//            ClassicAssert.AreEqual("UFirstName1", result.UFirstName);
-//            ClassicAssert.AreEqual("ULastName1", result.ULastName);
-//            ClassicAssert.AreEqual("UUserName1", result.UUserName);
-//            ClassicAssert.AreEqual("UEmail1", result.UEmail);
-//            ClassicAssert.AreEqual("UPhone1", result.UPhone);
-//        }
-
-//        //Post
-//        [Test]
-//        public void TestUserController_SaveUser_UserNotFound_ShouldThrowException()
-//        {
-//            //Arrange
-//            var controller = new UserController(context.Object, user.Object, mapper.Object);
-//            user.Setup(x => x.UID).Returns(22);
-
-//            //Act
-//            //Assert
-//            Assert.Throws<Exception>(() => controller.SaveUser(new UserViewModel()));
-//        }
-
-//        [Test]
-//        public void TestTasksController_SaveUser_UserIsFound_ShouldModifyUser()
-//        {
-//            //Arrange
-//            var controller = new UserController(context.Object, user.Object, mapper.Object);
-
-//            var model = new UserViewModel()
-//            {
-//                UFirstName = "UFirstName3",
-//                ULastName = "ULastName3",
-//                UUserName = "UUserName3",
-//                UEmail = "UEmail3",
-//                UPhone = "UPhone3",
-//            };
-
-//            //Act
-//            controller.SaveUser(model);
-
-//            //Assert
-//            ClassicAssert.AreEqual(2, users?.Count);
-//            ClassicAssert.AreEqual("UFirstName3", users?[0].UFirstName);
-//            ClassicAssert.AreEqual("ULastName3", users?[0].ULastName);
-//            ClassicAssert.AreEqual("UUserName3", users?[0].UUserName);
-//            ClassicAssert.AreEqual("UEmail3", users?[0].UEmail);
-//            ClassicAssert.AreEqual("UPhone3", users?[0].UPhone);
-//        }
-
-//        [Test]
-//        public void TestUserController_SaveUserByAdmin_UserNotFound_ShouldThrowException()
-//        {
-//            //Arrange
-//            var controller = new UserController(context.Object, user.Object, mapper.Object);
-
-//            //Act
-//            //Assert
-//            Assert.Throws<Exception>(() => controller.SaveUserByAdmin(new UserAdminViewModel()));
-//        }
-
-//        [Test]
-//        public void TestTasksController_SaveUserByAdmin_UserIsFound_ShouldModifyUser()
-//        {
-//            //Arrange
-//            var controller = new UserController(context.Object, user.Object, mapper.Object);
-
-//            var model = new UserAdminViewModel()
-//            {
-//                UGID = new Guid("b189857a-bf45-4c25-9644-f2408351d328"),
-//                URID = 1,
-//                UFirstName = "UFirstName3",
-//                ULastName = "ULastName3",
-//                UUserName = "UUserName3",
-//                UEmail = "UEmail3",
-//                UPhone = "UPhone3",
-//            };
-
-//            //Act
-//            controller.SaveUserByAdmin(model);
-
-//            //Assert
-//            ClassicAssert.AreEqual(2, users?.Count);
-//            ClassicAssert.AreEqual(1, users?[0].URID);
-//            ClassicAssert.AreEqual("UFirstName3", users?[0].UFirstName);
-//            ClassicAssert.AreEqual("ULastName3", users?[0].ULastName);
-//            ClassicAssert.AreEqual("UUserName3", users?[0].UUserName);
-//            ClassicAssert.AreEqual("UEmail3", users?[0].UEmail);
-//            ClassicAssert.AreEqual("UPhone3", users?[0].UPhone);
-//        }
-//    }
-//}
+            //Assert
+            dispatcher.Verify(x => x.DispatchCommand(It.IsAny<DeleteUserCommand>()), Times.Once);
+        }
+    }
+}

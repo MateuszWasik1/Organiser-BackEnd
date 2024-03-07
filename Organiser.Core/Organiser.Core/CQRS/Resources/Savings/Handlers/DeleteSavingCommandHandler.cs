@@ -1,7 +1,6 @@
 ﻿using Organiser.Core.CQRS.Resources.Savings.Commands;
 using Organiser.Cores.Context;
 using Organiser.CQRS.Abstraction.Commands;
-using System.ComponentModel.Design;
 
 namespace Organiser.Core.CQRS.Resources.Savings.Handlers
 {

@@ -21,9 +21,4 @@
     <ProjectReference Include="..\Organiser.Core\Organiser.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="CommandHandlers\" />
-    <Folder Include="QueryHandler\" />
-  </ItemGroup>
-
 </Project>

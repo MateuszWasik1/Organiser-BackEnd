@@ -2,7 +2,6 @@
 using Microsoft.IdentityModel.Tokens;
 using Organiser.Core.CQRS.Resources.Accounts.Queries;
 using Organiser.Cores.Context;
-using Organiser.Cores.Entities;
 using Organiser.Cores;
 using Organiser.Cores.Models.ViewModels.AccountsViewModel;
 using Organiser.CQRS.Abstraction.Queries;
