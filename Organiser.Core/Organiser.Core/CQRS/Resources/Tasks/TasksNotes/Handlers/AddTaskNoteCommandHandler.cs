@@ -17,6 +17,11 @@ namespace Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Handlers
 
         public void Handle(AddTaskNoteCommand command)
         {
+            var task = context.Tasks.FirstOrDefault(x => x.TGID == command.Model.TNTGID);
+
+            if (task == null)
+                throw new Exception("Nie znaleziono zadania! Nie udało się dodać notatki do zadania");
+
             var taskNote = new Cores.Entities.TasksNotes()
             {
                 TNGID = command.Model.TNGID,
