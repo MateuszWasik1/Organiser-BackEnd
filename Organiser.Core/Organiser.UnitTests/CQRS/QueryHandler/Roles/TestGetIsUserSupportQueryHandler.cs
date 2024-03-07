@@ -15,7 +15,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Roles
         private Mock<IDataBaseContext> context;
         private Mock<IUserContext> user;
 
-        private List<User> users;
+        private List<Cores.Entities.User> users;
 
         [SetUp]
         public void SetUp()
@@ -23,19 +23,19 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Roles
             context = new Mock<IDataBaseContext>();
             user = new Mock<IUserContext>();
 
-            users = new List<User>()
+            users = new List<Cores.Entities.User>()
             {
-                new User()
+                new Cores.Entities.User()
                 {
                     UID = 1,
                     URID = 1,
                 },
-                new User()
+                new Cores.Entities.User()
                 {
                     UID = 2,
                     URID = 2,
                 },
-                new User()
+                new Cores.Entities.User()
                 {
                     UID = 3,
                     URID = 3,

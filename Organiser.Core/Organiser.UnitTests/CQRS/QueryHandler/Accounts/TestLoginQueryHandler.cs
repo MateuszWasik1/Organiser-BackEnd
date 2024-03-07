@@ -6,7 +6,6 @@ using Organiser.Core.CQRS.Resources.Accounts.Handlers;
 using Organiser.Core.CQRS.Resources.Accounts.Queries;
 using Organiser.Cores;
 using Organiser.Cores.Context;
-using Organiser.Cores.Entities;
 
 namespace Organiser.UnitTests.CQRS.QueryHandler.Accounts
 {
@@ -14,21 +13,21 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Accounts
     public class TestLoginQueryHandler
     {
         private Mock<IDataBaseContext> context;
-        private Mock<IPasswordHasher<User>> hasher;
+        private Mock<IPasswordHasher<Cores.Entities.User>> hasher;
         private AuthenticationSettings authenticationSettings;
 
-        private List<User> users;
+        private List<Cores.Entities.User> users;
 
         [SetUp]
         public void SetUp()
         {
             context = new Mock<IDataBaseContext>();
-            hasher = new Mock<IPasswordHasher<User>>();
+            hasher = new Mock<IPasswordHasher<Cores.Entities.User>>();
             authenticationSettings = new AuthenticationSettings();
 
-            users = new List<User>()
+            users = new List<Cores.Entities.User>()
             {
-                new User()
+                new Cores.Entities.User()
                 {
                     UID = 1,
                     UGID = new Guid("30dd879c-ee2f-11db-8314-0800200c9a66"),
@@ -49,7 +48,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Accounts
 
             context.Setup(x => x.AllUsers).Returns(users.AsQueryable());
 
-            hasher.Setup(x => x.VerifyHashedPassword(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<string>())).Returns(PasswordVerificationResult.Failed);
+            hasher.Setup(x => x.VerifyHashedPassword(It.IsAny<Cores.Entities.User>(), It.IsAny<string>(), It.IsAny<string>())).Returns(PasswordVerificationResult.Failed);
 
         }
 
@@ -81,7 +80,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Accounts
         public void TestLoginQueryHandler_UserNameAndPasswordCorrect_ShouldReturnJWTToken()
         {
             //Arrange 
-            hasher.Setup(x => x.VerifyHashedPassword(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<string>())).Returns(PasswordVerificationResult.Success);
+            hasher.Setup(x => x.VerifyHashedPassword(It.IsAny<Cores.Entities.User>(), It.IsAny<string>(), It.IsAny<string>())).Returns(PasswordVerificationResult.Success);
 
             var query = new LoginQuery() { Username = users[0].UUserName, Password = users[0].UPassword };
             var handler = new LoginQueryHandler(context.Object, hasher.Object, authenticationSettings);

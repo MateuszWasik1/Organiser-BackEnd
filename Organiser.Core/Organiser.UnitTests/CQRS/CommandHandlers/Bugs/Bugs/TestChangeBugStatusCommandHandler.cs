@@ -21,7 +21,7 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Bugs.Bugs
 
         public List<Cores.Entities.Bugs> bugs;
         public List<Cores.Entities.BugsNotes> bugsNotes;
-        public List<User> users;
+        public List<Cores.Entities.User> users;
 
         [SetUp]
         public void SetUp()
@@ -46,9 +46,9 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Bugs.Bugs
 
             bugsNotes = new List<Cores.Entities.BugsNotes>();
 
-            users = new List<User>()
+            users = new List<Cores.Entities.User>()
             {
-                new User()
+                new Cores.Entities.User()
                 {
                     UID = 1,
                     UFirstName = "FirstName",

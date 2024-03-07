@@ -15,21 +15,21 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Accounts
     public class TestRegisterUserCommandHandler
     {
         private Mock<IDataBaseContext> context;
-        private Mock<IPasswordHasher<User>> hasher;
+        private Mock<IPasswordHasher<Cores.Entities.User>> hasher;
         private Mock<IEmailSender> emailSender;
 
-        private List<User> users;
+        private List<Cores.Entities.User> users;
 
         [SetUp]
         public void SetUp()
         {
             context = new Mock<IDataBaseContext>();
-            hasher = new Mock<IPasswordHasher<User>>();
+            hasher = new Mock<IPasswordHasher<Cores.Entities.User>>();
             emailSender = new Mock<IEmailSender>();
 
-            users = new List<User>()
+            users = new List<Cores.Entities.User>()
             {
-                new User()
+                new Cores.Entities.User()
                 {
                     UID = 1,
                     UGID = new Guid("30dd879c-ee2f-11db-8314-0800200c9a66"),
@@ -43,9 +43,9 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Accounts
 
             context.Setup(x => x.AllUsers).Returns(users.AsQueryable());
 
-            hasher.Setup(x => x.HashPassword(It.IsAny<User>(), It.IsAny<string>())).Returns("HashedPassword");
+            hasher.Setup(x => x.HashPassword(It.IsAny<Cores.Entities.User>(), It.IsAny<string>())).Returns("HashedPassword");
 
-            context.Setup(x => x.CreateOrUpdate(It.IsAny<User>())).Callback<User>(user => users.Add(user));
+            context.Setup(x => x.CreateOrUpdate(It.IsAny<Cores.Entities.User>())).Callback<Cores.Entities.User>(user => users.Add(user));
         }
 
         [Test]

@@ -16,10 +16,10 @@ namespace Organiser.Core.CQRS.Resources.User.Handlers
             if (deletedUser == null)
                 throw new Exception("Nie znaleziono użytkownika!");
 
-            var categories = context.AllCategories.Where(x => x.CUID == deletedUser.UID);
-            var tasks = context.AllTasks.Where(x => x.TUID == deletedUser.UID);
-            var taskNotes = context.AllTasksNotes.Where(x => x.TNUID == deletedUser.UID);
-            var savings = context.AllSavings.Where(x => x.SUID == deletedUser.UID);
+            var categories = context.AllCategories.Where(x => x.CUID == deletedUser.UID).ToList();
+            var tasks = context.AllTasks.Where(x => x.TUID == deletedUser.UID).ToList();
+            var taskNotes = context.AllTasksNotes.Where(x => x.TNUID == deletedUser.UID).ToList();
+            var savings = context.AllSavings.Where(x => x.SUID == deletedUser.UID).ToList();
 
             foreach (var category in categories)
                 context.DeleteCategory(category);

@@ -6,7 +6,6 @@ using Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Handlers;
 using Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Queries;
 using Organiser.Core.Models.ViewModels.BugsViewModels;
 using Organiser.Cores.Context;
-using Organiser.Cores.Entities;
 using Organiser.Cores.Models.Enums;
 using Organiser.Cores.Services;
 
@@ -22,7 +21,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.BugsNotes
         public List<Cores.Entities.Bugs> bugs;
         public List<Cores.Entities.BugsNotes> bugsNotes;
         public List<Cores.Entities.BugsNotes> allBugsNotes;
-        public List<User> users;
+        public List<Cores.Entities.User> users;
 
         public List<BugsNotesViewModel> bugsNotesViewModel;
 
@@ -93,21 +92,21 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.BugsNotes
                 }
             };
 
-            users = new List<User>()
+            users = new List<Cores.Entities.User>()
             {
-                new User()
+                new Cores.Entities.User()
                 {
                     UID = 1,
                     UGID = new Guid("00dd879c-ee2f-11db-8314-0800200c9a66"),
                     URID = 1
                 },
-                new User()
+                new Cores.Entities.User()
                 {
                     UID = 2,
                     UGID = new Guid("01dd879c-ee2f-11db-8314-0800200c9a66"),
                     URID = 2
                 },
-                new User()
+                new Cores.Entities.User()
                 {
                     UID = 3,
                     UGID = new Guid("02dd879c-ee2f-11db-8314-0800200c9a66"),
