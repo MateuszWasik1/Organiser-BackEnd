@@ -215,12 +215,32 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
 
         [TestCase(2)]
         [TestCase(3)]
+        public void TestGetBugsQueryHandler_UserIsAdminOrSupport_BugType_Is_New_ShouldReturnNewBugs(int userRole)
+        {
+            //Arrange
+            user.Setup(x => x.UID).Returns(userRole);
+
+            var query = new GetBugsQuery() { BugType = BugTypeEnum.New };
+            var handler = new GetBugsQueryHandler(context.Object, user.Object, mapper.Object);
+
+            //Act
+            var result = handler.Handle(query);
+
+            //Assert
+            ClassicAssert.AreEqual(2, bugsViewModel.Count);
+
+            ClassicAssert.AreEqual(1, bugsViewModel[0].BID);
+            ClassicAssert.AreEqual(4, bugsViewModel[1].BID);
+        }
+
+        [TestCase(2)]
+        [TestCase(3)]
         public void TestGetBugsQueryHandler_UserIsAdminOrSupport_BugType_Is_Unknown_ShouldReturnAllBugs(int userRole)
         {
             //Arrange
             user.Setup(x => x.UID).Returns(userRole);
 
-            var query = new GetBugsQuery() { BugType = (BugTypeEnum) 3 };
+            var query = new GetBugsQuery() { BugType = (BugTypeEnum) 4 };
             var handler = new GetBugsQueryHandler(context.Object, user.Object, mapper.Object);
 
             //Act
