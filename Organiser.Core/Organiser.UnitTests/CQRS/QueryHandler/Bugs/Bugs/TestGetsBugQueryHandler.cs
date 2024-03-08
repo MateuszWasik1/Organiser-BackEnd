@@ -235,12 +235,29 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
 
         [TestCase(2)]
         [TestCase(3)]
+        public void TestGetBugsQueryHandler_UserIsAdminOrSupport_BugType_Is_All_ShouldReturnAllBugs(int userRole)
+        {
+            //Arrange
+            user.Setup(x => x.UID).Returns(userRole);
+
+            var query = new GetBugsQuery() { BugType = BugTypeEnum.All };
+            var handler = new GetBugsQueryHandler(context.Object, user.Object, mapper.Object);
+
+            //Act
+            var result = handler.Handle(query);
+
+            //Assert
+            ClassicAssert.AreEqual(allBugs.Count, bugsViewModel.Count);
+        }
+
+        [TestCase(2)]
+        [TestCase(3)]
         public void TestGetBugsQueryHandler_UserIsAdminOrSupport_BugType_Is_Unknown_ShouldReturnAllBugs(int userRole)
         {
             //Arrange
             user.Setup(x => x.UID).Returns(userRole);
 
-            var query = new GetBugsQuery() { BugType = (BugTypeEnum) 4 };
+            var query = new GetBugsQuery() { BugType = (BugTypeEnum) 5 };
             var handler = new GetBugsQueryHandler(context.Object, user.Object, mapper.Object);
 
             //Act
