@@ -36,6 +36,12 @@ namespace Organiser.Core.CQRS.Resources.Bugs.Bugs.Handlers
                 else if (query.BugType == BugTypeEnum.Closed)
                     bugs = context.AllBugs.Where(x => x.BStatus == BugStatusEnum.Rejected || x.BStatus == BugStatusEnum.Fixed).OrderBy(x => x.BDate).ToList();
 
+                else if(query.BugType == BugTypeEnum.New)
+                    bugs = context.AllBugs.Where(x => x.BStatus == BugStatusEnum.New).OrderBy(x => x.BDate).ToList();
+
+                else if(query.BugType == BugTypeEnum.All)
+                    bugs = context.AllBugs.OrderBy(x => x.BDate).ToList();
+
                 else
                     bugs = context.AllBugs.OrderBy(x => x.BDate).ToList();
             }
