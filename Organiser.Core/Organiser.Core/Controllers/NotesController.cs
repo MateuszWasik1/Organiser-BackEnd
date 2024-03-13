@@ -1,12 +1,15 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Organiser.Core.CQRS.Dispatcher;
+using Organiser.Core.CQRS.Resources.Notes.Commands;
+using Organiser.Core.CQRS.Resources.Notes.Queries;
 using Organiser.Core.Models.ViewModels.NotesViewModels;
 
 namespace Organiser.Cores.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class NotesController : ControllerBase
     {
         private readonly IDispatcher dispatcher;
@@ -30,6 +33,6 @@ namespace Organiser.Cores.Controllers
         [HttpPut]
         [Route("DeleteNote")]
         public void DeleteNote(Guid ngid)
-            => dispatcher.DispatchCommand(new DeleteCommand() { Model = model });
+            => dispatcher.DispatchCommand(new DeleteNoteCommand() { NGID = ngid });
     }
 }
