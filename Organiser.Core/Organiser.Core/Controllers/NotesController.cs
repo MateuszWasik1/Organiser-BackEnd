@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using Organiser.Core.CQRS.Dispatcher;
+using Organiser.Core.Models.ViewModels.NotesViewModels;
 
 namespace Organiser.Cores.Controllers
 {
@@ -13,17 +14,17 @@ namespace Organiser.Cores.Controllers
 
         [HttpGet]
         [Route("GetNotes")]
-        public string GetNotes()
-            => dispatcher.DispatchQuery<GetNotesQuery, string>(new GetNotesQuery());
+        public List<NotesViewModel> GetNotes()
+            => dispatcher.DispatchQuery<GetNotesQuery, List<NotesViewModel>>(new GetNotesQuery());
 
         [HttpPost]
         [Route("AddNote")]
-        public void AddNote(NoteViewModel model)
+        public void AddNote(NotesAddViewModel model)
             => dispatcher.DispatchCommand(new AddNoteCommand() { Model = model });
         
         [HttpPut]
         [Route("UpdateNote")]
-        public void UpdateNote(NoteViewModel model)
+        public void UpdateNote(NotesAddViewModel model)
             => dispatcher.DispatchCommand(new UpdateNoteCommand() { Model = model });
 
         [HttpPut]
