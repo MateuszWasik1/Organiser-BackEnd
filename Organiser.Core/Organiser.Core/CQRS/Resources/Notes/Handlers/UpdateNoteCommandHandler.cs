@@ -4,12 +4,12 @@ using Organiser.CQRS.Abstraction.Commands;
 
 namespace Organiser.Core.CQRS.Resources.Notes.Handlers
 {
-    public class UpdateNoteCommand : ICommandHandler<AddNoteCommand>
+    public class UpdateNoteCommandHandler : ICommandHandler<UpdateNoteCommand>
     {
         private readonly IDataBaseContext context;
-        public UpdateNoteCommand(IDataBaseContext context) => this.context = context;
+        public UpdateNoteCommandHandler(IDataBaseContext context) => this.context = context;
 
-        public void Handle(AddNoteCommand command)
+        public void Handle(UpdateNoteCommand command)
         {
             var note = context.Notes.FirstOrDefault(x => x.NGID == command.Model.NGID);
 

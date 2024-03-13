@@ -4,14 +4,14 @@ using Organiser.CQRS.Abstraction.Commands;
 
 namespace Organiser.Core.CQRS.Resources.Notes.Handlers
 {
-    public class DeleteNoteCommand : ICommandHandler<AddNoteCommand>
+    public class DeleteNoteCommandHandler : ICommandHandler<DeleteNoteCommand>
     {
         private readonly IDataBaseContext context;
-        public DeleteNoteCommand(IDataBaseContext context) => this.context = context;
+        public DeleteNoteCommandHandler(IDataBaseContext context) => this.context = context;
 
-        public void Handle(AddNoteCommand command)
+        public void Handle(DeleteNoteCommand command)
         {
-            var note = context.Notes.FirstOrDefault(x => x.NGID == command.Model.NGID);
+            var note = context.Notes.FirstOrDefault(x => x.NGID == command.NGID);
 
             if (note == null)
                 throw new Exception("Nie udało się znaleźć podanej notatki. Notatka nie zostanie usunięta");
