@@ -82,3 +82,13 @@ CREATE TABLE BugsNotes (
 	BNIsStatusChange BIT NOT NULL,
 	BNChangedStatus INT NOT NULL,
 );
+
+CREATE TABLE Notes (
+	NID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	NGID uniqueidentifier NOT NULL,
+	NUID INT NOT NULL,
+	NDate DATETIME2 NOT NULL,
+	NModificationDate DATETIME2 NOT NULL,
+	NTitle nvarchar(200) NOT NULL,
+	NTxt nvarchar(4000) NOT NULL,
+)
