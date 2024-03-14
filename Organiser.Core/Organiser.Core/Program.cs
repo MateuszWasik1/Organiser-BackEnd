@@ -159,6 +159,7 @@ builder.Services.AddScoped<ICommandHandler<SaveUserByAdminCommand>, SaveUserByAd
 builder.Services.AddScoped<ICommandHandler<DeleteUserCommand>, DeleteUserCommandHandler>();
 
 //Notes
+builder.Services.AddScoped<IQueryHandler<GetNoteQuery, NotesViewModel>, GetNoteQueryHandler>();
 builder.Services.AddScoped<IQueryHandler<GetNotesQuery, List<NotesViewModel>>, GetNotesQueryHandler>();
 
 builder.Services.AddScoped<ICommandHandler<AddNoteCommand>, AddNoteCommandHandler>();

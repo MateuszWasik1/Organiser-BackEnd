@@ -16,6 +16,11 @@ namespace Organiser.Cores.Controllers
         public NotesController(IDispatcher dispatcher) => this.dispatcher = dispatcher;
 
         [HttpGet]
+        [Route("GetNote")]
+        public NotesViewModel GetNote(Guid ngid)
+            => dispatcher.DispatchQuery<GetNoteQuery, NotesViewModel>(new GetNoteQuery() { NGID = ngid });
+
+        [HttpGet]
         [Route("GetNotes")]
         public List<NotesViewModel> GetNotes()
             => dispatcher.DispatchQuery<GetNotesQuery, List<NotesViewModel>>(new GetNotesQuery());
