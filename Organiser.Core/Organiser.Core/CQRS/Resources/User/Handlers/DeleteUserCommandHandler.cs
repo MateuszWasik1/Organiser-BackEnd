@@ -20,6 +20,7 @@ namespace Organiser.Core.CQRS.Resources.User.Handlers
             var tasks = context.AllTasks.Where(x => x.TUID == deletedUser.UID).ToList();
             var taskNotes = context.AllTasksNotes.Where(x => x.TNUID == deletedUser.UID).ToList();
             var savings = context.AllSavings.Where(x => x.SUID == deletedUser.UID).ToList();
+            var notes = context.AllNotes.Where(x => x.NUID == deletedUser.UID).ToList();
 
             foreach (var category in categories)
                 context.DeleteCategory(category);
@@ -32,6 +33,9 @@ namespace Organiser.Core.CQRS.Resources.User.Handlers
 
             foreach (var saving in savings)
                 context.DeleteSaving(saving);
+
+            foreach (var note in notes)
+                context.DeleteNote(note);
 
             context.DeleteUser(deletedUser);
             context.SaveChanges();

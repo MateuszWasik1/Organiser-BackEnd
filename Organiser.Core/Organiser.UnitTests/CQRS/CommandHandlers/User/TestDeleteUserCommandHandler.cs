@@ -17,6 +17,7 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.User
         private List<Cores.Entities.Tasks>? tasks;
         private List<Cores.Entities.TasksNotes>? tasksNotes;
         private List<Cores.Entities.Savings>? savings;
+        private List<Cores.Entities.Notes>? notes;
 
         [SetUp]
         public void SetUp()
@@ -125,17 +126,41 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.User
                 },
             };
 
+            notes = new List<Cores.Entities.Notes>()
+            {
+                new Cores.Entities.Notes()
+                {
+                    NID = 1,
+                    NGID = new Guid("12dacc1d-7bee-4635-9c4c-9404a4af80dd"),
+                    NUID = 1,
+                },
+                new Cores.Entities.Notes()
+                {
+                    NID = 2,
+                    NGID = new Guid("13dacc1d-7bee-4635-9c4c-9404a4af80dd"),
+                    NUID = 1,
+                },
+                new Cores.Entities.Notes()
+                {
+                    NID = 3,
+                    NGID = new Guid("14dacc1d-7bee-4635-9c4c-9404a4af80dd"),
+                    NUID = 66,
+                },
+            };
+
             context.Setup(x => x.AllUsers).Returns(users.AsQueryable());
             context.Setup(x => x.AllCategories).Returns(categories.AsQueryable());
             context.Setup(x => x.AllTasks).Returns(tasks.AsQueryable());
             context.Setup(x => x.AllTasksNotes).Returns(tasksNotes.AsQueryable());
             context.Setup(x => x.AllSavings).Returns(savings.AsQueryable());
+            context.Setup(x => x.AllNotes).Returns(notes.AsQueryable());
 
             context.Setup(x => x.DeleteUser(It.IsAny<Cores.Entities.User>())).Callback<Cores.Entities.User>(user => users.Remove(user));
             context.Setup(x => x.DeleteCategory(It.IsAny<Cores.Entities.Categories>())).Callback<Cores.Entities.Categories>(category => categories.Remove(category));
             context.Setup(x => x.DeleteTask(It.IsAny<Cores.Entities.Tasks>())).Callback<Cores.Entities.Tasks>(task => tasks.Remove(task));
             context.Setup(x => x.DeleteTaskNotes(It.IsAny<Cores.Entities.TasksNotes>())).Callback<Cores.Entities.TasksNotes>(taskNote => tasksNotes.Remove(taskNote));
             context.Setup(x => x.DeleteSaving(It.IsAny<Cores.Entities.Savings>())).Callback<Cores.Entities.Savings>(saving => savings.Remove(saving));
+            context.Setup(x => x.DeleteNote(It.IsAny<Cores.Entities.Notes>())).Callback<Cores.Entities.Notes>(note => notes.Remove(note));
         }
 
         [Test]
@@ -166,12 +191,14 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.User
             ClassicAssert.AreEqual(1, tasks.Count);
             ClassicAssert.AreEqual(1, tasksNotes.Count);
             ClassicAssert.AreEqual(1, savings.Count);
+            ClassicAssert.AreEqual(1, notes.Count);
 
             context.Verify(x => x.DeleteUser(It.IsAny<Cores.Entities.User>()), Times.Once);
             context.Verify(x => x.DeleteCategory(It.IsAny<Cores.Entities.Categories>()), Times.Exactly(2));
             context.Verify(x => x.DeleteTask(It.IsAny<Cores.Entities.Tasks>()), Times.Exactly(2));
             context.Verify(x => x.DeleteTaskNotes(It.IsAny<Cores.Entities.TasksNotes>()), Times.Exactly(2));
             context.Verify(x => x.DeleteSaving(It.IsAny<Cores.Entities.Savings>()), Times.Exactly(2));
+            context.Verify(x => x.DeleteNote(It.IsAny<Cores.Entities.Notes>()), Times.Exactly(2));
         }
     }
 }
