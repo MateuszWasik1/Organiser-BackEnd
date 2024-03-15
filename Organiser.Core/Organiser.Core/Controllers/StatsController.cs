@@ -28,5 +28,10 @@ namespace Organiser.Cores.Controllers
         [Route("GetMoneySpendedForCategoryBarChart")]
         public StatsBarChartViewModel GetMoneySpendedForCategoryBarChart(DateTime startDate, DateTime endDate, Guid cGID)
             => dispatcher.DispatchQuery<GetMoneySpendedForCategoryBarChartQuery, StatsBarChartViewModel>(new GetMoneySpendedForCategoryBarChartQuery() { StartDate = startDate, EndDate = endDate, CGID = cGID });
+
+        [HttpGet]
+        [Route("GetNotesBarChart")]
+        public StatsBarChartViewModel GetNotesBarChart(DateTime startDate, DateTime endDate)
+            => dispatcher.DispatchQuery<GetNotesBarChartQuery, StatsBarChartViewModel>(new GetNotesBarChartQuery() { StartDate = startDate, EndDate = endDate });
     }
 }

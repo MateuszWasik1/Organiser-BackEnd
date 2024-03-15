@@ -49,7 +49,7 @@ namespace Organiser.UnitTests.Controllers
             var controller = new NotesController(dispatcher.Object);
 
             //Act
-            controller.UpdateNote(new NotesAddViewModel());
+            controller.UpdateNote(new NotesUpdateViewModel());
 
             //Assert
             dispatcher.Verify(x => x.DispatchCommand(It.IsAny<UpdateNoteCommand>()), Times.Once);

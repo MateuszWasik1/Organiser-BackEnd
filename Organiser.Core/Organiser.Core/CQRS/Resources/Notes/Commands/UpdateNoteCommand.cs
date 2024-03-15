@@ -5,6 +5,6 @@ namespace Organiser.Core.CQRS.Resources.Notes.Commands
 {
     public class UpdateNoteCommand : ICommand
     {
-        public NotesAddViewModel Model { get; set; }
+        public NotesUpdateViewModel Model { get; set; }
     }
 }

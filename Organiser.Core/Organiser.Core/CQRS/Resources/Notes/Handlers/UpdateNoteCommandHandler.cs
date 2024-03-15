@@ -18,7 +18,7 @@ namespace Organiser.Core.CQRS.Resources.Notes.Handlers
 
             note.NTitle = command.Model.NTitle;
             note.NTxt = command.Model.NTxt;
-            note.NModificationDate = new DateTime();
+            note.NModificationDate = DateTime.Now;
 
             context.CreateOrUpdate(note);
             context.SaveChanges();

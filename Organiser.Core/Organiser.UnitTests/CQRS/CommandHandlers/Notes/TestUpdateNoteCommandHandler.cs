@@ -47,7 +47,7 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Notes
         public void TestUpdateNoteCommandHandler_UpdateNote_NoteNotFound_ShouldThrowException()
         {
             //Arrange
-            var model = new NotesAddViewModel()
+            var model = new NotesUpdateViewModel()
             {
                 NGID = new Guid(),
                 NTitle = "New Title",
@@ -66,7 +66,7 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Notes
         public void TestUpdateNoteCommandHandler_UpdateNote_NoteWasFound_ShouldUpdateNote()
         {
             //Arrange
-            var model = new NotesAddViewModel()
+            var model = new NotesUpdateViewModel()
             {
                 NGID = notes[0].NGID,
                 NTitle = "New Title",

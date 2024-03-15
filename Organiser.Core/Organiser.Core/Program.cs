@@ -136,6 +136,7 @@ builder.Services.AddScoped<ICommandHandler<DeleteSavingCommand>, DeleteSavingCom
 builder.Services.AddScoped<IQueryHandler<GetSavingBarChartQuery, StatsBarChartViewModel>, GetSavingBarChartQueryHandler>();
 builder.Services.AddScoped<IQueryHandler<GetMoneySpendedFromTaskBarChartQuery, StatsBarChartViewModel>, GetMoneySpendedFromTaskBarChartQueryHandler>();
 builder.Services.AddScoped<IQueryHandler<GetMoneySpendedForCategoryBarChartQuery, StatsBarChartViewModel>, GetMoneySpendedForCategoryBarChartQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetNotesBarChartQuery, StatsBarChartViewModel>, GetNotesBarChartQueryHandler>();
 
 //Tasks
 builder.Services.AddScoped<IQueryHandler<GetTasksQuery, List<TasksViewModel>>, GetTasksQueryHandler>();

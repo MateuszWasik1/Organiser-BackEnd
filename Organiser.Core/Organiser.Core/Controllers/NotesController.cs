@@ -32,11 +32,11 @@ namespace Organiser.Cores.Controllers
         
         [HttpPut]
         [Route("UpdateNote")]
-        public void UpdateNote(NotesAddViewModel model)
+        public void UpdateNote(NotesUpdateViewModel model)
             => dispatcher.DispatchCommand(new UpdateNoteCommand() { Model = model });
 
-        [HttpPut]
-        [Route("DeleteNote")]
+        [HttpDelete]
+        [Route("DeleteNote/{ngid}")]
         public void DeleteNote(Guid ngid)
             => dispatcher.DispatchCommand(new DeleteNoteCommand() { NGID = ngid });
     }

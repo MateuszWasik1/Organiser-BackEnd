@@ -20,9 +20,9 @@ namespace Organiser.Core.CQRS.Resources.Notes.Handlers
             var note = new Cores.Entities.Notes()
             {
                 NUID = user.UID,
-                NGID = command.Model.NGID,
-                NDate = new DateTime(),
-                NModificationDate = new DateTime(),
+                NGID = Guid.NewGuid(),
+                NDate = DateTime.Now,
+                NModificationDate = DateTime.Now,
                 NTitle = command.Model.NTitle,
                 NTxt = command.Model.NTxt,
             };
