@@ -112,6 +112,19 @@ namespace Organiser.Cores.Context
         public void DeleteBugNote(BugsNotes bugNote) => dataContext.BugsNotes.Remove(bugNote);
         #endregion
 
+        #region Notes
+        public IQueryable<Notes> Notes => dataContext.Notes.Where(x => x.NUID == user.UID);
+        public IQueryable<Notes> AllNotes => dataContext.Notes;
+        public void CreateOrUpdate(Notes note)
+        {
+            if (note.NID == default)
+                dataContext.Notes.Add(note);
+            else
+                dataContext.Entry(note).State = EntityState.Modified;
+        }
+        public void DeleteNote(Notes note) => dataContext.Notes.Remove(note);
+        #endregion
+
         public void SaveChanges() => dataContext.SaveChanges();
         public void Dispose() => dataContext.Dispose();
     }

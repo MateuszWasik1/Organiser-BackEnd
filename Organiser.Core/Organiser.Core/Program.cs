@@ -12,6 +12,9 @@ using Organiser.Core.CQRS.Resources.Bugs.Bugs.Queries;
 using Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Commands;
 using Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Handlers;
 using Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Queries;
+using Organiser.Core.CQRS.Resources.Notes.Commands;
+using Organiser.Core.CQRS.Resources.Notes.Handlers;
+using Organiser.Core.CQRS.Resources.Notes.Queries;
 using Organiser.Core.CQRS.Resources.Roles.Handlers;
 using Organiser.Core.CQRS.Resources.Roles.Queries;
 using Organiser.Core.CQRS.Resources.Savings.Commands;
@@ -29,6 +32,7 @@ using Organiser.Core.CQRS.Resources.User.Commands;
 using Organiser.Core.CQRS.Resources.User.Handlers;
 using Organiser.Core.CQRS.Resources.User.Queries;
 using Organiser.Core.Models.ViewModels.BugsViewModels;
+using Organiser.Core.Models.ViewModels.NotesViewModels;
 using Organiser.Cores;
 using Organiser.Cores.Context;
 using Organiser.Cores.Entities;
@@ -132,6 +136,7 @@ builder.Services.AddScoped<ICommandHandler<DeleteSavingCommand>, DeleteSavingCom
 builder.Services.AddScoped<IQueryHandler<GetSavingBarChartQuery, StatsBarChartViewModel>, GetSavingBarChartQueryHandler>();
 builder.Services.AddScoped<IQueryHandler<GetMoneySpendedFromTaskBarChartQuery, StatsBarChartViewModel>, GetMoneySpendedFromTaskBarChartQueryHandler>();
 builder.Services.AddScoped<IQueryHandler<GetMoneySpendedForCategoryBarChartQuery, StatsBarChartViewModel>, GetMoneySpendedForCategoryBarChartQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetNotesBarChartQuery, StatsBarChartViewModel>, GetNotesBarChartQueryHandler>();
 
 //Tasks
 builder.Services.AddScoped<IQueryHandler<GetTasksQuery, List<TasksViewModel>>, GetTasksQueryHandler>();
@@ -153,6 +158,14 @@ builder.Services.AddScoped<IQueryHandler<GetUserQuery, UserViewModel>, GetUserQu
 builder.Services.AddScoped<ICommandHandler<SaveUserCommand>, SaveUserCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<SaveUserByAdminCommand>, SaveUserByAdminCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<DeleteUserCommand>, DeleteUserCommandHandler>();
+
+//Notes
+builder.Services.AddScoped<IQueryHandler<GetNoteQuery, NotesViewModel>, GetNoteQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetNotesQuery, List<NotesViewModel>>, GetNotesQueryHandler>();
+
+builder.Services.AddScoped<ICommandHandler<AddNoteCommand>, AddNoteCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<UpdateNoteCommand>, UpdateNoteCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<DeleteNoteCommand>, DeleteNoteCommandHandler>();
 #endregion
 
 //EmailSender

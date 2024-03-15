@@ -59,6 +59,13 @@ namespace Organiser.Cores.Context
         void DeleteBugNote(BugsNotes bugNote);
         #endregion
 
+        #region Notes
+        IQueryable<Notes> Notes { get; }
+        IQueryable<Notes> AllNotes { get; }
+        void CreateOrUpdate(Notes note);
+        void DeleteNote(Notes note);
+        #endregion
+
         void SaveChanges();
     }
 }
