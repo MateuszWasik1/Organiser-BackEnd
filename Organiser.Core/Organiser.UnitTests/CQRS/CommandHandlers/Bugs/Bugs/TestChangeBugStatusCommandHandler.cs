@@ -174,6 +174,7 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Bugs.Bugs
 
             ClassicAssert.AreEqual(2, bugsNotes.Count);
 
+            ClassicAssert.AreEqual(bugs[0].BGID, bugsNotes[0].BNBGID);
             ClassicAssert.AreEqual(true, bugsNotes[0].BNIsNewVerifier);
             ClassicAssert.AreEqual($"Nowym weryfikującym jest: {name} {surname} {ugid}", bugsNotes[0].BNText);
 

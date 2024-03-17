@@ -23,6 +23,7 @@ namespace Organiser.Core.CQRS.Resources.Bugs.Bugs.Handlers
         public List<BugsViewModel> Handle(GetBugsQuery query)
         {
             var bugs = new List<Cores.Entities.Bugs>();
+            var bugsViewModel = new List<BugsViewModel>();
             var currentUserRole = context.User.FirstOrDefault(x => x.UID == user.UID)?.URID ?? 1;
 
             if (currentUserRole == (int) RoleEnum.Admin || currentUserRole == (int) RoleEnum.Support)
@@ -44,23 +45,35 @@ namespace Organiser.Core.CQRS.Resources.Bugs.Bugs.Handlers
 
                 else
                     bugs = context.AllBugs.OrderBy(x => x.BDate).ToList();
+
+                var supportGIDs = bugs.Where(x => x.BAUIDS != null).SelectMany(x => x.BAUIDS?.Split(',')).Distinct().ToList();
+                var supportUsers = context.AllUsers.Where(x => supportGIDs.Contains(x.UGID.ToString())).Select(x => new { x.UFirstName, x.ULastName, x.UGID }).ToList();
+
+                bugs.ForEach(x =>
+                {
+                    var bVM = mapper.Map<Cores.Entities.Bugs, BugsViewModel>(x);
+
+                    if (x.BAUIDS != null)
+                    {
+                        var bugSupportUsers = supportUsers.Where(u => x.BAUIDS.Contains(u.UGID.ToString())).ToList();
+                        bugSupportUsers.ForEach(u => bVM.BVerifiers += $"{u.UFirstName} {u.ULastName} {u.UGID}");
+                    }
+
+                    bugsViewModel.Add(bVM);
+                });
             }
 
             else
+            {
                 bugs = context.Bugs.OrderBy(x => x.BDate).ToList();
 
-            var supportGIDs = bugs.Where(x => x.BAUIDS != null).SelectMany(x => x.BAUIDS?.Split(',')).Distinct().ToList();
-            var supportGIDs2 = bugs.Where(x => x.BAUIDS != null).Select(x => x.BAUIDS).ToList();
-            var supportGIDs3 = bugs.Select(x => x.BAUIDS).ToList();
+                bugs.ForEach(x =>
+                {
+                    var bVM = mapper.Map<Cores.Entities.Bugs, BugsViewModel>(x);
 
-            var bugsViewModel = new List<BugsViewModel>();
-
-            bugs.ForEach(x =>
-            {
-                var bVM = mapper.Map<Cores.Entities.Bugs, BugsViewModel>(x);
-
-                bugsViewModel.Add(bVM);
-            });
+                    bugsViewModel.Add(bVM);
+                });
+            }
 
             return bugsViewModel;
         }

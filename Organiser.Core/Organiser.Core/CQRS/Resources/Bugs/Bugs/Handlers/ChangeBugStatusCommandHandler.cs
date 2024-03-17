@@ -47,7 +47,7 @@ namespace Organiser.Core.CQRS.Resources.Bugs.Bugs.Handlers
                 var bugNoteIsVerifier = new Cores.Entities.BugsNotes()
                 {
                     BNGID = Guid.NewGuid(),
-                    BNBGID = Guid.NewGuid(),
+                    BNBGID = bug.BGID,
                     BNUID = user.UID,
                     BNDate = DateTime.Now,
                     BNText = $"Nowym weryfikującym jest: {currentUser?.UFirstName} {currentUser?.ULastName} {currentUser?.UGID}",

@@ -112,19 +112,25 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
                 {
                     UID = 1,
                     UGID = new Guid("00dd879c-ee2f-11db-8314-0800200c9a66"),
-                    URID = 1
+                    URID = 1,
+                    UFirstName = "First1",
+                    ULastName = "Last1",
                 },
                 new Cores.Entities.User()
                 {
                     UID = 2,
                     UGID = new Guid("01dd879c-ee2f-11db-8314-0800200c9a66"),
-                    URID = 2
+                    URID = 2,
+                    UFirstName = "First2",
+                    ULastName = "Last2",
                 },
                 new Cores.Entities.User()
                 {
                     UID = 3,
                     UGID = new Guid("02dd879c-ee2f-11db-8314-0800200c9a66"),
-                    URID = 3
+                    URID = 3,
+                    UFirstName = "First3",
+                    ULastName = "Last3",
                 },
             };
 
@@ -136,8 +142,8 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
 
             user.Setup(x => x.UID).Returns(1);
 
-            mapper.Setup(m => m.Map<Cores.Entities.Bugs, BugsViewModel>(It.IsAny<Cores.Entities.Bugs>())).
-                Callback<Cores.Entities.Bugs>((Cores.Entities.Bugs bug) =>
+            mapper.Setup(m => m.Map<Cores.Entities.Bugs, BugsViewModel>(It.IsAny<Cores.Entities.Bugs>()))
+                .Callback((Cores.Entities.Bugs bug) =>
                     bugsViewModel.Add(
                         new BugsViewModel()
                         {   
@@ -147,7 +153,19 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
                             BTitle = bug.BTitle,
                             BText = bug.BText,
                             BStatus = bug.BStatus,
-                            //BAUIDS = bug.BAUIDS,
+                            BDate = bug.BDate,
+                        }
+                    )
+                ).Returns((Cores.Entities.Bugs bug) =>
+                    bugsViewModel.Add(
+                        new BugsViewModel()
+                        {
+                            BID = bug.BID,
+                            BGID = bug.BGID,
+                            BUID = bug.BUID,
+                            BTitle = bug.BTitle,
+                            BText = bug.BText,
+                            BStatus = bug.BStatus,
                             BDate = bug.BDate,
                         }
                     )
@@ -191,6 +209,9 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
             ClassicAssert.AreEqual(1, result.Count);
 
             ClassicAssert.AreEqual(4, bugsViewModel[0].BID);
+
+            ClassicAssert.IsTrue(bugsViewModel.Any(x => x.BVerifiers.Contains($"{users[1].UFirstName} {users[1].ULastName} {users[1].UGID}")));
+            ClassicAssert.IsTrue(bugsViewModel.Any(x => x.BVerifiers.Contains($"{users[2].UFirstName} {users[2].ULastName} {users[2].UGID}")));
         }
 
         [TestCase(2)]
@@ -280,6 +301,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
             //Assert
             ClassicAssert.AreEqual(1, bugsViewModel.Count);
             ClassicAssert.AreEqual(1, bugsViewModel[0].BID);
+            ClassicAssert.AreEqual(null, bugsViewModel[0].BVerifiers);
         }
     }
 }
