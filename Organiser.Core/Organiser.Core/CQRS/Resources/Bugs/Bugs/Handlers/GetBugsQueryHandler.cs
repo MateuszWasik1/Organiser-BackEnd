@@ -56,7 +56,7 @@ namespace Organiser.Core.CQRS.Resources.Bugs.Bugs.Handlers
                     if (x.BAUIDS != null)
                     {
                         var bugSupportUsers = supportUsers.Where(u => x.BAUIDS.Contains(u.UGID.ToString())).ToList();
-                        bugSupportUsers.ForEach(u => bVM.BVerifiers += $"{u.UFirstName} {u.ULastName} {u.UGID}");
+                        bugSupportUsers.ForEach(u => bVM.BVerifiers += $"{u.UFirstName} {u.ULastName} {u.UGID} ");
                     }
 
                     bugsViewModel.Add(bVM);
