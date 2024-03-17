@@ -146,19 +146,6 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
                 .Callback((Cores.Entities.Bugs bug) =>
                     bugsViewModel.Add(
                         new BugsViewModel()
-                        {   
-                            BID = bug.BID,
-                            BGID = bug.BGID,
-                            BUID = bug.BUID,
-                            BTitle = bug.BTitle,
-                            BText = bug.BText,
-                            BStatus = bug.BStatus,
-                            BDate = bug.BDate,
-                        }
-                    )
-                ).Returns((Cores.Entities.Bugs bug) =>
-                    bugsViewModel.Add(
-                        new BugsViewModel()
                         {
                             BID = bug.BID,
                             BGID = bug.BGID,
@@ -209,9 +196,6 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
             ClassicAssert.AreEqual(1, result.Count);
 
             ClassicAssert.AreEqual(4, bugsViewModel[0].BID);
-
-            ClassicAssert.IsTrue(bugsViewModel.Any(x => x.BVerifiers.Contains($"{users[1].UFirstName} {users[1].ULastName} {users[1].UGID}")));
-            ClassicAssert.IsTrue(bugsViewModel.Any(x => x.BVerifiers.Contains($"{users[2].UFirstName} {users[2].ULastName} {users[2].UGID}")));
         }
 
         [TestCase(2)]
@@ -286,6 +270,43 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
 
             //Assert
             ClassicAssert.AreEqual(allBugs.Count, bugsViewModel.Count);
+        }
+
+        [TestCase(2, "01dd879c-ee2f-11db-8314-0800200c9a66")]
+        [TestCase(3, "02dd879c-ee2f-11db-8314-0800200c9a66")]
+        public void TestGetBugsQueryHandler_UserIsAdminOrSupport_BugType_Is_ImVerificator_ShouldReturnUserBugs_With_BVerifiers(int userRole, string userGid)
+        {
+            //Arrange
+            context.Setup(x => x.AllUsers).Returns(users.AsQueryable());
+
+            mapper.Setup(m => m.Map<Cores.Entities.Bugs, BugsViewModel>(It.IsAny<Cores.Entities.Bugs>()))
+                .Returns((Cores.Entities.Bugs bug) =>
+                    new BugsViewModel()
+                    {
+                        BID = bug.BID,
+                        BGID = bug.BGID,
+                        BUID = bug.BUID,
+                        BTitle = bug.BTitle,
+                        BText = bug.BText,
+                        BStatus = bug.BStatus,
+                        BDate = bug.BDate,
+                    }
+                );
+
+            user.Setup(x => x.UID).Returns(userRole);
+            user.Setup(x => x.UGID).Returns(userGid);
+
+            var query = new GetBugsQuery() { BugType = BugTypeEnum.ImVerificator };
+            var handler = new GetBugsQueryHandler(context.Object, user.Object, mapper.Object);
+
+            //Act
+            var result = handler.Handle(query);
+
+            //Assert
+            ClassicAssert.AreEqual(1, result.Count);
+
+            ClassicAssert.IsTrue(result.Any(x => x.BVerifiers.Contains($"{users[1].UFirstName} {users[1].ULastName} {users[1].UGID}")));
+            ClassicAssert.IsTrue(result.Any(x => x.BVerifiers.Contains($"{users[2].UFirstName} {users[2].ULastName} {users[2].UGID}")));
         }
 
         [Test]
