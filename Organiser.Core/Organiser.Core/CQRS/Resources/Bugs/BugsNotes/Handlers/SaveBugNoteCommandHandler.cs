@@ -34,14 +34,13 @@ namespace Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Handlers
             if (currentUser == null)
                 throw new Exception("Nie znaleziono użytkownika");
 
-            var bug = context.Bugs.FirstOrDefault(x => x.BGID == bugNote.BNBGID);
+            var bug = context.AllBugs.FirstOrDefault(x => x.BGID == bugNote.BNBGID);
 
             if (bug == null)
                 throw new Exception("Nie znaleziono wskazanego błędu!");
 
             var isUserVerifier = bug?.BAUIDS?.Contains(currentUser.UGID.ToString()) ?? false;
             var isUserSupportOrAdmin = (currentUser?.URID == (int)RoleEnum.Admin || currentUser?.URID == (int)RoleEnum.Support);
-
 
             if (!isUserVerifier && isUserSupportOrAdmin)
             {

@@ -1,5 +1,6 @@
 ﻿using Organiser.Core.CQRS.Resources.Bugs.Bugs.Commands;
 using Organiser.Cores.Context;
+using Organiser.Cores.Models.Enums;
 using Organiser.Cores.Models.Helpers;
 using Organiser.Cores.Services;
 using Organiser.CQRS.Abstraction.Commands;
@@ -18,7 +19,7 @@ namespace Organiser.Core.CQRS.Resources.Bugs.Bugs.Handlers
 
         public void Handle(ChangeBugStatusCommand command)
         {
-            var bug = context.Bugs.FirstOrDefault(x => x.BGID == command.Model.BGID);
+            var bug = context.AllBugs.FirstOrDefault(x => x.BGID == command.Model.BGID);
 
             if (bug == null)
                 throw new Exception("Nie udało się zaaktualizować statusu błędu!");
@@ -29,6 +30,32 @@ namespace Organiser.Core.CQRS.Resources.Bugs.Bugs.Handlers
 
             if (currentUser == null)
                 throw new Exception("Nie udało się odnaleźć użytkownika! Aktualizacja błędu się nie powiodła.");
+
+            var isUserVerifier = bug?.BAUIDS?.Contains(currentUser.UGID.ToString()) ?? false;
+            var isUserSupportOrAdmin = (currentUser?.URID == (int)RoleEnum.Admin || currentUser?.URID == (int)RoleEnum.Support);
+
+            if (!isUserVerifier && isUserSupportOrAdmin)
+            {
+
+                if (string.IsNullOrEmpty(bug?.BAUIDS))
+                    bug.BAUIDS = currentUser?.UGID.ToString();
+                else
+                    bug.BAUIDS = string.Join(",", bug.BAUIDS, currentUser?.UGID);
+
+                context.CreateOrUpdate(bug);
+
+                var bugNoteIsVerifier = new Cores.Entities.BugsNotes()
+                {
+                    BNGID = Guid.NewGuid(),
+                    BNBGID = Guid.NewGuid(),
+                    BNUID = user.UID,
+                    BNDate = DateTime.Now,
+                    BNText = $"Nowym weryfikującym jest: {currentUser?.UFirstName} {currentUser?.ULastName} {currentUser?.UGID}",
+                    BNIsNewVerifier = true,
+                    BNIsStatusChange = false,
+                };
+                context.CreateOrUpdate(bugNoteIsVerifier);
+            }
 
             var bugNote = new Cores.Entities.BugsNotes()
             {
@@ -41,6 +68,7 @@ namespace Organiser.Core.CQRS.Resources.Bugs.Bugs.Handlers
                 BNIsStatusChange = true,
                 BNChangedStatus = command.Model.Status,
             };
+
 
             context.CreateOrUpdate(bugNote);
             context.CreateOrUpdate(bug);

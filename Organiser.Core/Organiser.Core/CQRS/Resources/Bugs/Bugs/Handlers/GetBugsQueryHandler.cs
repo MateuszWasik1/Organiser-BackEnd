@@ -25,7 +25,7 @@ namespace Organiser.Core.CQRS.Resources.Bugs.Bugs.Handlers
             var bugs = new List<Cores.Entities.Bugs>();
             var currentUserRole = context.User.FirstOrDefault(x => x.UID == user.UID)?.URID ?? 1;
 
-            if (currentUserRole == (int)RoleEnum.Admin || currentUserRole == (int)RoleEnum.Support)
+            if (currentUserRole == (int) RoleEnum.Admin || currentUserRole == (int) RoleEnum.Support)
             {
                 if (query.BugType == BugTypeEnum.My)
                     bugs = context.AllBugs.Where(x => x.BUID == user.UID).OrderBy(x => x.BDate).ToList();
@@ -47,8 +47,11 @@ namespace Organiser.Core.CQRS.Resources.Bugs.Bugs.Handlers
             }
 
             else
-                bugs = context.Bugs.ToList();
+                bugs = context.Bugs.OrderBy(x => x.BDate).ToList();
 
+            var supportGIDs = bugs.Where(x => x.BAUIDS != null).SelectMany(x => x.BAUIDS?.Split(',')).Distinct().ToList();
+            var supportGIDs2 = bugs.Where(x => x.BAUIDS != null).Select(x => x.BAUIDS).ToList();
+            var supportGIDs3 = bugs.Select(x => x.BAUIDS).ToList();
 
             var bugsViewModel = new List<BugsViewModel>();
 

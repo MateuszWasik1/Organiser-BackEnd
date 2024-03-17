@@ -82,6 +82,7 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Bugs.BugsNotes
             };
 
             context.Setup(x => x.Bugs).Returns(bugs.AsQueryable());
+            context.Setup(x => x.AllBugs).Returns(bugs.AsQueryable());
             context.Setup(x => x.BugsNotes).Returns(bugsNotes.AsQueryable());
             context.Setup(x => x.User).Returns(users.AsQueryable());
 

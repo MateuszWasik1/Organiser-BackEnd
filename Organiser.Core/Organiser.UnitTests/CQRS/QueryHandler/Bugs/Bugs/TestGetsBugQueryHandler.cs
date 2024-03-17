@@ -147,7 +147,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
                             BTitle = bug.BTitle,
                             BText = bug.BText,
                             BStatus = bug.BStatus,
-                            BAUIDS = bug.BAUIDS,
+                            //BAUIDS = bug.BAUIDS,
                             BDate = bug.BDate,
                         }
                     )
