@@ -16,13 +16,24 @@ namespace Organiser.Cores.Controllers
         public SavingsController(IDispatcher dispatcher) => this.dispatcher = dispatcher;
 
         [HttpGet]
-        public List<SavingsViewModel> Get()
+        [Route("GetSaving")]
+        public SavingsViewModel GetSaving()
+            => dispatcher.DispatchQuery<GetSavingQuery, SavingsViewModel>(new GetSavingQuery());
+
+        [HttpGet]
+        [Route("GetSavings")]
+        public List<SavingsViewModel> GetSavings()
             => dispatcher.DispatchQuery<GetSavingsQuery, List<SavingsViewModel>>(new GetSavingsQuery());
 
         [HttpPost]
-        [Route("Save")]
-        public void Save(SavingsViewModel model)
+        [Route("AddSaving")]
+        public void AddSaving(SavingsViewModel model)
             => dispatcher.DispatchCommand(new SaveSavingCommand() { Model = model });
+
+        [HttpPost]
+        [Route("UpdateSaving")]
+        public void UpdateSaving(SavingsViewModel model)
+            => dispatcher.DispatchCommand(new UpdateSavingCommand() { Model = model });
 
         [HttpDelete]
         [Route("Delete/{sGID}")]
