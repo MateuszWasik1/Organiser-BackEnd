@@ -37,6 +37,7 @@ using Organiser.Cores;
 using Organiser.Cores.Context;
 using Organiser.Cores.Entities;
 using Organiser.Cores.Models.ViewModels;
+using Organiser.Cores.Models.ViewModels.SavingsViewModels;
 using Organiser.Cores.Models.ViewModels.StatsViewModels;
 using Organiser.Cores.Models.ViewModels.UserViewModels;
 using Organiser.Cores.Services;
@@ -127,9 +128,11 @@ builder.Services.AddScoped<IQueryHandler<GetIsUserAdminQuery, bool>, GetIsUserAd
 builder.Services.AddScoped<IQueryHandler<GetIsUserSupportQuery, bool>, GetIsUserSupportQueryHandler>();
 
 //Savings
+builder.Services.AddScoped<IQueryHandler<GetSavingQuery, SavingViewModel>, GetSavingQueryHandler>();
 builder.Services.AddScoped<IQueryHandler<GetSavingsQuery, List<SavingsViewModel>>, GetSavingsQueryHandler>();
 
-builder.Services.AddScoped<ICommandHandler<SaveSavingCommand>, SaveSavingCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<AddSavingCommand>, AddSavingCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<UpdateSavingCommand>, UpdateSavingCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<DeleteSavingCommand>, DeleteSavingCommandHandler>();
 
 //Stats

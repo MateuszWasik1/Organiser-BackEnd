@@ -5,7 +5,7 @@ using NUnit.Framework.Legacy;
 using Organiser.Core.CQRS.Resources.Savings.Handlers;
 using Organiser.Core.CQRS.Resources.Savings.Queries;
 using Organiser.Cores.Context;
-using Organiser.Cores.Models.ViewModels;
+using Organiser.Cores.Models.ViewModels.SavingsViewModels;
 
 namespace Organiser.UnitTests.CQRS.QueryHandler.Savings
 {

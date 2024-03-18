@@ -1,4 +1,4 @@
-﻿namespace Organiser.Cores.Models.ViewModels
+﻿namespace Organiser.Cores.Models.ViewModels.SavingsViewModels
 {
     public class SavingsViewModel
     {
