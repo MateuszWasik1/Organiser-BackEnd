@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Organiser.Cores.Context;
-using Organiser.Cores.Models.ViewModels;
+using Organiser.Cores.Models.ViewModels.CategoriesViewModel;
 using Organiser.CQRS.Abstraction.Queries;
 using Organiser.CQRS.Resources.Categories.Queries;
 

@@ -1,4 +1,4 @@
-﻿namespace Organiser.Cores.Models.ViewModels
+﻿namespace Organiser.Cores.Models.ViewModels.CategoriesViewModel
 {
     public class CategoriesForFiltersViewModel
     {
