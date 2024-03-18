@@ -3,8 +3,8 @@ using Organiser.CQRS.Abstraction.Commands;
 
 namespace Organiser.Core.CQRS.Resources.Savings.Commands
 {
-    public class SaveSavingCommand : ICommand
+    public class AddSavingCommand : ICommand
     {
-        public SavingsViewModel? Model { get; set; }
+        public SavingViewModel? Model { get; set; }
     }
 }

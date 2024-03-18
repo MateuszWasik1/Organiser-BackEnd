@@ -16,6 +16,7 @@ namespace Organiser.Cores
             CreateMap<Tasks, TasksViewModel>();
             CreateMap<TasksNotes, TasksNotesViewModel>();
             CreateMap<Savings, SavingsViewModel>();
+            CreateMap<Savings, SavingViewModel>();
             CreateMap<User, UserViewModel>();
             CreateMap<User, UsersAdminViewModel>();
             CreateMap<User, UserAdminViewModel>();

@@ -15,10 +15,10 @@ namespace Organiser.Cores.Controllers
         private readonly IDispatcher dispatcher;
         public SavingsController(IDispatcher dispatcher) => this.dispatcher = dispatcher;
 
-        //[HttpGet]
-        //[Route("GetSaving")]
-        //public SavingViewModel GetSaving()
-        //    => dispatcher.DispatchQuery<GetSavingQuery, SavingViewModel>(new GetSavingQuery());
+        [HttpGet]
+        [Route("GetSaving")]
+        public SavingViewModel GetSaving(Guid sgid)
+            => dispatcher.DispatchQuery<GetSavingQuery, SavingViewModel>(new GetSavingQuery() { SGID = sgid });
 
         [HttpGet]
         [Route("GetSavings")]
@@ -27,13 +27,13 @@ namespace Organiser.Cores.Controllers
 
         [HttpPost]
         [Route("AddSaving")]
-        public void AddSaving(SavingsViewModel model)
-            => dispatcher.DispatchCommand(new SaveSavingCommand() { Model = model });
+        public void AddSaving(SavingViewModel model)
+            => dispatcher.DispatchCommand(new AddSavingCommand() { Model = model });
 
-        //[HttpPost]
-        //[Route("UpdateSaving")]
-        //public void UpdateSaving(SavingsViewModel model)
-        //    => dispatcher.DispatchCommand(new UpdateSavingCommand() { Model = model });
+        [HttpPut]
+        [Route("UpdateSaving")]
+        public void UpdateSaving(SavingViewModel model)
+            => dispatcher.DispatchCommand(new UpdateSavingCommand() { Model = model });
 
         [HttpDelete]
         [Route("Delete/{sGID}")]

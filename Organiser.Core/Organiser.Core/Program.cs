@@ -130,7 +130,7 @@ builder.Services.AddScoped<IQueryHandler<GetIsUserSupportQuery, bool>, GetIsUser
 //Savings
 builder.Services.AddScoped<IQueryHandler<GetSavingsQuery, List<SavingsViewModel>>, GetSavingsQueryHandler>();
 
-builder.Services.AddScoped<ICommandHandler<SaveSavingCommand>, SaveSavingCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<AddSavingCommand>, AddSavingCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<DeleteSavingCommand>, DeleteSavingCommandHandler>();
 
 //Stats
