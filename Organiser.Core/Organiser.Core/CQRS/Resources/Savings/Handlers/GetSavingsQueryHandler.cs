@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Organiser.Core.CQRS.Resources.Savings.Queries;
 using Organiser.Cores.Context;
-using Organiser.Cores.Models.ViewModels;
+using Organiser.Cores.Models.ViewModels.SavingsViewModels;
 using Organiser.CQRS.Abstraction.Queries;
 
 namespace Organiser.Core.CQRS.Resources.Savings.Handlers

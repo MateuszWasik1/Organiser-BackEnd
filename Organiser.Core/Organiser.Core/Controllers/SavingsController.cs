@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Organiser.Core.CQRS.Dispatcher;
 using Organiser.Core.CQRS.Resources.Savings.Commands;
 using Organiser.Core.CQRS.Resources.Savings.Queries;
-using Organiser.Cores.Models.ViewModels;
+using Organiser.Cores.Models.ViewModels.SavingsViewModels;
 
 namespace Organiser.Cores.Controllers
 {
@@ -15,10 +15,10 @@ namespace Organiser.Cores.Controllers
         private readonly IDispatcher dispatcher;
         public SavingsController(IDispatcher dispatcher) => this.dispatcher = dispatcher;
 
-        [HttpGet]
-        [Route("GetSaving")]
-        public SavingsViewModel GetSaving()
-            => dispatcher.DispatchQuery<GetSavingQuery, SavingsViewModel>(new GetSavingQuery());
+        //[HttpGet]
+        //[Route("GetSaving")]
+        //public SavingViewModel GetSaving()
+        //    => dispatcher.DispatchQuery<GetSavingQuery, SavingViewModel>(new GetSavingQuery());
 
         [HttpGet]
         [Route("GetSavings")]
@@ -30,10 +30,10 @@ namespace Organiser.Cores.Controllers
         public void AddSaving(SavingsViewModel model)
             => dispatcher.DispatchCommand(new SaveSavingCommand() { Model = model });
 
-        [HttpPost]
-        [Route("UpdateSaving")]
-        public void UpdateSaving(SavingsViewModel model)
-            => dispatcher.DispatchCommand(new UpdateSavingCommand() { Model = model });
+        //[HttpPost]
+        //[Route("UpdateSaving")]
+        //public void UpdateSaving(SavingsViewModel model)
+        //    => dispatcher.DispatchCommand(new UpdateSavingCommand() { Model = model });
 
         [HttpDelete]
         [Route("Delete/{sGID}")]

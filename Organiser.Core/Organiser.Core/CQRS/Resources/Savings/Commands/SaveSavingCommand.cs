@@ -1,4 +1,4 @@
-﻿using Organiser.Cores.Models.ViewModels;
+﻿using Organiser.Cores.Models.ViewModels.SavingsViewModels;
 using Organiser.CQRS.Abstraction.Commands;
 
 namespace Organiser.Core.CQRS.Resources.Savings.Commands

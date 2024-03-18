@@ -37,6 +37,7 @@ using Organiser.Cores;
 using Organiser.Cores.Context;
 using Organiser.Cores.Entities;
 using Organiser.Cores.Models.ViewModels;
+using Organiser.Cores.Models.ViewModels.SavingsViewModels;
 using Organiser.Cores.Models.ViewModels.StatsViewModels;
 using Organiser.Cores.Models.ViewModels.UserViewModels;
 using Organiser.Cores.Services;
