@@ -128,9 +128,11 @@ builder.Services.AddScoped<IQueryHandler<GetIsUserAdminQuery, bool>, GetIsUserAd
 builder.Services.AddScoped<IQueryHandler<GetIsUserSupportQuery, bool>, GetIsUserSupportQueryHandler>();
 
 //Savings
+builder.Services.AddScoped<IQueryHandler<GetSavingQuery, SavingViewModel>, GetSavingQueryHandler>();
 builder.Services.AddScoped<IQueryHandler<GetSavingsQuery, List<SavingsViewModel>>, GetSavingsQueryHandler>();
 
 builder.Services.AddScoped<ICommandHandler<AddSavingCommand>, AddSavingCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<UpdateSavingCommand>, UpdateSavingCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<DeleteSavingCommand>, DeleteSavingCommandHandler>();
 
 //Stats
