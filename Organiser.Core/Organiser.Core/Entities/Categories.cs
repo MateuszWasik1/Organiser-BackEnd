@@ -13,6 +13,6 @@ namespace Organiser.Cores.Entities
         public string? CName { get; set; }
         public DateTime CStartDate { get; set; }
         public DateTime CEndDate { get; set; }
-        public int? CBudget { get; set; }
+        public int CBudget { get; set; }
     }
 }

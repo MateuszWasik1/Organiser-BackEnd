@@ -2,18 +2,16 @@
 using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using Organiser.Cores.Context;
-using Organiser.Cores.Models.ViewModels;
-using Organiser.Cores.Services;
+using Organiser.Cores.Models.ViewModels.CategoriesViewModel;
 using Organiser.CQRS.Resources.Categories.Commands;
 using Organiser.CQRS.Resources.Categories.Handlers;
 
 namespace Organiser.UnitTests.CQRS.CommandHandlers.Categories
 {
     [TestFixture]
-    public class TestSaveCategoriesCommandHandler
+    public class TestUpdateCategoryCommandHandler
     {
         private Mock<IDataBaseContext>? context;
-        private Mock<IUserContext>? user;
 
         private List<Cores.Entities.Categories>? categories;
 
@@ -21,7 +19,6 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Categories
         public void SetUp()
         {
             context = new Mock<IDataBaseContext>();
-            user = new Mock<IUserContext>();
 
             categories = new List<Cores.Entities.Categories>()
             {
@@ -69,59 +66,20 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Categories
 
             context.Setup(x => x.Categories).Returns(categories.AsQueryable());
 
-            context.Setup(x => x.CreateOrUpdate(It.IsAny<Cores.Entities.Categories>())).Callback<Cores.Entities.Categories>(category =>
-            {
-                var currentCategory = categories.FirstOrDefault(x => x.CID == category.CID);
-
-                if (currentCategory != null)
-                    categories[categories.FindIndex(x => x.CID == currentCategory.CID)] = category;
-                else
-                    categories.Add(category);
-            });
-        }
-
-        //Post
-        [Test]
-        public void TestCategoriesController_AddCategory_ShouldAddCategory()
-        {
-            //Arrange
-            var model = new CategoriesViewModel()
-            {
-                CID = 0,
-                CGID = new Guid("f9dacc1d-7bee-4635-9c4c-9404a4af80dd"),
-                CUID = 44,
-                CName = "Nazwa 5",
-                CBudget = 2050,
-                CStartDate = new DateTime(2023, 12, 4, 21, 30, 0),
-                CEndDate = new DateTime(2023, 12, 9, 21, 30, 0)
-            };
-
-            var command = new SaveCategoriesCommand() { Model = model };
-            var handler = new SaveCategoriesCommandHandler(context.Object, user.Object);
-
-            //Act
-            handler.Handle(command);
-
-            //Assert
-            ClassicAssert.AreEqual(5, categories.Count);
-            ClassicAssert.AreEqual("Nazwa 5", categories[4].CName);
-            ClassicAssert.AreEqual(2050, categories[4].CBudget);
-            ClassicAssert.AreEqual(new DateTime(2023, 12, 4, 21, 30, 0), categories[4].CStartDate);
-            ClassicAssert.AreEqual(new DateTime(2023, 12, 9, 21, 30, 0), categories[4].CEndDate);
+            context.Setup(x => x.CreateOrUpdate(It.IsAny<Cores.Entities.Categories>())).Callback<Cores.Entities.Categories>(category => categories[categories.FindIndex(x => x.CID == category.CID)] = category);
         }
 
         [Test]
-        public void TestCategoriesController_AddCategory_CategoryExistButErrorIsThrow_ShouldThrowException()
+        public void TestUpdateCategoryCommandHandler_CategoryDontExist_ShouldThrowException()
         {
             //Arrange
-            var model = new CategoriesViewModel()
+            var model = new CategoryViewModel()
             {
-                CID = 2,
                 CGID = new Guid("99dacc1d-7bee-4635-9c4c-9404a4af80dd"),
             };
 
-            var command = new SaveCategoriesCommand() { Model = model };
-            var handler = new SaveCategoriesCommandHandler(context.Object, user.Object);
+            var command = new UpdateCategoryCommand() { Model = model };
+            var handler = new UpdateCategoryCommandHandler(context.Object);
 
             //Act
             //Assert
@@ -129,22 +87,20 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Categories
         }
 
         [Test]
-        public void TestCategoriesController_AddCategory_CategoryExist_ShouldModifyCategory()
+        public void TestUpdateCategoryCommandHandler_CategoryExist_ShouldModifyCategory()
         {
             //Arrange
-            var model = new CategoriesViewModel()
+            var model = new CategoryViewModel()
             {
-                CID = 4,
                 CGID = new Guid("f9dacc1d-7bee-4635-9c4c-9404a4af80dd"),
-                CUID = 44,
                 CName = "Nazwa 5",
                 CBudget = 2060,
                 CStartDate = new DateTime(2023, 12, 5, 21, 30, 0),
                 CEndDate = new DateTime(2023, 12, 12, 21, 30, 0)
             };
 
-            var command = new SaveCategoriesCommand() { Model = model };
-            var handler = new SaveCategoriesCommandHandler(context.Object, user.Object);
+            var command = new UpdateCategoryCommand() { Model = model };
+            var handler = new UpdateCategoryCommandHandler(context.Object);
 
             //Act
             handler.Handle(command);

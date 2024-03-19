@@ -3,7 +3,7 @@ using Moq;
 using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using Organiser.Cores.Context;
-using Organiser.Cores.Models.ViewModels;
+using Organiser.Cores.Models.ViewModels.CategoriesViewModel;
 using Organiser.CQRS.Resources.Categories.Handlers;
 using Organiser.CQRS.Resources.Categories.Queries;
 
@@ -53,7 +53,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Categories
             context.Setup(x => x.Categories).Returns(categories.AsQueryable());
 
             mapper.Setup(m => m.Map<Cores.Entities.Categories, CategoriesViewModel>(It.IsAny<Cores.Entities.Categories>()))
-                .Callback<Cores.Entities.Categories>((Cores.Entities.Categories categories) =>
+                .Callback((Cores.Entities.Categories categories) =>
                     categoriesViewModel.Add(
                         new CategoriesViewModel()
                         {
