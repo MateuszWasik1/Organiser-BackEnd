@@ -117,10 +117,12 @@ builder.Services.AddScoped<IQueryHandler<GetBugNotesQuery, List<BugsNotesViewMod
 builder.Services.AddScoped<ICommandHandler<SaveBugNoteCommand>, SaveBugNoteCommandHandler>();
 
 //Categories
+builder.Services.AddScoped<IQueryHandler<GetCategoryQuery, CategoryViewModel>, GetCategoryQueryHandler>();
 builder.Services.AddScoped<IQueryHandler<GetCategoriesQuery, List<CategoriesViewModel>>, GetCategoriesQueryHandler>();
 builder.Services.AddScoped<IQueryHandler<GetCategoriesForFilterQuery, List<CategoriesForFiltersViewModel>>, GetCategoriesForFilterQueryHandler>();
 
 builder.Services.AddScoped<ICommandHandler<AddCategoryCommand>, AddCategoryCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<UpdateCategoryCommand>, UpdateCategoryCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<DeleteCategoriesCommand>, DeleteCategoriesCommandHandler>();
 
 //Roles

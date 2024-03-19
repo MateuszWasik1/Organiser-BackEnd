@@ -13,6 +13,7 @@ namespace Organiser.Cores
     {
         public MappingProfile()
         {
+            CreateMap<Categories, CategoryViewModel>();
             CreateMap<Categories, CategoriesViewModel>();
             CreateMap<Tasks, TasksViewModel>();
             CreateMap<TasksNotes, TasksNotesViewModel>();

@@ -19,7 +19,7 @@ namespace Organiser.CQRS.Resources.Categories.Handlers
         {
             var category = new Cores.Entities.Categories()
             {
-                CGID = command.Model.CGID,
+                CGID = Guid.NewGuid(),
                 CUID = user.UID,
                 CName = command.Model.CName,
                 CStartDate = command.Model.CStartDate,

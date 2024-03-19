@@ -35,8 +35,8 @@ namespace Organiser.Cores.Controllers
         public void AddCategory(CategoryViewModel model) 
             => dispatcher.DispatchCommand(new AddCategoryCommand() { Model = model });
 
-        [HttpPost]
-        [Route("Save")]
+        [HttpPut]
+        [Route("UpdateCategory")]
         public void UpdateCategory(CategoryViewModel model)
             => dispatcher.DispatchCommand(new UpdateCategoryCommand() { Model = model });
 
