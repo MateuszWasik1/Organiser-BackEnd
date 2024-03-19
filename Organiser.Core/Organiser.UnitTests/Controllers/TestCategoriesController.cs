@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using Organiser.Core.CQRS.Dispatcher;
 using Organiser.Cores.Controllers;
-using Organiser.Cores.Models.ViewModels;
+using Organiser.Cores.Models.ViewModels.CategoriesViewModel;
 using Organiser.CQRS.Resources.Categories.Commands;
 using Organiser.CQRS.Resources.Categories.Queries;
 
@@ -17,13 +17,26 @@ namespace Organiser.UnitTests.Controllers
         public void SetUp() => dispatcher = new Mock<IDispatcher>();
 
         [Test]
-        public void TestCategoriesController_Get_ShouldDispatch_GetCategoriesQuery()
+        public void TestCategoriesController_GetCategory_ShouldDispatch_GetCategoryQuery()
         {
             //Arrange
             var controller = new CategoriesController(dispatcher.Object);
 
             //Act
-            controller.Get(new DateTime());
+            controller.GetCategory(new Guid());
+
+            //Assert
+            dispatcher.Verify(x => x.DispatchQuery<GetCategoryQuery, CategoryViewModel>(It.IsAny<GetCategoryQuery>()), Times.Once);
+        }
+
+        [Test]
+        public void TestCategoriesController_GetCategories_ShouldDispatch_GetCategoriesQuery()
+        {
+            //Arrange
+            var controller = new CategoriesController(dispatcher.Object);
+
+            //Act
+            controller.GetCategories(new DateTime());
 
             //Assert
             dispatcher.Verify(x => x.DispatchQuery<GetCategoriesQuery, List<CategoriesViewModel>>(It.IsAny<GetCategoriesQuery>()), Times.Once);
@@ -43,17 +56,29 @@ namespace Organiser.UnitTests.Controllers
         }
 
         [Test]
-        public void TestAccountsController_Save_ShouldDispatch_SaveCategoriesCommand()
+        public void TestAccountsController_AddCategory_ShouldDispatch_AddCategoryCommand()
         {
             //Arrange
             var controller = new CategoriesController(dispatcher.Object);
 
             //Act
-            controller.Save(new CategoriesViewModel());
+            controller.AddCategory(new CategoryViewModel());
 
             //Assert
+            dispatcher.Verify(x => x.DispatchCommand(It.IsAny<AddCategoryCommand>()), Times.Once);
+        }
 
-            dispatcher.Verify(x => x.DispatchCommand(It.IsAny<SaveCategoriesCommand>()), Times.Once);
+        [Test]
+        public void TestAccountsController_UpdateCategory_ShouldDispatch_UpdateCategoryCommand()
+        {
+            //Arrange
+            var controller = new CategoriesController(dispatcher.Object);
+
+            //Act
+            controller.UpdateCategory(new CategoryViewModel());
+
+            //Assert
+            dispatcher.Verify(x => x.DispatchCommand(It.IsAny<UpdateCategoryCommand>()), Times.Once);
         }
 
         [Test]
@@ -66,7 +91,6 @@ namespace Organiser.UnitTests.Controllers
             controller.Delete(new Guid());
 
             //Assert
-
             dispatcher.Verify(x => x.DispatchCommand(It.IsAny<DeleteCategoriesCommand>()), Times.Once);
         }
     }

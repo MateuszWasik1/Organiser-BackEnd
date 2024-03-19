@@ -53,7 +53,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Categories
             context.Setup(x => x.Categories).Returns(categories.AsQueryable());
 
             mapper.Setup(m => m.Map<Cores.Entities.Categories, CategoriesViewModel>(It.IsAny<Cores.Entities.Categories>()))
-                .Callback<Cores.Entities.Categories>((Cores.Entities.Categories categories) =>
+                .Callback((Cores.Entities.Categories categories) =>
                     categoriesViewModel.Add(
                         new CategoriesViewModel()
                         {
