@@ -37,6 +37,7 @@ using Organiser.Cores;
 using Organiser.Cores.Context;
 using Organiser.Cores.Entities;
 using Organiser.Cores.Models.ViewModels;
+using Organiser.Cores.Models.ViewModels.CategoriesViewModel;
 using Organiser.Cores.Models.ViewModels.SavingsViewModels;
 using Organiser.Cores.Models.ViewModels.StatsViewModels;
 using Organiser.Cores.Models.ViewModels.UserViewModels;
@@ -119,7 +120,7 @@ builder.Services.AddScoped<ICommandHandler<SaveBugNoteCommand>, SaveBugNoteComma
 builder.Services.AddScoped<IQueryHandler<GetCategoriesQuery, List<CategoriesViewModel>>, GetCategoriesQueryHandler>();
 builder.Services.AddScoped<IQueryHandler<GetCategoriesForFilterQuery, List<CategoriesForFiltersViewModel>>, GetCategoriesForFilterQueryHandler>();
 
-builder.Services.AddScoped<ICommandHandler<SaveCategoriesCommand>, SaveCategoriesCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<AddCategoryCommand>, AddCategoryCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<DeleteCategoriesCommand>, DeleteCategoriesCommandHandler>();
 
 //Roles
