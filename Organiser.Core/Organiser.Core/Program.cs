@@ -33,6 +33,7 @@ using Organiser.Core.CQRS.Resources.User.Handlers;
 using Organiser.Core.CQRS.Resources.User.Queries;
 using Organiser.Core.Models.ViewModels.BugsViewModels;
 using Organiser.Core.Models.ViewModels.NotesViewModels;
+using Organiser.Core.Models.ViewModels.TasksViewModels;
 using Organiser.Cores;
 using Organiser.Cores.Context;
 using Organiser.Cores.Entities;
@@ -147,7 +148,7 @@ builder.Services.AddScoped<IQueryHandler<GetNotesBarChartQuery, StatsBarChartVie
 //Tasks
 builder.Services.AddScoped<IQueryHandler<GetTasksQuery, List<TasksViewModel>>, GetTasksQueryHandler>();
 
-builder.Services.AddScoped<ICommandHandler<SaveTaskCommand>, SaveTaskCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<AddTaskCommand>, AddTaskCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<DeleteTaskCommand>, DeleteTaskCommandHandler>();
 
 //TaskNotes

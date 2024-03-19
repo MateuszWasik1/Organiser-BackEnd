@@ -1,6 +1,6 @@
 ﻿using Organiser.Cores.Models.Enums;
 
-namespace Organiser.Cores.Models.ViewModels
+namespace Organiser.Core.Models.ViewModels.TasksViewModels
 {
     public class TasksViewModel
     {

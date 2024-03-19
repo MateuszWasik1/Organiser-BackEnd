@@ -3,9 +3,8 @@ using Organiser.CQRS.Abstraction.Queries;
 
 namespace Organiser.Core.CQRS.Resources.Tasks.Tasks.Queries
 {
-    public class GetTasksQuery : IQuery<List<TasksViewModel>>
+    public class GetTaskQuery : IQuery<TaskViewModel>
     {
-        public string? CGID { get; set; }
-        public int Status { get; set; }
+        public Guid TGID { get; set; }
     }
 }

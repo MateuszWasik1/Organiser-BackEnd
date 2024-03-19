@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Organiser.Core.CQRS.Dispatcher;
 using Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Commands;
 using Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Queries;
-using Organiser.Cores.Models.ViewModels;
+using Organiser.Core.Models.ViewModels.TasksViewModels;
 
 namespace Organiser.Cores.Controllers
 {

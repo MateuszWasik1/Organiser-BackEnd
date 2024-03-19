@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Organiser.Core.Models.ViewModels.BugsViewModels;
 using Organiser.Core.Models.ViewModels.NotesViewModels;
+using Organiser.Core.Models.ViewModels.TasksViewModels;
 using Organiser.Cores.Entities;
-using Organiser.Cores.Models.ViewModels;
 using Organiser.Cores.Models.ViewModels.CategoriesViewModel;
 using Organiser.Cores.Models.ViewModels.SavingsViewModels;
 using Organiser.Cores.Models.ViewModels.UserViewModels;

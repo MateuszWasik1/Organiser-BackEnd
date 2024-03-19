@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Organiser.Core.CQRS.Resources.Tasks.Tasks.Queries;
+using Organiser.Core.Models.ViewModels.TasksViewModels;
 using Organiser.Cores.Context;
-using Organiser.Cores.Models.ViewModels;
 using Organiser.Cores.Services;
 using Organiser.CQRS.Abstraction.Queries;
 
