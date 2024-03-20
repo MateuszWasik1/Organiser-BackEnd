@@ -30,7 +30,7 @@ namespace Organiser.Cores.Controllers
         public void AddTask(TaskViewModel model)
              => dispatcher.DispatchCommand(new AddTaskCommand() { Model = model });
 
-        [HttpPost]
+        [HttpPut]
         [Route("UpdateTask")]
         public void UpdateTask(TaskViewModel model)
             => dispatcher.DispatchCommand(new UpdateTaskCommand() { Model = model });

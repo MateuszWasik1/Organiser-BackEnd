@@ -19,7 +19,7 @@ namespace Organiser.Core.CQRS.Resources.Tasks.Tasks.Handlers
         {
             var task = new Cores.Entities.Tasks()
             {
-                TGID = command.Model.TGID,
+                TGID = Guid.NewGuid(),
                 TUID = user.UID,
                 TCGID = command.Model.TCGID,
                 TName = command.Model.TName,
