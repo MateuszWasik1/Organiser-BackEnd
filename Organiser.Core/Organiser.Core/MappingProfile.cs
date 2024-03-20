@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Organiser.Core.Models.ViewModels.BugsViewModels;
 using Organiser.Core.Models.ViewModels.NotesViewModels;
+using Organiser.Core.Models.ViewModels.TasksViewModels;
 using Organiser.Cores.Entities;
-using Organiser.Cores.Models.ViewModels;
 using Organiser.Cores.Models.ViewModels.CategoriesViewModel;
 using Organiser.Cores.Models.ViewModels.SavingsViewModels;
 using Organiser.Cores.Models.ViewModels.UserViewModels;
@@ -15,8 +15,10 @@ namespace Organiser.Cores
         {
             CreateMap<Categories, CategoryViewModel>();
             CreateMap<Categories, CategoriesViewModel>();
+            CreateMap<Tasks, TaskViewModel>();
             CreateMap<Tasks, TasksViewModel>();
             CreateMap<TasksNotes, TasksNotesViewModel>();
+            CreateMap<TasksNotes, TasksNotesAddViewModel>();
             CreateMap<Savings, SavingsViewModel>();
             CreateMap<Savings, SavingViewModel>();
             CreateMap<User, UserViewModel>();

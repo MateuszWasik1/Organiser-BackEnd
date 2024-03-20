@@ -4,8 +4,8 @@ using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Handlers;
 using Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Queries;
+using Organiser.Core.Models.ViewModels.TasksViewModels;
 using Organiser.Cores.Context;
-using Organiser.Cores.Models.ViewModels;
 
 namespace Organiser.UnitTests.CQRS.QueryHandler.Tasks.TasksNotes
 {
