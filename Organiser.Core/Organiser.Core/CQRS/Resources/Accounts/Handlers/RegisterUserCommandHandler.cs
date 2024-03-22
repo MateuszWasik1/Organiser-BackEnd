@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Organiser.Core.CQRS.Resources.Accounts.Commands;
+using Organiser.Core.Exceptions;
 using Organiser.Cores.Context;
 using Organiser.Cores.Services.EmailSender;
 using Organiser.CQRS.Abstraction.Commands;
+using System.Text.RegularExpressions;
 
 namespace Organiser.Core.CQRS.Resources.Accounts.Handlers
 {
@@ -22,18 +24,33 @@ namespace Organiser.Core.CQRS.Resources.Accounts.Handlers
         public void Handle(RegisterUserCommand command)
         {
             if (string.IsNullOrEmpty(command.Model.UUserName))
-                throw new Exception("Nazwa użytkownika nie może być pusta");
+                throw new RegisterUserNameIsEmptyException("Nazwa użytkownika nie może być pusta");
 
             if (string.IsNullOrEmpty(command.Model.UEmail))
-                throw new Exception("Email nie może być pusty");
+                throw new RegisterEmailIsEmptyException("Email nie może być pusty");
 
             if (string.IsNullOrEmpty(command.Model.UPassword))
-                throw new Exception("Hasło nie może być puste");
+                throw new RegisterPasswordIsEmptyException("Hasło nie może być puste");
+
+            if (!Regex.IsMatch(command.Model.UPassword, "[0-9]"))
+                throw new RegisterPasswordNoNumbersException("Hasło nie zawiera cyfr");
+
+            if (!Regex.IsMatch(command.Model.UPassword, "[A-Z]"))
+                throw new RegisterPasswordNoUpperCaseException("Hasło nie zawiera wielkich liter");
+
+            if (!Regex.IsMatch(command.Model.UPassword, "[a-z]"))
+                throw new RegisterPasswordNoLowerCaseException("Hasło nie zawiera małych liter");
+
+            if (!Regex.IsMatch(command.Model.UPassword, "[$@^!%*?&]"))
+                throw new RegisterPasswordNoSpecialSignsException("Hasło nie zawiera znaków specjalnych");
+
+            if (command.Model.UPassword.Length < 8)
+                throw new RegisterPasswordNo8charactersException("Hasło nie zawiera znaków specjalnych");
 
             var userNameExist = context.AllUsers.Any(x => x.UUserName == command.Model.UUserName);
 
             if (userNameExist)
-                throw new Exception("Podana nazwa użytkownika występuje w systemie");
+                throw new RegisterUserNameIsFoundException("Podana nazwa użytkownika występuje w systemie");
 
             var roleID = context.Roles.FirstOrDefault(x => x.RName == "user")?.RID ?? 1;
 

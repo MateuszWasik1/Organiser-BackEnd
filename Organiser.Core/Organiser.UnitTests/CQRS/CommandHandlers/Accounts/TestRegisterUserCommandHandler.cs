@@ -4,8 +4,8 @@ using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using Organiser.Core.CQRS.Resources.Accounts.Commands;
 using Organiser.Core.CQRS.Resources.Accounts.Handlers;
+using Organiser.Core.Exceptions;
 using Organiser.Cores.Context;
-using Organiser.Cores.Entities;
 using Organiser.Cores.Models.ViewModels.AccountsViewModel;
 using Organiser.Cores.Services.EmailSender;
 
@@ -49,7 +49,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Accounts
         }
 
         [Test]
-        public void TestRegisterUserCommandHandler_UserNameIsEmptyString_ShouldThrowException()
+        public void TestRegisterUserCommandHandler_UserNameIsEmptyString_ShouldThrowRegisterUserNameIsEmptyException()
         {
             //Arrange 
             var model = new RegisterViewModel()
@@ -64,11 +64,11 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Accounts
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => handler.Handle(command));
+            Assert.Throws<RegisterUserNameIsEmptyException>(() => handler.Handle(command));
         }
 
         [Test]
-        public void TestRegisterUserCommandHandler_UserNameIsNull_ShouldThrowException()
+        public void TestRegisterUserCommandHandler_UserNameIsNull_ShouldThrowRegisterUserNameIsEmptyException()
         {
             //Arrange 
             var model = new RegisterViewModel()
@@ -83,11 +83,11 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Accounts
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => handler.Handle(command));
+            Assert.Throws<RegisterUserNameIsEmptyException>(() => handler.Handle(command));
         }
 
         [Test]
-        public void TestRegisterUserCommandHandler_EmailIsEmptyString_ShouldThrowException()
+        public void TestRegisterUserCommandHandler_EmailIsEmptyString_ShouldThrowRegisterEmailIsEmptyException()
         {
             //Arrange 
             var model = new RegisterViewModel()
@@ -102,11 +102,11 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Accounts
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => handler.Handle(command));
+            Assert.Throws<RegisterEmailIsEmptyException>(() => handler.Handle(command));
         }
 
         [Test]
-        public void TestRegisterUserCommandHandler_EmailIsNull_ShouldThrowException()
+        public void TestRegisterUserCommandHandler_EmailIsNull_ShouldThrowRegisterEmailIsEmptyException()
         {
             //Arrange 
             var model = new RegisterViewModel()
@@ -121,11 +121,11 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Accounts
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => handler.Handle(command));
+            Assert.Throws<RegisterEmailIsEmptyException>(() => handler.Handle(command));
         }
 
         [Test]
-        public void TestRegisterUserCommandHandler_PasswordIsEmptyString_ShouldThrowException()
+        public void TestRegisterUserCommandHandler_PasswordIsEmptyString_ShouldThrowRegisterPasswordIsEmptyException()
         {
             //Arrange 
             var model = new RegisterViewModel()
@@ -140,11 +140,11 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Accounts
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => handler.Handle(command));
+            Assert.Throws<RegisterPasswordIsEmptyException>(() => handler.Handle(command));
         }
 
         [Test]
-        public void TestRegisterUserCommandHandler_PasswordIsNull_ShouldThrowException()
+        public void TestRegisterUserCommandHandler_PasswordIsNull_ShouldThrowRegisterPasswordIsEmptyException()
         {
             //Arrange 
             var model = new RegisterViewModel()
@@ -159,18 +159,18 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Accounts
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => handler.Handle(command));
+            Assert.Throws<RegisterPasswordIsEmptyException>(() => handler.Handle(command));
         }
 
         [Test]
-        public void TestRegisterUserCommandHandler_UserNameExistingInSystem_ShouldThrowException()
+        public void TestRegisterUserCommandHandler_PasswordHasNoNumbers_ShouldThrowRegisterPasswordNoNumbersException()
         {
             //Arrange 
             var model = new RegisterViewModel()
             {
-                UUserName = users[0].UUserName,
+                UUserName = "NewUser",
                 UEmail = "NewEmail",
-                UPassword = "NewPassword"
+                UPassword = "aaaa"
             };
 
             var command = new RegisterUserCommand() { Model = model };
@@ -178,7 +178,102 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Accounts
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => handler.Handle(command));
+            Assert.Throws<RegisterPasswordNoNumbersException>(() => handler.Handle(command));
+        }
+
+        [Test]
+        public void TestRegisterUserCommandHandler_PasswordHasNoUpperCase_ShouldThrowRegisterPasswordNoUpperCaseException()
+        {
+            //Arrange 
+            var model = new RegisterViewModel()
+            {
+                UUserName = "NewUser",
+                UEmail = "NewEmail",
+                UPassword = "1111"
+            };
+
+            var command = new RegisterUserCommand() { Model = model };
+            var handler = new RegisterUserCommandHandler(context.Object, hasher.Object, emailSender.Object);
+
+            //Act
+            //Assert
+            Assert.Throws<RegisterPasswordNoUpperCaseException>(() => handler.Handle(command));
+        }
+
+        [Test]
+        public void TestRegisterUserCommandHandler_PasswordHasNoLowerCase_ShouldThrowRegisterPasswordNoLowerCaseException()
+        {
+            //Arrange 
+            var model = new RegisterViewModel()
+            {
+                UUserName = "NewUser",
+                UEmail = "NewEmail",
+                UPassword = "AAA1111"
+            };
+
+            var command = new RegisterUserCommand() { Model = model };
+            var handler = new RegisterUserCommandHandler(context.Object, hasher.Object, emailSender.Object);
+
+            //Act
+            //Assert
+            Assert.Throws<RegisterPasswordNoLowerCaseException>(() => handler.Handle(command));
+        }
+
+        [Test]
+        public void TestRegisterUserCommandHandler_PasswordHasNoSpecialSign_ShouldThrowRegisterPasswordNoSpecialSignsException()
+        {
+            //Arrange 
+            var model = new RegisterViewModel()
+            {
+                UUserName = "NewUser",
+                UEmail = "NewEmail",
+                UPassword = "AAaa111"
+            };
+
+            var command = new RegisterUserCommand() { Model = model };
+            var handler = new RegisterUserCommandHandler(context.Object, hasher.Object, emailSender.Object);
+
+            //Act
+            //Assert
+            Assert.Throws<RegisterPasswordNoSpecialSignsException>(() => handler.Handle(command));
+        }
+
+        [Test]
+        public void TestRegisterUserCommandHandler_PasswordHasNot8characters_ShouldThrowRegisterPasswordNo8charactersException()
+        {
+            //Arrange 
+            var model = new RegisterViewModel()
+            {
+                UUserName = "NewUser",
+                UEmail = "NewEmail",
+                UPassword = "AAaa11@"
+            };
+
+            var command = new RegisterUserCommand() { Model = model };
+            var handler = new RegisterUserCommandHandler(context.Object, hasher.Object, emailSender.Object);
+
+            //Act
+            //Assert
+            Assert.Throws<RegisterPasswordNo8charactersException>(() => handler.Handle(command));
+        }
+
+        [Test]
+        public void TestRegisterUserCommandHandler_UserNameExistingInSystem_ShouldThrowRegisterUserNameIsFoundException()
+        {
+            //Arrange 
+            var model = new RegisterViewModel()
+            {
+                UUserName = users[0].UUserName,
+                UEmail = "NewEmail",
+                UPassword = "AAaaaa11@"
+            };
+
+            var command = new RegisterUserCommand() { Model = model };
+            var handler = new RegisterUserCommandHandler(context.Object, hasher.Object, emailSender.Object);
+
+            //Act
+            //Assert
+            Assert.Throws<RegisterUserNameIsFoundException>(() => handler.Handle(command));
         }
 
         [Test]
@@ -189,7 +284,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Accounts
             {
                 UUserName = "New User",
                 UEmail = "NewEmail",
-                UPassword = "NewPassword"
+                UPassword = "AAaaaa11@Password"
             };
 
             var command = new RegisterUserCommand() { Model = model };
