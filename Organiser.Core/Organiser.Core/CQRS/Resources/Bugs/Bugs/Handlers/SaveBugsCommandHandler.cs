@@ -1,4 +1,5 @@
 ﻿using Organiser.Core.CQRS.Resources.Bugs.Bugs.Commands;
+using Organiser.Core.Exceptions.Accounts;
 using Organiser.Cores.Context;
 using Organiser.Cores.Services;
 using Organiser.CQRS.Abstraction.Commands;
@@ -17,6 +18,18 @@ namespace Organiser.Core.CQRS.Resources.Bugs.Bugs.Handlers
 
         public void Handle(SaveBugCommand command)
         {
+            if (command.Model.BTitle.Length == 0)
+                throw new BugTitleRequiredExceptions("Tytuł błędu jest wymagany!");
+
+            if (command.Model.BTitle.Length > 200)
+                throw new BugTitleMax200Exceptions("Tytuł błędu nie może mieć więcej niż 200 znaków!");
+
+            if (command.Model.BText.Length == 0)
+                throw new BugTextRequiredExceptions("Tytuł błędu jest wymagany!");
+
+            if (command.Model.BText.Length > 4000)
+                throw new BugTextMax4000Exceptions("Tytuł błędu nie może mieć więcej niż 200 znaków!");
+
             var bug = new Cores.Entities.Bugs()
             {
                 BGID = command.Model.BGID,

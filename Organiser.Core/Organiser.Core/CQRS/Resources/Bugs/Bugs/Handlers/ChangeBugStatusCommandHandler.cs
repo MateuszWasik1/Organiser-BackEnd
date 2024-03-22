@@ -1,4 +1,5 @@
 ﻿using Organiser.Core.CQRS.Resources.Bugs.Bugs.Commands;
+using Organiser.Core.Exceptions.Accounts;
 using Organiser.Cores.Context;
 using Organiser.Cores.Models.Enums;
 using Organiser.Cores.Models.Helpers;
@@ -22,21 +23,20 @@ namespace Organiser.Core.CQRS.Resources.Bugs.Bugs.Handlers
             var bug = context.AllBugs.FirstOrDefault(x => x.BGID == command.Model.BGID);
 
             if (bug == null)
-                throw new Exception("Nie udało się zaaktualizować statusu błędu!");
+                throw new BugNotFoundExceptions("Nie udało się zaaktualizować statusu błędu!");
 
             bug.BStatus = command.Model.Status;
 
             var currentUser = context.User.FirstOrDefault(x => x.UID == user.UID);
 
             if (currentUser == null)
-                throw new Exception("Nie udało się odnaleźć użytkownika! Aktualizacja błędu się nie powiodła.");
+                throw new UserNotFoundExceptions("Nie udało się odnaleźć użytkownika! Aktualizacja błędu się nie powiodła.");
 
             var isUserVerifier = bug?.BAUIDS?.Contains(currentUser.UGID.ToString()) ?? false;
             var isUserSupportOrAdmin = (currentUser?.URID == (int)RoleEnum.Admin || currentUser?.URID == (int)RoleEnum.Support);
 
             if (!isUserVerifier && isUserSupportOrAdmin)
             {
-
                 if (string.IsNullOrEmpty(bug?.BAUIDS))
                     bug.BAUIDS = currentUser?.UGID.ToString();
                 else
@@ -68,7 +68,6 @@ namespace Organiser.Core.CQRS.Resources.Bugs.Bugs.Handlers
                 BNIsStatusChange = true,
                 BNChangedStatus = command.Model.Status,
             };
-
 
             context.CreateOrUpdate(bugNote);
             context.CreateOrUpdate(bug);
