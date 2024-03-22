@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Organiser.Core.CQRS.Resources.Accounts.Commands;
-using Organiser.Core.Exceptions;
+using Organiser.Core.Exceptions.Accounts;
 using Organiser.Cores.Context;
 using Organiser.Cores.Services.EmailSender;
 using Organiser.CQRS.Abstraction.Commands;

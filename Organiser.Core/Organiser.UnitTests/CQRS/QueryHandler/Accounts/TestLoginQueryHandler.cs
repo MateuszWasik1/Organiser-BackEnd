@@ -4,6 +4,7 @@ using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using Organiser.Core.CQRS.Resources.Accounts.Handlers;
 using Organiser.Core.CQRS.Resources.Accounts.Queries;
+using Organiser.Core.Exceptions.Accounts;
 using Organiser.Cores;
 using Organiser.Cores.Context;
 
@@ -53,7 +54,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Accounts
         }
 
         [Test]
-        public void TestLoginQueryHandler_NoUserNameFound_ShouldThrowException()
+        public void TestLoginQueryHandler_NoUserNameFound_ShouldThrowLoginOrUserNotFoundExceptions()
         {
             //Arrange 
             var query = new LoginQuery() { Username = "RandomUser", Password = users[0].UPassword };
@@ -61,11 +62,11 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Accounts
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => handler.Handle(query));
+            Assert.Throws<LoginOrUserNotFoundExceptions>(() => handler.Handle(query));
         }
 
         [Test]
-        public void TestLoginQueryHandler_UserNameFound_PasswordIncorrect_ShouldThrowException()
+        public void TestLoginQueryHandler_UserNameFound_PasswordIncorrect_ShouldThrowLoginOrUserNotFoundExceptions()
         {
             //Arrange 
             var query = new LoginQuery() { Username = users[0].UUserName, Password = "RandomPassword" };
@@ -73,7 +74,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Accounts
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => handler.Handle(query));
+            Assert.Throws<LoginOrUserNotFoundExceptions>(() => handler.Handle(query));
         }
 
         [Test]

@@ -1,4 +1,4 @@
-﻿namespace Organiser.Core.Exceptions
+﻿namespace Organiser.Core.Exceptions.Accounts
 {
     public class RegisterExceptions : Exception
     {

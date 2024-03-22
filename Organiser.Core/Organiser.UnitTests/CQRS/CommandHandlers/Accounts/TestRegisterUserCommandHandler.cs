@@ -4,7 +4,7 @@ using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using Organiser.Core.CQRS.Resources.Accounts.Commands;
 using Organiser.Core.CQRS.Resources.Accounts.Handlers;
-using Organiser.Core.Exceptions;
+using Organiser.Core.Exceptions.Accounts;
 using Organiser.Cores.Context;
 using Organiser.Cores.Models.ViewModels.AccountsViewModel;
 using Organiser.Cores.Services.EmailSender;
