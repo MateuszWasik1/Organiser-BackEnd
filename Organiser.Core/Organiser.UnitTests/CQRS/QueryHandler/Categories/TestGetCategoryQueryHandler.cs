@@ -2,6 +2,7 @@
 using Moq;
 using NUnit.Framework;
 using NUnit.Framework.Legacy;
+using Organiser.Core.Exceptions.Categories;
 using Organiser.Cores.Context;
 using Organiser.Cores.Models.ViewModels.CategoriesViewModel;
 using Organiser.CQRS.Resources.Categories.Handlers;
@@ -72,7 +73,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Notes
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => handler.Handle(query));
+            Assert.Throws<CategoryNotFoundException>(() => handler.Handle(query));
         }
 
         [Test]

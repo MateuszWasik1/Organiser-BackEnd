@@ -1,4 +1,4 @@
-﻿namespace Organiser.Core.Exceptions.Accounts
+﻿namespace Organiser.Core.Exceptions.Bugs
 {
     public class BugsExceptions : Exception
     {

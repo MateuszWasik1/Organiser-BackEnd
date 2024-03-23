@@ -4,7 +4,7 @@ using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using Organiser.Core.CQRS.Resources.Bugs.Bugs.Handlers;
 using Organiser.Core.CQRS.Resources.Bugs.Bugs.Queries;
-using Organiser.Core.Exceptions.Accounts;
+using Organiser.Core.Exceptions.Bugs;
 using Organiser.Core.Models.ViewModels.BugsViewModels;
 using Organiser.Cores.Context;
 using Organiser.Cores.Models.Enums;

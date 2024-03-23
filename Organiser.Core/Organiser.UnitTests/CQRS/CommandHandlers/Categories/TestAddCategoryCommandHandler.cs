@@ -1,6 +1,7 @@
 ﻿using Moq;
 using NUnit.Framework;
 using NUnit.Framework.Legacy;
+using Organiser.Core.Exceptions.Categories;
 using Organiser.Cores.Context;
 using Organiser.Cores.Models.ViewModels.CategoriesViewModel;
 using Organiser.Cores.Services;
@@ -70,6 +71,61 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Categories
             context.Setup(x => x.Categories).Returns(categories.AsQueryable());
 
             context.Setup(x => x.CreateOrUpdate(It.IsAny<Cores.Entities.Categories>())).Callback<Cores.Entities.Categories>(category => categories.Add(category));
+        }
+
+        [Test]
+        public void TestAddCategoryCommandHandler_AddCategory_CNameIsEmpty_ShouldAddThrowCategoryNameRequiredException()
+        {
+            //Arrange
+            var model = new CategoryViewModel()
+            {
+                CGID = new Guid("f9dacc1d-7bee-4635-9c4c-9404a4af80dd"),
+                CName = "",
+            };
+
+            var command = new AddCategoryCommand() { Model = model };
+            var handler = new AddCategoryCommandHandler(context.Object, user.Object);
+
+            //Act
+            //Assert
+            Assert.Throws<CategoryNameRequiredException>(() => handler.Handle(command));
+        }
+
+        [Test]
+        public void TestAddCategoryCommandHandler_AddCategory_CNameIsOver300_ShouldAddThrowCategoryNameMax300Exception()
+        {
+            //Arrange
+            var model = new CategoryViewModel()
+            {
+                CGID = new Guid("f9dacc1d-7bee-4635-9c4c-9404a4af80dd"),
+                CName = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec p",
+            };
+
+            var command = new AddCategoryCommand() { Model = model };
+            var handler = new AddCategoryCommandHandler(context.Object, user.Object);
+
+            //Act
+            //Assert
+            Assert.Throws<CategoryNameMax300Exception>(() => handler.Handle(command));
+        }
+
+        [Test]
+        public void TestAddCategoryCommandHandler_AddCategory_CBudgetIsLowertThan0_ShouldAddThrowCategoryBudgetMin0Exception()
+        {
+            //Arrange
+            var model = new CategoryViewModel()
+            {
+                CGID = new Guid("f9dacc1d-7bee-4635-9c4c-9404a4af80dd"),
+                CName = "234",
+                CBudget = -1,
+            };
+
+            var command = new AddCategoryCommand() { Model = model };
+            var handler = new AddCategoryCommandHandler(context.Object, user.Object);
+
+            //Act
+            //Assert
+            Assert.Throws<CategoryBudgetMin0Exception>(() => handler.Handle(command));
         }
 
         [Test]

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Organiser.Core.Exceptions.Categories;
 using Organiser.Cores.Context;
 using Organiser.Cores.Models.ViewModels.CategoriesViewModel;
 using Organiser.CQRS.Abstraction.Queries;
@@ -21,7 +22,7 @@ namespace Organiser.CQRS.Resources.Categories.Handlers
             var category = context.Categories.FirstOrDefault(x => x.CGID == query.CGID);
 
             if (category == null)
-                throw new Exception("Nie udało się znaleźć kategorii");
+                throw new CategoryNotFoundException("Nie udało się znaleźć kategorii");
 
             var categoryViewModel = mapper.Map<Cores.Entities.Categories, CategoryViewModel>(category);
 

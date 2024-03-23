@@ -4,11 +4,11 @@ using NUnit.Framework.Legacy;
 using Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Commands;
 using Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Handlers;
 using Organiser.Core.Exceptions.Accounts;
+using Organiser.Core.Exceptions.Bugs;
 using Organiser.Core.Models.ViewModels.BugsViewModels;
 using Organiser.Cores.Context;
 using Organiser.Cores.Models.Enums;
 using Organiser.Cores.Services;
-using System.Linq;
 
 namespace Organiser.UnitTests.CQRS.CommandHandlers.Bugs.BugsNotes
 {
