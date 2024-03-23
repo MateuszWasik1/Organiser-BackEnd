@@ -3,6 +3,7 @@ using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using Organiser.Core.CQRS.Resources.Stats.Handlers;
 using Organiser.Core.CQRS.Resources.Stats.Queries;
+using Organiser.Core.Exceptions.Categories;
 using Organiser.Cores.Context;
 using Organiser.Cores.Models.Enums;
 
@@ -95,7 +96,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Stats
         }
 
         [Test]
-        public void TestStatsController_GetMoneySpendedForCategoryBarChart_CGIDIsNotFound_ShouldThrowException()
+        public void TestStatsController_GetMoneySpendedForCategoryBarChart_CGIDIsNotFound_ShouldThrowCategoryNotFoundException()
         {
             //Arrange
             var query = new GetMoneySpendedForCategoryBarChartQuery() { StartDate = new DateTime(2024, 1, 1, 0, 0, 0), EndDate = new DateTime(2024, 1, 31, 23, 59, 59), CGID = Guid.NewGuid() };
@@ -103,7 +104,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Stats
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => handler.Handle(query));
+            Assert.Throws<CategoryNotFoundException>(() => handler.Handle(query));
         }
 
         [Test]
