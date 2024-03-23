@@ -4,6 +4,7 @@ using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using Organiser.Core.CQRS.Resources.Savings.Handlers;
 using Organiser.Core.CQRS.Resources.Savings.Queries;
+using Organiser.Core.Exceptions.Savings;
 using Organiser.Cores.Context;
 using Organiser.Cores.Models.ViewModels.SavingsViewModels;
 
@@ -63,7 +64,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Notes
         }
 
         [Test]
-        public void TestGetSavingQueryHandler_SavingNotFound_ShouldThrowException()
+        public void TestGetSavingQueryHandler_SavingNotFound_ShouldThrowSavingNotFoundException()
         {
             //Arrange
             var query = new GetSavingQuery() { SGID = new Guid() };
@@ -71,7 +72,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Notes
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => handler.Handle(query));
+            Assert.Throws<SavingNotFoundException>(() => handler.Handle(query));
         }
 
         [Test]

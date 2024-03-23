@@ -1,9 +1,15 @@
 ﻿using Moq;
 using NUnit.Framework;
 using NUnit.Framework.Legacy;
+using Organiser.Core.CQRS.Resources.Notes.Commands;
+using Organiser.Core.CQRS.Resources.Notes.Handlers;
 using Organiser.Core.CQRS.Resources.Savings.Commands;
 using Organiser.Core.CQRS.Resources.Savings.Handlers;
+using Organiser.Core.Exceptions.Notes;
+using Organiser.Core.Exceptions.Savings;
+using Organiser.Core.Models.ViewModels.NotesViewModels;
 using Organiser.Cores.Context;
+using Organiser.Cores.Entities;
 using Organiser.Cores.Models.ViewModels.SavingsViewModels;
 
 namespace Organiser.UnitTests.CQRS.CommandHandlers.Savings
@@ -70,7 +76,28 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Savings
         }
 
         [Test]
-        public void TestUpdateSavingCommandHandler_SavingNotFound_ShouldThrowException()
+        public void TestUpdateSavingCommandHandler_SavingAmountLessThan0_ShouldThrowSavingAmountLessThan0Exception()
+        {
+            //Arrange
+            var model = new SavingViewModel()
+            {
+                SGID = new Guid("f5dacc1d-7bee-4635-9c4c-9404a4af80dd"),
+                SAmount = -1,
+                SOnWhat = "Nazwa 5",
+                SWhere = "Lokalizacja 5",
+                STime = new DateTime(2023, 12, 4, 21, 30, 0)
+            };
+
+            var command = new UpdateSavingCommand() { Model = model };
+            var handler = new UpdateSavingCommandHandler(context.Object);
+
+            //Act
+            //Assert
+            Assert.Throws<SavingAmountLessThan0Exception>(() => handler.Handle(command));
+        }
+
+        [Test]
+        public void TestUpdateSavingCommandHandler_SavingNotFound_ShouldThrowSavingNotFoundException()
         {
             //Arrange
             var model = new SavingViewModel()
@@ -83,7 +110,7 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Savings
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => handler.Handle(command));
+            Assert.Throws<SavingNotFoundException>(() => handler.Handle(command));
         }
 
         [Test]

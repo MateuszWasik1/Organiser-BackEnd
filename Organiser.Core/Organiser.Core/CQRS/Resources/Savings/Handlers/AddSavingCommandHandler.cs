@@ -1,4 +1,5 @@
 ﻿using Organiser.Core.CQRS.Resources.Savings.Commands;
+using Organiser.Core.Exceptions.Savings;
 using Organiser.Cores.Context;
 using Organiser.Cores.Services;
 using Organiser.CQRS.Abstraction.Commands;
@@ -17,6 +18,9 @@ namespace Organiser.Core.CQRS.Resources.Savings.Handlers
 
         public void Handle(AddSavingCommand command)
         {
+            if (command.Model.SAmount < 0)
+                throw new SavingAmountLessThan0Exception("Kwota oszczędności nie może być niższa niż 0!");
+
             var saving = new Cores.Entities.Savings()
             {
                 SGID = Guid.NewGuid(),
