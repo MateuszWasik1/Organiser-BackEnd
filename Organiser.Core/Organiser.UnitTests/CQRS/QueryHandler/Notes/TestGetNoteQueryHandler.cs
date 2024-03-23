@@ -4,6 +4,7 @@ using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using Organiser.Core.CQRS.Resources.Notes.Handlers;
 using Organiser.Core.CQRS.Resources.Notes.Queries;
+using Organiser.Core.Exceptions.Notes;
 using Organiser.Core.Models.ViewModels.NotesViewModels;
 using Organiser.Cores.Context;
 
@@ -71,7 +72,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Notes
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => handler.Handle(query));
+            Assert.Throws<NoteNotFoundException>(() => handler.Handle(query));
         }
 
         [Test]

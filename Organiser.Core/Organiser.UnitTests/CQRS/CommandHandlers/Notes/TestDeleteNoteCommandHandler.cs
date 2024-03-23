@@ -3,6 +3,7 @@ using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using Organiser.Core.CQRS.Resources.Notes.Commands;
 using Organiser.Core.CQRS.Resources.Notes.Handlers;
+using Organiser.Core.Exceptions.Notes;
 using Organiser.Cores.Context;
 
 namespace Organiser.UnitTests.CQRS.CommandHandlers.Notes
@@ -51,7 +52,7 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Notes
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => handler.Handle(command));
+            Assert.Throws<NoteNotFoundException>(() => handler.Handle(command));
         }
 
         [Test]
