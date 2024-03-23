@@ -3,6 +3,7 @@ using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Commands;
 using Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Handlers;
+using Organiser.Core.Exceptions.Accounts;
 using Organiser.Core.Models.ViewModels.BugsViewModels;
 using Organiser.Cores.Context;
 using Organiser.Cores.Models.Enums;
@@ -93,10 +94,31 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Bugs.BugsNotes
         }
 
         [Test]
-        public void TestSaveBugNoteCommandHandler_CurrentUserNotFound_ShouldThrowException()
+        public void TestSaveBugNoteCommandHandler_TextIsEmpty_ShouldThrowBugsNotesTextRequiredException()
         {
             //Arrange
             user.Setup(x => x.UID).Returns(1);
+
+            var command = new SaveBugNoteCommand()
+            {
+                Model = new BugsNotesViewModel()
+                {
+                    BNBGID = new Guid("20dd879c-ee2f-11db-8314-0800200c9a66"),
+                    BNText = "",
+                }
+            };
+            var handler = new SaveBugNoteCommandHandler(context.Object, user.Object);
+
+            //Act
+            //Assert
+            Assert.Throws<BugsNotesTextRequiredException>(() => handler.Handle(command));
+        }
+
+        [Test]
+        public void TestSaveBugNoteCommandHandler_CurrentUserNotFound_ShouldThrowUserNotFoundExceptions()
+        {
+            //Arrange
+            user.Setup(x => x.UID).Returns(7);
 
             var command = new SaveBugNoteCommand() { 
                 Model =  new BugsNotesViewModel()
@@ -109,11 +131,11 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Bugs.BugsNotes
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => handler.Handle(command));
+            Assert.Throws<UserNotFoundExceptions>(() => handler.Handle(command));
         }
 
         [Test]
-        public void TestSaveBugNoteCommandHandler_BugNotFound_ShouldThrowException()
+        public void TestSaveBugNoteCommandHandler_BugNotFound_ShouldThrowBugNotFoundExceptions()
         {
             //Arrange
             user.Setup(x => x.UID).Returns(1);
@@ -130,7 +152,7 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Bugs.BugsNotes
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => handler.Handle(command));
+            Assert.Throws<BugNotFoundExceptions>(() => handler.Handle(command));
         }
 
         [TestCase(2, "01dd879c-ee2f-11db-8314-0800200c9a66", "NameS", "Support")]
