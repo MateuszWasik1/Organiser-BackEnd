@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Organiser.Core.CQRS.Resources.Tasks.Tasks.Queries;
+using Organiser.Core.Exceptions.Tasks;
 using Organiser.Core.Models.ViewModels.TasksViewModels;
 using Organiser.Cores.Context;
 using Organiser.CQRS.Abstraction.Queries;
@@ -21,7 +22,7 @@ namespace Organiser.Core.CQRS.Resources.Tasks.Tasks.Handlers
             var task = context.Tasks.FirstOrDefault(x => x.TGID == query.TGID);
 
             if (task == null)
-                throw new Exception("Nie udało się znaleźć zadania!");
+                throw new TaskNotFoundException("Nie udało się znaleźć zadania!");
 
             var taskViewModel = mapper.Map<Cores.Entities.Tasks, TaskViewModel>(task);
 

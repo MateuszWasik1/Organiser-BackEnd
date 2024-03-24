@@ -4,6 +4,7 @@ using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using Organiser.Core.CQRS.Resources.Tasks.Tasks.Handlers;
 using Organiser.Core.CQRS.Resources.Tasks.Tasks.Queries;
+using Organiser.Core.Exceptions.Tasks;
 using Organiser.Core.Models.ViewModels.TasksViewModels;
 using Organiser.Cores.Context;
 using Organiser.Cores.Models.Enums;
@@ -70,7 +71,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Notes
         }
 
         [Test]
-        public void TestGetTaskQueryHandler_TaskNotFound_ShouldThrowException()
+        public void TestGetTaskQueryHandler_TaskNotFound_ShouldThrowTaskNotFoundException()
         {
             //Arrange
             var query = new GetTaskQuery() { TGID = new Guid() };
@@ -78,7 +79,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Notes
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => handler.Handle(query));
+            Assert.Throws<TaskNotFoundException>(() => handler.Handle(query));
         }
 
         [Test]

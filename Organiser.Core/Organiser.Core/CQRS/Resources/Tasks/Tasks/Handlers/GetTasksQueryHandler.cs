@@ -2,7 +2,6 @@
 using Organiser.Core.CQRS.Resources.Tasks.Tasks.Queries;
 using Organiser.Core.Models.ViewModels.TasksViewModels;
 using Organiser.Cores.Context;
-using Organiser.Cores.Services;
 using Organiser.CQRS.Abstraction.Queries;
 
 namespace Organiser.Core.CQRS.Resources.Tasks.Tasks.Handlers
@@ -10,12 +9,10 @@ namespace Organiser.Core.CQRS.Resources.Tasks.Tasks.Handlers
     public class GetTasksQueryHandler : IQueryHandler<GetTasksQuery, List<TasksViewModel>>
     {
         private readonly IDataBaseContext context;
-        private readonly IUserContext user;
         private readonly IMapper mapper;
-        public GetTasksQueryHandler(IDataBaseContext context, IUserContext user, IMapper mapper)
+        public GetTasksQueryHandler(IDataBaseContext context, IMapper mapper)
         {
             this.context = context;
-            this.user = user;
             this.mapper = mapper;
         }
 

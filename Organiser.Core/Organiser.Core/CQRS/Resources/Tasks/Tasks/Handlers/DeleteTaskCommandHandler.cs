@@ -1,4 +1,5 @@
 ﻿using Organiser.Core.CQRS.Resources.Tasks.Tasks.Commands;
+using Organiser.Core.Exceptions.Tasks;
 using Organiser.Cores.Context;
 using Organiser.CQRS.Abstraction.Commands;
 
@@ -14,7 +15,7 @@ namespace Organiser.Core.CQRS.Resources.Tasks.Tasks.Handlers
             var task = context.Tasks.FirstOrDefault(x => x.TGID == command.TGID);
 
             if (task == null)
-                throw new Exception("Nie znaleziono zadania");
+                throw new TaskNotFoundException("Nie znaleziono zadania");
 
             context.DeleteTask(task);
             context.SaveChanges();

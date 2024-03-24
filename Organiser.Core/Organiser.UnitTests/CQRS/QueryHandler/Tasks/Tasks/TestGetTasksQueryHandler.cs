@@ -15,7 +15,6 @@
 //    public class TestGetTasksQueryHandler
 //    {
 //        private Mock<IDataBaseContext>? context;
-//        private Mock<IUserContext>? user;
 //        private Mock<IMapper>? mapper;
 
 //        public List<Cores.Entities.Tasks>? tasks;
@@ -25,7 +24,6 @@
 //        public void SetUp()
 //        {
 //            context = new Mock<IDataBaseContext>();
-//            user = new Mock<IUserContext>();
 //            mapper = new Mock<IMapper>();
 
 //            tasks = new List<Cores.Entities.Tasks>()
@@ -96,7 +94,7 @@
 //        {
 //            //Arrange
 //            var query = new GetTasksQuery() { CGID = Guid.Empty.ToString(), Status = 4 };
-//            var handler = new GetTasksQueryHandler(context.Object, user.Object, mapper.Object);
+//            var handler = new GetTasksQueryHandler(context.Object, mapper.Object);
 
 //            //Act
 //            handler.Handle(query);
@@ -110,7 +108,7 @@
 //        {
 //            //Arrange
 //            var query = new GetTasksQuery() { CGID = Guid.Empty.ToString(), Status = 1 };
-//            var handler = new GetTasksQueryHandler(context.Object, user.Object, mapper.Object);
+//            var handler = new GetTasksQueryHandler(context.Object, mapper.Object);
 
 //            //Act
 //            handler.Handle(query);
@@ -127,7 +125,7 @@
 //        {
 //            //Arrange
 //            var query = new GetTasksQuery() { CGID = Guid.Empty.ToString(), Status = 2 };
-//            var handler = new GetTasksQueryHandler(context.Object, user.Object, mapper.Object);
+//            var handler = new GetTasksQueryHandler(context.Object, mapper.Object);
 
 //            //Act
 //            handler.Handle(query);
@@ -144,7 +142,7 @@
 //        {
 //            //Arrange
 //            var query = new GetTasksQuery() { CGID = Guid.Empty.ToString(), Status = 3 };
-//            var handler = new GetTasksQueryHandler(context.Object, user.Object, mapper.Object);
+//            var handler = new GetTasksQueryHandler(context.Object, mapper.Object);
 
 //            //Act
 //            handler.Handle(query);
