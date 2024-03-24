@@ -14,9 +14,23 @@
         }
     }
 
+    public class RegisterUserNameIsOver100Exception : RegisterExceptions
+    {
+        public RegisterUserNameIsOver100Exception(string message) : base(message)
+        {
+        }
+    }
+
     public class RegisterEmailIsEmptyException : RegisterExceptions
     {
         public RegisterEmailIsEmptyException(string message) : base(message)
+        {
+        }
+    }
+
+    public class RegisterEmailIsOver100Exception : RegisterExceptions
+    {
+        public RegisterEmailIsOver100Exception(string message) : base(message)
         {
         }
     }

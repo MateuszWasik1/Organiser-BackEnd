@@ -68,6 +68,25 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Accounts
         }
 
         [Test]
+        public void TestRegisterUserCommandHandler_UserNameIsOver100_ShouldThrowRegisterUserNameIsOver100Exception()
+        {
+            //Arrange 
+            var model = new RegisterViewModel()
+            {
+                UUserName = "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890",
+                UEmail = "",
+                UPassword = ""
+            };
+
+            var command = new RegisterUserCommand() { Model = model };
+            var handler = new RegisterUserCommandHandler(context.Object, hasher.Object, emailSender.Object);
+
+            //Act
+            //Assert
+            Assert.Throws<RegisterUserNameIsOver100Exception>(() => handler.Handle(command));
+        }
+
+        [Test]
         public void TestRegisterUserCommandHandler_UserNameIsNull_ShouldThrowRegisterUserNameIsEmptyException()
         {
             //Arrange 
@@ -122,6 +141,25 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Accounts
             //Act
             //Assert
             Assert.Throws<RegisterEmailIsEmptyException>(() => handler.Handle(command));
+        }
+
+        [Test]
+        public void TestRegisterUserCommandHandler_EmaikIsEmptyString_ShouldThrowRegisterEmailIsOver100Exception()
+        {
+            //Arrange 
+            var model = new RegisterViewModel()
+            {
+                UUserName = "User",
+                UEmail = "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890",
+                UPassword = ""
+            };
+
+            var command = new RegisterUserCommand() { Model = model };
+            var handler = new RegisterUserCommandHandler(context.Object, hasher.Object, emailSender.Object);
+
+            //Act
+            //Assert
+            Assert.Throws<RegisterEmailIsOver100Exception>(() => handler.Handle(command));
         }
 
         [Test]

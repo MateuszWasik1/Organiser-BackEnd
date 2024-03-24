@@ -26,8 +26,14 @@ namespace Organiser.Core.CQRS.Resources.Accounts.Handlers
             if (string.IsNullOrEmpty(command.Model.UUserName))
                 throw new RegisterUserNameIsEmptyException("Nazwa użytkownika nie może być pusta");
 
+            if (command.Model.UUserName.Length > 100)
+                throw new RegisterUserNameIsOver100Exception("Nazwa użytkownika nie może zawierać więcej niż 100 znaków!");
+
             if (string.IsNullOrEmpty(command.Model.UEmail))
                 throw new RegisterEmailIsEmptyException("Email nie może być pusty");
+
+            if (command.Model.UEmail.Length > 100)
+                throw new RegisterEmailIsOver100Exception("Email użytkownika nie może zawierać więcej niż 100 znaków!");
 
             if (string.IsNullOrEmpty(command.Model.UPassword))
                 throw new RegisterPasswordIsEmptyException("Hasło nie może być puste");
@@ -45,7 +51,7 @@ namespace Organiser.Core.CQRS.Resources.Accounts.Handlers
                 throw new RegisterPasswordNoSpecialSignsException("Hasło nie zawiera znaków specjalnych");
 
             if (command.Model.UPassword.Length < 8)
-                throw new RegisterPasswordNo8charactersException("Hasło nie zawiera znaków specjalnych");
+                throw new RegisterPasswordNo8charactersException("Hasło jest krótsze niż 8 znaków!");
 
             var userNameExist = context.AllUsers.Any(x => x.UUserName == command.Model.UUserName);
 
