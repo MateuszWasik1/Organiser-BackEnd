@@ -1,4 +1,5 @@
 ﻿using Organiser.Core.CQRS.Resources.User.Commands;
+using Organiser.Core.Exceptions;
 using Organiser.Cores.Context;
 using Organiser.CQRS.Abstraction.Commands;
 
@@ -14,7 +15,7 @@ namespace Organiser.Core.CQRS.Resources.User.Handlers
             var deletedUser = context.AllUsers.FirstOrDefault(x => x.UGID == command.UGID);
 
             if (deletedUser == null)
-                throw new Exception("Nie znaleziono użytkownika!");
+                throw new UserNotFoundExceptions("Nie znaleziono użytkownika!");
 
             var categories = context.AllCategories.Where(x => x.CUID == deletedUser.UID).ToList();
             var tasks = context.AllTasks.Where(x => x.TUID == deletedUser.UID).ToList();

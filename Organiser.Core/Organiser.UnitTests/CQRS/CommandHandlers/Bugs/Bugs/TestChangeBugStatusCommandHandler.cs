@@ -3,6 +3,8 @@ using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using Organiser.Core.CQRS.Resources.Bugs.Bugs.Commands;
 using Organiser.Core.CQRS.Resources.Bugs.Bugs.Handlers;
+using Organiser.Core.Exceptions;
+using Organiser.Core.Exceptions.Bugs;
 using Organiser.Core.Models.ViewModels.BugsViewModels;
 using Organiser.Cores.Context;
 using Organiser.Cores.Models.Enums;
@@ -82,7 +84,7 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Bugs.Bugs
         }
 
         [Test]
-        public void TestChangeBugStatusCommandHandler_BugNotFound_ShouldThrowException()
+        public void TestChangeBugStatusCommandHandler_BugNotFound_ShouldThrowBugNotFoundExceptions()
         {
             //Arrange 
             var model = new ChangeBugStatusViewModel()
@@ -96,11 +98,11 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Bugs.Bugs
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => handler.Handle(command));
+            Assert.Throws<BugNotFoundExceptions>(() => handler.Handle(command));
         }
 
         [Test]
-        public void TestChangeBugStatusCommandHandler_UserNotFound_ShouldThrowException()
+        public void TestChangeBugStatusCommandHandler_UserNotFound_ShouldThrowUserNotFoundExceptions()
         {
             //Arrange 
             user.Setup(x => x.UID).Returns(4);
@@ -116,7 +118,7 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Bugs.Bugs
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => handler.Handle(command));
+            Assert.Throws<UserNotFoundExceptions>(() => handler.Handle(command));
         }
 
         [Test]

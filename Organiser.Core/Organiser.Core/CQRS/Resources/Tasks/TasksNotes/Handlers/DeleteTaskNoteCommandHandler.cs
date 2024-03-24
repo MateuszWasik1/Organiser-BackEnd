@@ -1,4 +1,5 @@
 ﻿using Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Commands;
+using Organiser.Core.Exceptions.Tasks;
 using Organiser.Cores.Context;
 using Organiser.CQRS.Abstraction.Commands;
 
@@ -14,7 +15,7 @@ namespace Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Handlers
             var taskNote = context.TasksNotes.FirstOrDefault(x => x.TNGID == command.TNGID);
 
             if (taskNote == null)
-                throw new Exception("Nie znaleziono notatki do zadania! Notatka nie została usunięta.");
+                throw new TaskNotesNotFoundException("Nie znaleziono notatki do zadania! Notatka nie została usunięta.");
 
             context.DeleteTaskNotes(taskNote);
             context.SaveChanges();

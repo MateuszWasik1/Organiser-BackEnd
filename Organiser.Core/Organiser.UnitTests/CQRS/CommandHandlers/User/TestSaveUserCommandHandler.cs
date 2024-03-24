@@ -6,6 +6,8 @@ using Organiser.Core.CQRS.Resources.User.Handlers;
 using Organiser.Cores.Context;
 using Organiser.Cores.Models.ViewModels.UserViewModels;
 using Organiser.Cores.Services;
+using Organiser.Core.Exceptions;
+using Organiser.Core.Exceptions.Tasks;
 
 namespace Organiser.UnitTests.CQRS.CommandHandlers.User
 {
@@ -51,17 +53,173 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.User
         }
 
         [Test]
-        public void TestSaveUserCommandHandler_UserNotFound_ShouldThrowException()
+        public void TestSaveUserCommandHandler_UserNameIsEmpty_ShouldThrowUserNameRequiredException()
         {
             //Arrange
-            user.Setup(x => x.UID).Returns(2);
+            var model = new UserViewModel()
+            {
+                UFirstName = "",
+                ULastName = "",
+                UUserName = "",
+                UEmail = "",
+                UPhone = "",
+            };
 
-            var query = new SaveUserCommand() { Model = new UserViewModel() };
+            var query = new SaveUserCommand() { Model = model };
             var handler = new SaveUserCommandHandler(context.Object, user.Object);
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => handler.Handle(query));
+            Assert.Throws<UserNameRequiredException>(() => handler.Handle(query));
+        }
+
+        [Test]
+        public void TestSaveUserCommandHandler_UserNameIsOver100_ShouldThrowUserNameMax100Exception()
+        {
+            //Arrange
+            var model = new UserViewModel()
+            {
+                UFirstName = "",
+                ULastName = "",
+                UUserName = "NewUserNameNewUserNameNewUserNameNewUserNameNewUserNameNewUserNameNewUserNameNewUserNameNewUserNameNewUserNameNewUserName",
+                UEmail = "",
+                UPhone = "",
+            };
+
+            var query = new SaveUserCommand() { Model = model };
+            var handler = new SaveUserCommandHandler(context.Object, user.Object);
+
+            //Act
+            //Assert
+            Assert.Throws<UserNameMax100Exception>(() => handler.Handle(query));
+        }
+
+        [Test]
+        public void TestSaveUserCommandHandler_UserFirstnameIsOver50_ShouldThrowUserFirstNameMax50Exception()
+        {
+            //Arrange
+            var model = new UserViewModel()
+            {
+                UFirstName = "NewNameNewNameNewNameNewNameNewNameNewNameNewNameNewName",
+                ULastName = "",
+                UUserName = "NewUserName",
+                UEmail = "",
+                UPhone = "",
+            };
+
+            var query = new SaveUserCommand() { Model = model };
+            var handler = new SaveUserCommandHandler(context.Object, user.Object);
+
+            //Act
+            //Assert
+            Assert.Throws<UserFirstNameMax50Exception>(() => handler.Handle(query));
+        }
+
+        [Test]
+        public void TestSaveUserCommandHandler_UserLastNameIsOver50_ShouldThrowUserLastNameMax50Exception()
+        {
+            //Arrange
+            var model = new UserViewModel()
+            {
+                UFirstName = "NewName",
+                ULastName = "NewLastNameNewLastNameNewLastNameNewLastNameNewLastNameNewLastNameNewLastName",
+                UUserName = "NewUserName",
+                UEmail = "",
+                UPhone = "",
+            };
+
+            var query = new SaveUserCommand() { Model = model };
+            var handler = new SaveUserCommandHandler(context.Object, user.Object);
+
+            //Act
+            //Assert
+            Assert.Throws<UserLastNameMax50Exception>(() => handler.Handle(query));
+        }
+
+        [Test]
+        public void TestSaveUserCommandHandler_UserEmailIsEmpty_ShouldThrowUserEmailRequiredException()
+        {
+            //Arrange
+            var model = new UserViewModel()
+            {
+                UFirstName = "NewName",
+                ULastName = "NewLastName",
+                UUserName = "NewUserName",
+                UEmail = "",
+                UPhone = "",
+            };
+
+            var query = new SaveUserCommand() { Model = model };
+            var handler = new SaveUserCommandHandler(context.Object, user.Object);
+
+            //Act
+            //Assert
+            Assert.Throws<UserEmailRequiredException>(() => handler.Handle(query));
+        }
+
+        [Test]
+        public void TestSaveUserCommandHandler_UserEmailIsOver100_ShouldThrowUserEmailMax100Exception()
+        {
+            //Arrange
+            var model = new UserViewModel()
+            {
+                UFirstName = "NewName",
+                ULastName = "NewLastName",
+                UUserName = "NewUserName",
+                UEmail = "NewEmailNewEmailNewEmailNewEmailNewEmailNewEmailNewEmailNewEmailNewEmailNewEmailNewEmailNewEmailNewEmailNewEmailNewEmailNewEmailNewEmail",
+                UPhone = "",
+            };
+
+            var query = new SaveUserCommand() { Model = model };
+            var handler = new SaveUserCommandHandler(context.Object, user.Object);
+
+            //Act
+            //Assert
+            Assert.Throws<UserEmailMax100Exception>(() => handler.Handle(query));
+        }
+
+        [Test]
+        public void TestSaveUserCommandHandler_UserPhoneIsOver100_ShouldThrowUserPhoneMax100Exception()
+        {
+            //Arrange
+            var model = new UserViewModel()
+            {
+                UFirstName = "NewName",
+                ULastName = "NewLastName",
+                UUserName = "NewUserName",
+                UEmail = "NewEmail",
+                UPhone = "NewPhoneNewPhoneNewPhoneNewPhoneNewPhoneNewPhoneNewPhoneNewPhoneNewPhoneNewPhoneNewPhoneNewPhoneNewPhoneNewPhoneNewPhoneNewPhoneNewPhoneNewPhoneNewPhone",
+            };
+
+            var query = new SaveUserCommand() { Model = model };
+            var handler = new SaveUserCommandHandler(context.Object, user.Object);
+
+            //Act
+            //Assert
+            Assert.Throws<UserPhoneMax100Exception>(() => handler.Handle(query));
+        }
+
+        [Test]
+        public void TestSaveUserCommandHandler_UserNotFound_ShouldThrowUserNotFoundExceptions()
+        {
+            //Arrange
+            user.Setup(x => x.UID).Returns(2);
+
+            var model = new UserViewModel()
+            {
+                UFirstName = "NewName",
+                ULastName = "NewLastName",
+                UUserName = "NewUserName",
+                UEmail = "NewEmail",
+                UPhone = "NewPhone",
+            };
+
+            var query = new SaveUserCommand() { Model = model };
+            var handler = new SaveUserCommandHandler(context.Object, user.Object);
+
+            //Act
+            //Assert
+            Assert.Throws<UserNotFoundExceptions>(() => handler.Handle(query));
         }
 
         [Test]

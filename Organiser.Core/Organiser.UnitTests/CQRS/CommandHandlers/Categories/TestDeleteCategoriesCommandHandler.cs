@@ -1,6 +1,7 @@
 ﻿using Moq;
 using NUnit.Framework;
 using NUnit.Framework.Legacy;
+using Organiser.Core.Exceptions.Categories;
 using Organiser.Cores.Context;
 using Organiser.CQRS.Resources.Categories.Commands;
 using Organiser.CQRS.Resources.Categories.Handlers;
@@ -68,7 +69,7 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Categories
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => handler.Handle(command));
+            Assert.Throws<CategoryNotFoundException>(() => handler.Handle(command));
         }
 
         [Test]
@@ -80,7 +81,7 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Categories
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => handler.Handle(command));
+            Assert.Throws<CategoryHasTasksException>(() => handler.Handle(command));
         }
 
         [Test]

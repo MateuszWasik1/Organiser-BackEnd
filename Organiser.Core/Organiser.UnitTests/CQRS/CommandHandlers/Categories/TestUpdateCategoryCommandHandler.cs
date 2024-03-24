@@ -1,6 +1,7 @@
 ﻿using Moq;
 using NUnit.Framework;
 using NUnit.Framework.Legacy;
+using Organiser.Core.Exceptions.Categories;
 using Organiser.Cores.Context;
 using Organiser.Cores.Models.ViewModels.CategoriesViewModel;
 using Organiser.CQRS.Resources.Categories.Commands;
@@ -70,12 +71,13 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Categories
         }
 
         [Test]
-        public void TestUpdateCategoryCommandHandler_CategoryDontExist_ShouldThrowException()
+        public void TestUpdateCategoryCommandHandler_AddCategory_CNameIsEmpty_ShouldAddThrowCategoryNameRequiredException()
         {
             //Arrange
             var model = new CategoryViewModel()
             {
-                CGID = new Guid("99dacc1d-7bee-4635-9c4c-9404a4af80dd"),
+                CGID = new Guid("f9dacc1d-7bee-4635-9c4c-9404a4af80dd"),
+                CName = "",
             };
 
             var command = new UpdateCategoryCommand() { Model = model };
@@ -83,7 +85,65 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Categories
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => handler.Handle(command));
+            Assert.Throws<CategoryNameRequiredException>(() => handler.Handle(command));
+        }
+
+        [Test]
+        public void TestUpdateCategoryCommandHandler_AddCategory_CNameIsOver300_ShouldAddThrowCategoryNameMax300Exception()
+        {
+            //Arrange
+            var model = new CategoryViewModel()
+            {
+                CGID = new Guid("f9dacc1d-7bee-4635-9c4c-9404a4af80dd"),
+                CName = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec p",
+            };
+
+            var command = new UpdateCategoryCommand() { Model = model };
+            var handler = new UpdateCategoryCommandHandler(context.Object);
+
+            //Act
+            //Assert
+            Assert.Throws<CategoryNameMax300Exception>(() => handler.Handle(command));
+        }
+
+        [Test]
+        public void TestUpdateCategoryCommandHandler_AddCategory_CBudgetIsLowertThan0_ShouldAddThrowCategoryBudgetMin0Exception()
+        {
+            //Arrange
+            var model = new CategoryViewModel()
+            {
+                CGID = new Guid("f9dacc1d-7bee-4635-9c4c-9404a4af80dd"),
+                CName = "234",
+                CBudget = -1,
+            };
+
+            var command = new UpdateCategoryCommand() { Model = model };
+            var handler = new UpdateCategoryCommandHandler(context.Object);
+
+            //Act
+            //Assert
+            Assert.Throws<CategoryBudgetMin0Exception>(() => handler.Handle(command));
+        }
+
+        [Test]
+        public void TestUpdateCategoryCommandHandler_CategoryDontExist_ShouldThrowException()
+        {
+            //Arrange
+            var model = new CategoryViewModel()
+            {
+                CGID = new Guid("99dacc1d-7bee-4635-9c4c-9404a4af80dd"),
+                CName = "Nazwa 5",
+                CBudget = 2060,
+                CStartDate = new DateTime(2023, 12, 5, 21, 30, 0),
+                CEndDate = new DateTime(2023, 12, 12, 21, 30, 0)
+            };
+
+            var command = new UpdateCategoryCommand() { Model = model };
+            var handler = new UpdateCategoryCommandHandler(context.Object);
+
+            //Act
+            //Assert
+            Assert.Throws<CategoryNotFoundException>(() => handler.Handle(command));
         }
 
         [Test]

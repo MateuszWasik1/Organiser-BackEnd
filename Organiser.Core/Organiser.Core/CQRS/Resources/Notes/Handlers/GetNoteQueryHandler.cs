@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Organiser.Core.CQRS.Resources.Notes.Queries;
+using Organiser.Core.Exceptions.Notes;
 using Organiser.Core.Models.ViewModels.NotesViewModels;
 using Organiser.Cores.Context;
 using Organiser.CQRS.Abstraction.Queries;
@@ -22,7 +23,7 @@ namespace Organiser.Core.CQRS.Resources.Notes.Handlers
             var note = context.Notes.FirstOrDefault(x => x.NGID == query.NGID);
 
             if (note == null)
-                throw new Exception("Nie udało znaleźć się notatki!");
+                throw new NoteNotFoundException("Nie udało znaleźć się notatki!");
 
             var noteViewModel = mapper.Map<Cores.Entities.Notes, NotesViewModel>(note);
 

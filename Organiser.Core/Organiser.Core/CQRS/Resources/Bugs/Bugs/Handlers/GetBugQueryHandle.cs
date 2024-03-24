@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Organiser.Core.CQRS.Resources.Bugs.Bugs.Queries;
+using Organiser.Core.Exceptions.Bugs;
 using Organiser.Core.Models.ViewModels.BugsViewModels;
 using Organiser.Cores.Context;
 using Organiser.Cores.Models.Enums;
@@ -31,7 +32,7 @@ namespace Organiser.Core.CQRS.Resources.Bugs.Bugs.Handlers
                 bug = context.Bugs.FirstOrDefault(x => x.BGID == query.BGID);
 
             if (bug == null)
-                throw new Exception("Nie znaleziono wskazanego błędu !");
+                throw new BugNotFoundExceptions("Nie znaleziono wskazanego błędu!");
 
             var bugViewModel = mapper.Map<Cores.Entities.Bugs, BugViewModel>(bug);
 

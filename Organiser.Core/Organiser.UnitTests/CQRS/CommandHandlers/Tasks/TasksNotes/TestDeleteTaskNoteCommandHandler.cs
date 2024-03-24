@@ -3,6 +3,7 @@ using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Commands;
 using Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Handlers;
+using Organiser.Core.Exceptions.Tasks;
 using Organiser.Cores.Context;
 
 namespace Organiser.UnitTests.CQRS.CommandHandlers.Tasks.TasksNotes
@@ -39,7 +40,7 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Tasks.TasksNotes
         }
 
         [Test]
-        public void TestDeleteTaskNoteCommandHandler_TaskNoteNotFound_ShouldThrowException()
+        public void TestDeleteTaskNoteCommandHandler_TaskNoteNotFound_ShouldThrowTaskNotesNotFoundException()
         {
             //Arrange
             var command = new DeleteTaskNoteCommand() { TNGID = new Guid("00dacc1d-7bee-4635-9c4c-9404a4af80dd") };
@@ -47,7 +48,7 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Tasks.TasksNotes
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => handler.Handle(command));
+            Assert.Throws<TaskNotesNotFoundException>(() => handler.Handle(command));
         }
 
         [Test]

@@ -4,6 +4,7 @@ using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using Organiser.Core.CQRS.Resources.Bugs.Bugs.Handlers;
 using Organiser.Core.CQRS.Resources.Bugs.Bugs.Queries;
+using Organiser.Core.Exceptions.Bugs;
 using Organiser.Core.Models.ViewModels.BugsViewModels;
 using Organiser.Cores.Context;
 using Organiser.Cores.Models.Enums;
@@ -100,7 +101,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
         }
 
         [Test]
-        public void TestGetBugQueryHandler_UserTriedToLookInNotHisBug_UserIsNotAdmin_ShouldThrowException()
+        public void TestGetBugQueryHandler_UserTriedToLookInNotHisBug_UserIsNotAdmin_ShouldThrowBugNotFoundExceptions()
         {
             //Arrange
             var query = new GetBugQuery() { BGID  = allBugs[0].BGID };
@@ -108,7 +109,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => handler.Handle(query));
+            Assert.Throws<BugNotFoundExceptions>(() => handler.Handle(query));
         }
 
         [Test]

@@ -1,4 +1,6 @@
 ﻿using Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Commands;
+using Organiser.Core.Exceptions;
+using Organiser.Core.Exceptions.Bugs;
 using Organiser.Cores.Context;
 using Organiser.Cores.Models.Enums;
 using Organiser.Cores.Services;
@@ -18,6 +20,12 @@ namespace Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Handlers
 
         public void Handle(SaveBugNoteCommand command) 
         {
+            if (command.Model.BNText.Length == 0)
+                throw new BugsNotesTextRequiredException("Tekst notatki do błędu musi zawierać znaki!");
+
+            if (command.Model.BNText.Length > 4000)
+                throw new BugsNotesTextMax4000Exception("Tekst notatki maksymalnie może zawierać 4000 znaków!");
+
             var bugNote = new Cores.Entities.BugsNotes()
             {
                 BNGID = Guid.NewGuid(),
@@ -32,12 +40,12 @@ namespace Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Handlers
             var currentUser = context.User.FirstOrDefault(x => x.UID == user.UID);
 
             if (currentUser == null)
-                throw new Exception("Nie znaleziono użytkownika");
+                throw new UserNotFoundExceptions("Nie znaleziono użytkownika");
 
             var bug = context.AllBugs.FirstOrDefault(x => x.BGID == bugNote.BNBGID);
 
             if (bug == null)
-                throw new Exception("Nie znaleziono wskazanego błędu!");
+                throw new BugNotFoundExceptions("Nie znaleziono wskazanego błędu!");
 
             var isUserVerifier = bug?.BAUIDS?.Contains(currentUser.UGID.ToString()) ?? false;
             var isUserSupportOrAdmin = (currentUser?.URID == (int)RoleEnum.Admin || currentUser?.URID == (int)RoleEnum.Support);

@@ -9,6 +9,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
+using Organiser.Core.Exceptions.Accounts;
 
 namespace Organiser.Core.CQRS.Resources.Accounts.Handlers
 {
@@ -44,12 +45,12 @@ namespace Organiser.Core.CQRS.Resources.Accounts.Handlers
             var user = context.AllUsers.FirstOrDefault(u => u.UUserName == model.UUserName);
 
             if (user == null)
-                throw new Exception("Podany login lub hasło jest błędne!");
+                throw new LoginOrUserNotFoundExceptions("Podany login lub hasło jest błędne!");
 
             var result = hasher.VerifyHashedPassword(user, user.UPassword, model.UPassword);
 
             if (result == PasswordVerificationResult.Failed)
-                throw new Exception("Podany login lub hasło jest błędne!");
+                throw new LoginOrUserNotFoundExceptions("Podany login lub hasło jest błędne!");
 
             var userRole = context.Roles.FirstOrDefault(x => x.RID == user.URID)?.RName ?? "User";
 

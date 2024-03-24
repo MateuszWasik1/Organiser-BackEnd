@@ -4,6 +4,7 @@ using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using Organiser.Core.CQRS.Resources.User.Handlers;
 using Organiser.Core.CQRS.Resources.User.Queries;
+using Organiser.Core.Exceptions;
 using Organiser.Cores.Context;
 using Organiser.Cores.Models.ViewModels.UserViewModels;
 using Organiser.Cores.Services;
@@ -68,7 +69,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.User
         }
 
         [Test]
-        public void TestGetUserQueryHandler_GetUser_UserNotFound_ShouldThrowException()
+        public void TestGetUserQueryHandler_GetUser_UserNotFound_ShouldThrowUserNotFoundExceptions()
         {
             //Arrange
             user.Setup(x => x.UID).Returns(223);
@@ -78,7 +79,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.User
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => handler.Handle(query));
+            Assert.Throws<UserNotFoundExceptions>(() => handler.Handle(query));
         }
 
         [Test]

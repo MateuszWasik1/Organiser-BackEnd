@@ -3,6 +3,7 @@ using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using Organiser.Core.CQRS.Resources.Savings.Commands;
 using Organiser.Core.CQRS.Resources.Savings.Handlers;
+using Organiser.Core.Exceptions.Savings;
 using Organiser.Cores.Context;
 using Organiser.Cores.Models.ViewModels.SavingsViewModels;
 using Organiser.Cores.Services;
@@ -70,6 +71,27 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Savings
             context.Setup(x => x.Savings).Returns(savings.AsQueryable());
 
             context.Setup(x => x.CreateOrUpdate(It.IsAny<Cores.Entities.Savings>())).Callback<Cores.Entities.Savings>(saving => savings.Add(saving));
+        }
+
+        [Test]
+        public void TestAddSavingCommandHandler_SavingAmountLessThan0_ShouldThrowSavingAmountLessThan0Exception()
+        {
+            //Arrange
+            var model = new SavingViewModel()
+            {
+                SGID = new Guid("f5dacc1d-7bee-4635-9c4c-9404a4af80dd"),
+                SAmount = -1,
+                SOnWhat = "Nazwa 5",
+                SWhere = "Lokalizacja 5",
+                STime = new DateTime(2023, 12, 4, 21, 30, 0)
+            };
+
+            var command = new AddSavingCommand() { Model = model };
+            var handler = new AddSavingCommandHandler(context.Object, user.Object);
+
+            //Act
+            //Assert
+            Assert.Throws<SavingAmountLessThan0Exception>(() => handler.Handle(command));
         }
 
         [Test]

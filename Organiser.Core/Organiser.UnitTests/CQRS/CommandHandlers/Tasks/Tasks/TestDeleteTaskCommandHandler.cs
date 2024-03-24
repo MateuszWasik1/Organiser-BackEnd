@@ -3,6 +3,7 @@ using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using Organiser.Core.CQRS.Resources.Tasks.Tasks.Commands;
 using Organiser.Core.CQRS.Resources.Tasks.Tasks.Handlers;
+using Organiser.Core.Exceptions.Tasks;
 using Organiser.Cores.Context;
 using Organiser.Cores.Models.Enums;
 
@@ -66,7 +67,7 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Tasks.Tasks
         }
 
         [Test]
-        public void TestTasksController_DeleteTask_TaskNotFound_ShouldThrowException()
+        public void TestTasksController_DeleteTask_TaskNotFound_ShouldThrowTaskNotFoundException()
         {
             //Arrange
             var command = new DeleteTaskCommand() { TGID = Guid.Empty };
@@ -74,7 +75,7 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Tasks.Tasks
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => handler.Handle(command));
+            Assert.Throws<TaskNotFoundException>(() => handler.Handle(command));
         }
 
         [Test]

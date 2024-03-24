@@ -3,6 +3,8 @@ using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using Organiser.Core.CQRS.Resources.User.Commands;
 using Organiser.Core.CQRS.Resources.User.Handlers;
+using Organiser.Core.Exceptions;
+using Organiser.Core.Exceptions.Accounts;
 using Organiser.Cores.Context;
 
 namespace Organiser.UnitTests.CQRS.CommandHandlers.User
@@ -164,7 +166,7 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.User
         }
 
         [Test]
-        public void TestDeleteUserCommandHandler_UserNotFound_ShouldThrowException()
+        public void TestDeleteUserCommandHandler_UserNotFound_ShouldThrowUserNotFoundExceptions()
         {
             //Arrange
             var query = new DeleteUserCommand() { UGID = new Guid("69dacc1d-7bee-4635-9c4c-9404a4af80dd") };
@@ -172,7 +174,7 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.User
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => handler.Handle(query));
+            Assert.Throws<UserNotFoundExceptions>(() => handler.Handle(query));
         }
 
         [Test]

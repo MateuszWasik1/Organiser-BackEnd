@@ -3,6 +3,7 @@ using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using Organiser.Core.CQRS.Resources.Savings.Commands;
 using Organiser.Core.CQRS.Resources.Savings.Handlers;
+using Organiser.Core.Exceptions.Savings;
 using Organiser.Cores.Context;
 
 namespace Organiser.UnitTests.CQRS.CommandHandlers.Savings
@@ -49,7 +50,7 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Savings
         }
 
         [Test]
-        public void TestDeleteSavingCommandHandler_DeleteSaving_SavingNotFound_ShouldThrowException()
+        public void TestDeleteSavingCommandHandler_DeleteSaving_SavingNotFound_ShouldThrowSavingNotFoundException()
         {
             //Arrange
             var command = new DeleteSavingCommand() { SGID = Guid.Empty };
@@ -57,7 +58,7 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Savings
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => handler.Handle(command));
+            Assert.Throws<SavingNotFoundException>(() => handler.Handle(command));
         }
 
         [Test]

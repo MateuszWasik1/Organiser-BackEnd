@@ -3,6 +3,7 @@ using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using Organiser.Core.CQRS.Resources.Tasks.Tasks.Commands;
 using Organiser.Core.CQRS.Resources.Tasks.Tasks.Handlers;
+using Organiser.Core.Exceptions.Tasks;
 using Organiser.Core.Models.ViewModels.TasksViewModels;
 using Organiser.Cores.Context;
 using Organiser.Cores.Models.Enums;
@@ -67,12 +68,13 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Tasks.Tasks
         }
 
         [Test]
-        public void TestUpdateTaskCommandHandler_AddTask_TaskDontExist_ShouldThrowException()
+        public void TestUpdateTaskCommandHandler_UpdateTask_NameIsEmpty_ShouldThrowTaskNameRequiredException()
         {
             //Arrange
             var model = new TaskViewModel()
             {
-                TGID = new Guid("99dacc1d-7bee-4635-9c4c-9404a4af80dd"),
+                TGID = new Guid("f7dacc1d-7bee-4635-9c4c-9404a4af80dd"),
+                TName = "",
             };
 
             var command = new UpdateTaskCommand() { Model = model };
@@ -80,7 +82,84 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Tasks.Tasks
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => handler.Handle(command));
+            Assert.Throws<TaskNameRequiredException>(() => handler.Handle(command));
+        }
+
+        [Test]
+        public void TestUpdateTaskCommandHandler_UpdateTask_NameIsOver300_ShouldThrowTaskNameMax300Exception()
+        {
+            //Arrange
+            var model = new TaskViewModel()
+            {
+                TGID = new Guid("f7dacc1d-7bee-4635-9c4c-9404a4af80dd"),
+                TName = "DummyText\r\nLorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec p",
+            };
+
+            var command = new UpdateTaskCommand() { Model = model };
+            var handler = new UpdateTaskCommandHandler(context.Object);
+
+            //Act
+            //Assert
+            Assert.Throws<TaskNameMax300Exception>(() => handler.Handle(command));
+        }
+
+        [Test]
+        public void TestUpdateTaskCommandHandler_UpdateTask_LocalizationIsOver300_ShouldThrowTaskLocalizationMax300Exception()
+        {
+            //Arrange
+            var model = new TaskViewModel()
+            {
+                TGID = new Guid("f7dacc1d-7bee-4635-9c4c-9404a4af80dd"),
+                TName = "Name",
+                TLocalization = "DummyText\r\nLorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec p",
+            };
+
+            var command = new UpdateTaskCommand() { Model = model };
+            var handler = new UpdateTaskCommandHandler(context.Object);
+
+            //Act
+            //Assert
+            Assert.Throws<TaskLocalizationMax300Exception>(() => handler.Handle(command));
+        }
+
+        [Test]
+        public void TestUpdateTaskCommandHandler_UpdateTask_BudgetIsUnder0_ShouldThrowTaskBudgetMin0Exception()
+        {
+            //Arrange
+            var model = new TaskViewModel()
+            {
+                TGID = new Guid("f7dacc1d-7bee-4635-9c4c-9404a4af80dd"),
+                TName = "Name",
+                TLocalization = "Localization",
+                TBudget = -1,
+            };
+
+            var command = new UpdateTaskCommand() { Model = model };
+            var handler = new UpdateTaskCommandHandler(context.Object);
+
+            //Act
+            //Assert
+            Assert.Throws<TaskBudgetMin0Exception>(() => handler.Handle(command));
+        }
+
+        [Test]
+        public void TestUpdateTaskCommandHandler_UpdateTask_TaskDontExist_ShouldThrowTaskNotFoundException()
+        {
+            //Arrange
+            var model = new TaskViewModel()
+            {
+                TGID = new Guid("99dacc1d-7bee-4635-9c4c-9404a4af80dd"),
+                TName = "Name",
+                TLocalization = "Localization",
+                TBudget = 11,
+            };
+
+            var command = new UpdateTaskCommand() { Model = model };
+            var handler = new UpdateTaskCommandHandler(context.Object);
+
+            //Act
+            //Assert
+            Assert.Throws<TaskNotFoundException>(() => handler.Handle(command));
         }
 
         [Test]

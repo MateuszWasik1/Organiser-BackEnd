@@ -4,6 +4,7 @@ using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using Organiser.Core.CQRS.Resources.User.Handlers;
 using Organiser.Core.CQRS.Resources.User.Queries;
+using Organiser.Core.Exceptions;
 using Organiser.Cores.Context;
 using Organiser.Cores.Models.ViewModels.UserViewModels;
 
@@ -70,7 +71,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.User
         }
 
         [Test]
-        public void TestGetUserByAdminQueryHandler_GetUserByAdmin_UserNotFound_ShouldThrowException()
+        public void TestGetUserByAdminQueryHandler_GetUserByAdmin_UserNotFound_ShouldThrowUserNotFoundExceptions()
         {
             //Arrange
             var query = new GetUserByAdminQuery() { UGID = new Guid("d189857a-bf45-4c25-9644-f2408351d328") };
@@ -78,7 +79,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.User
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => handler.Handle(query));
+            Assert.Throws<UserNotFoundExceptions>(() => handler.Handle(query));
         }
 
         [Test]
