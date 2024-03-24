@@ -4,6 +4,7 @@ using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Handlers;
 using Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Queries;
+using Organiser.Core.Exceptions.Notes;
 using Organiser.Core.Models.ViewModels.TasksViewModels;
 using Organiser.Cores.Context;
 
@@ -76,7 +77,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Tasks.TasksNotes
         }
 
         [Test]
-        public void TestGetTaskNoteQueryHandler_TaskNotFound_ShouldThrowException()
+        public void TestGetTaskNoteQueryHandler_TaskNotFound_ShouldThrowNoteNotFoundException()
         {
             //Arrange
             var query = new GetTaskNoteQuery() { TGID = new Guid("69dacc1d-7bee-4635-9c4c-9404a4af80dd") };
@@ -84,7 +85,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Tasks.TasksNotes
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => handler.Handle(query));
+            Assert.Throws<NoteNotFoundException>(() => handler.Handle(query));
         }
 
         [Test]

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Queries;
+using Organiser.Core.Exceptions.Notes;
 using Organiser.Core.Models.ViewModels.TasksViewModels;
 using Organiser.Cores.Context;
 using Organiser.CQRS.Abstraction.Queries;
@@ -21,7 +22,7 @@ namespace Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Handlers
             var task = context.Tasks.FirstOrDefault(x => x.TGID == query.TGID);
 
             if (task == null)
-                throw new Exception("Nie znaleziono notatki do zadania. Nie można załadować notatek!");
+                throw new NoteNotFoundException("Nie znaleziono zadania. Nie można załadować notatek!");
 
             var taskNotes = context.TasksNotes.Where(x => x.TNTGID == task.TGID).OrderBy(x => x.TNDate).ToList();
 
