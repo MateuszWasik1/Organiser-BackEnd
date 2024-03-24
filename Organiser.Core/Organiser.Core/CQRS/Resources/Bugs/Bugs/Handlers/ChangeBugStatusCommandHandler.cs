@@ -1,5 +1,5 @@
 ﻿using Organiser.Core.CQRS.Resources.Bugs.Bugs.Commands;
-using Organiser.Core.Exceptions.Accounts;
+using Organiser.Core.Exceptions;
 using Organiser.Core.Exceptions.Bugs;
 using Organiser.Cores.Context;
 using Organiser.Cores.Models.Enums;

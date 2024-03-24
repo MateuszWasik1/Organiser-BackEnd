@@ -3,7 +3,10 @@ using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using Organiser.Core.CQRS.Resources.User.Commands;
 using Organiser.Core.CQRS.Resources.User.Handlers;
+using Organiser.Core.Exceptions;
+using Organiser.Core.Exceptions.Tasks;
 using Organiser.Cores.Context;
+using Organiser.Cores.Entities;
 using Organiser.Cores.Models.ViewModels.UserViewModels;
 
 namespace Organiser.UnitTests.CQRS.CommandHandlers.User
@@ -46,15 +49,174 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.User
         }
 
         [Test]
-        public void TestSaveUserByAdminCommandHandler_UserNotFound_ShouldThrowException()
+        public void TestSaveUserByAdminCommandHandler_UserNameIsEmpty_ShouldThrowUserNameRequiredException()
         {
             //Arrange
-            var query = new SaveUserByAdminCommand() { Model = new UserAdminViewModel() { UGID = new Guid() } };
+            var model = new UserAdminViewModel()
+            {
+                UFirstName = "",
+                ULastName = "",
+                UUserName = "",
+                UEmail = "",
+                UPhone = "",
+            };
+
+            var query = new SaveUserByAdminCommand() { Model = model };
             var handler = new SaveUserByAdminCommandHandler(context.Object);
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => handler.Handle(query));
+            Assert.Throws<UserNameRequiredException>(() => handler.Handle(query));
+        }
+
+        [Test]
+        public void TestSaveUserByAdminCommandHandler_UserNameIsOver100_ShouldThrowUserNameMax100Exception()
+        {
+            //Arrange
+            var model = new UserAdminViewModel()
+            {
+                UFirstName = "",
+                ULastName = "",
+                UUserName = "NewUserNameNewUserNameNewUserNameNewUserNameNewUserNameNewUserNameNewUserNameNewUserNameNewUserNameNewUserNameNewUserName",
+                UEmail = "",
+                UPhone = "",
+            };
+
+            var query = new SaveUserByAdminCommand() { Model = model };
+            var handler = new SaveUserByAdminCommandHandler(context.Object);
+
+            //Act
+            //Assert
+            Assert.Throws<UserNameMax100Exception>(() => handler.Handle(query));
+        }
+
+        [Test]
+        public void TestSaveUserByAdminCommandHandler_UserFirstnameIsOver50_ShouldThrowUserFirstNameMax50Exception()
+        {
+            //Arrange
+            var model = new UserAdminViewModel()
+            {
+                UFirstName = "NewNameNewNameNewNameNewNameNewNameNewNameNewNameNewName",
+                ULastName = "",
+                UUserName = "NewUserName",
+                UEmail = "",
+                UPhone = "",
+            };
+
+            var query = new SaveUserByAdminCommand() { Model = model };
+            var handler = new SaveUserByAdminCommandHandler(context.Object);
+
+            //Act
+            //Assert
+            Assert.Throws<UserFirstNameMax50Exception>(() => handler.Handle(query));
+        }
+
+        [Test]
+        public void TestSaveUserByAdminCommandHandler_UserLastNameIsOver50_ShouldThrowUserLastNameMax50Exception()
+        {
+            //Arrange
+            var model = new UserAdminViewModel()
+            {
+                UFirstName = "NewName",
+                ULastName = "NewLastNameNewLastNameNewLastNameNewLastNameNewLastNameNewLastNameNewLastName",
+                UUserName = "NewUserName",
+                UEmail = "",
+                UPhone = "",
+            };
+
+            var query = new SaveUserByAdminCommand() { Model = model };
+            var handler = new SaveUserByAdminCommandHandler(context.Object);
+
+            //Act
+            //Assert
+            Assert.Throws<UserLastNameMax50Exception>(() => handler.Handle(query));
+        }
+
+        [Test]
+        public void TestSaveUserByAdminCommandHandler_UserEmailIsEmpty_ShouldThrowUserEmailRequiredException()
+        {
+            //Arrange
+            var model = new UserAdminViewModel()
+            {
+                UFirstName = "NewName",
+                ULastName = "NewLastName",
+                UUserName = "NewUserName",
+                UEmail = "",
+                UPhone = "",
+            };
+
+            var query = new SaveUserByAdminCommand() { Model = model };
+            var handler = new SaveUserByAdminCommandHandler(context.Object);
+
+            //Act
+            //Assert
+            Assert.Throws<UserEmailRequiredException>(() => handler.Handle(query));
+        }
+
+        [Test]
+        public void TestSaveUserByAdminCommandHandler_UserEmailIsOver100_ShouldThrowUserEmailMax100Exception()
+        {
+            //Arrange
+            var model = new UserAdminViewModel()
+            {
+                UFirstName = "NewName",
+                ULastName = "NewLastName",
+                UUserName = "NewUserName",
+                UEmail = "NewEmailNewEmailNewEmailNewEmailNewEmailNewEmailNewEmailNewEmailNewEmailNewEmailNewEmailNewEmailNewEmailNewEmailNewEmailNewEmailNewEmail",
+                UPhone = "",
+            };
+
+            var query = new SaveUserByAdminCommand() { Model = model };
+            var handler = new SaveUserByAdminCommandHandler(context.Object);
+
+            //Act
+            //Assert
+            Assert.Throws<UserEmailMax100Exception>(() => handler.Handle(query));
+        }
+
+        [Test]
+        public void TestSaveUserByAdminCommandHandler_UserPhoneIsOver100_ShouldThrowUserPhoneMax100Exception()
+        {
+            //Arrange
+            var model = new UserAdminViewModel()
+            {
+                UFirstName = "NewName",
+                ULastName = "NewLastName",
+                UUserName = "NewUserName",
+                UEmail = "NewEmail",
+                UPhone = "NewPhoneNewPhoneNewPhoneNewPhoneNewPhoneNewPhoneNewPhoneNewPhoneNewPhoneNewPhoneNewPhoneNewPhoneNewPhoneNewPhoneNewPhoneNewPhoneNewPhoneNewPhoneNewPhone",
+            };
+
+            var query = new SaveUserByAdminCommand() { Model = model };
+            var handler = new SaveUserByAdminCommandHandler(context.Object);
+
+            //Act
+            //Assert
+            Assert.Throws<UserPhoneMax100Exception>(() => handler.Handle(query));
+        }
+
+        [Test]
+        public void TestSaveUserByAdminCommandHandler_UserNotFound_ShouldThrowUserNotFoundExceptions()
+        {
+            //Arrange
+            var model = new UserAdminViewModel()
+            {
+                UID = 1,
+                UGID = Guid.NewGuid(),
+                URID = 3,
+                UFirstName = "NewName",
+                ULastName = "NewLastName",
+                UUserName = "NewUserName",
+                UEmail = "NewEmail",
+                UPhone = "NewPhone",
+            };
+
+            var query = new SaveUserByAdminCommand() { Model = model };
+            var handler = new SaveUserByAdminCommandHandler(context.Object);
+
+            //Act
+            //Assert
+            Assert.Throws<UserNotFoundExceptions>(() => handler.Handle(query));
         }
 
         [Test]

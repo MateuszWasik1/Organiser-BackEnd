@@ -13,4 +13,11 @@
         {
         }
     }
+
+    public class BugsNotesTextMax4000Exception : BugsNotesExceptions
+    {
+        public BugsNotesTextMax4000Exception(string message) : base(message)
+        {
+        }
+    }
 }

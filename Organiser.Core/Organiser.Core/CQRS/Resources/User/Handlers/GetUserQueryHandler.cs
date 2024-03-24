@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Organiser.Core.CQRS.Resources.User.Queries;
+using Organiser.Core.Exceptions;
 using Organiser.Cores.Context;
 using Organiser.Cores.Models.ViewModels.UserViewModels;
 using Organiser.Cores.Services;
@@ -25,7 +26,7 @@ namespace Organiser.Core.CQRS.Resources.User.Handlers
             var userData = context.User.FirstOrDefault(x => x.UID == user.UID);
 
             if (userData == null)
-                throw new Exception("Nie znaleziono użytkownika!");
+                throw new UserNotFoundExceptions("Nie znaleziono użytkownika!");
 
             var model = mapper.Map<Cores.Entities.User, UserViewModel>(userData);
 

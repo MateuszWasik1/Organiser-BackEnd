@@ -1,5 +1,5 @@
 ﻿using Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Commands;
-using Organiser.Core.Exceptions.Accounts;
+using Organiser.Core.Exceptions;
 using Organiser.Core.Exceptions.Bugs;
 using Organiser.Cores.Context;
 using Organiser.Cores.Models.Enums;
@@ -22,6 +22,9 @@ namespace Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Handlers
         {
             if (command.Model.BNText.Length == 0)
                 throw new BugsNotesTextRequiredException("Tekst notatki do błędu musi zawierać znaki!");
+
+            if (command.Model.BNText.Length > 4000)
+                throw new BugsNotesTextMax4000Exception("Tekst notatki maksymalnie może zawierać 4000 znaków!");
 
             var bugNote = new Cores.Entities.BugsNotes()
             {
