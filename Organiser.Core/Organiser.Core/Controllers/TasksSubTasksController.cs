@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Organiser.Core.CQRS.Dispatcher;
+using Organiser.Core.CQRS.Resources.Tasks.TasksSubTasks.Commands;
 using Organiser.Core.CQRS.Resources.Tasks.TasksSubTasks.Queries;
-//using Organiser.Core.CQRS.Resources.Tasks.TasksSubTasks.Commands;
 using Organiser.Core.Models.ViewModels.TasksViewModels;
 
 namespace Organiser.Cores.Controllers
@@ -16,13 +16,14 @@ namespace Organiser.Cores.Controllers
         public TasksSubTasksController(IDispatcher dispatcher) => this.dispatcher = dispatcher;
 
         [HttpGet]
+        [Route("GetSubTasks")]
         public List<TasksSubTasksViewModel> GetSubTasks(Guid tGID)
             => dispatcher.DispatchQuery<GetSubTasksQuery, List<TasksSubTasksViewModel>>(new GetSubTasksQuery() { TGID = tGID });
 
-        //[HttpPost]
-        //[Route("AddTaskNote")]
-        //public void AddTaskNote(TasksNotesAddViewModel model)
-        //    => dispatcher.DispatchCommand(new AddTaskNoteCommand() { Model = model });
+        [HttpPost]
+        [Route("AddTaskSubTask")]
+        public void AddTaskNote(TasksAddSubTaskViewModel model)
+            => dispatcher.DispatchCommand(new AddTaskSubTaskCommand() { Model = model });
 
         //[HttpPut]
         //[Route("ChangeSubTaskStatus")]
