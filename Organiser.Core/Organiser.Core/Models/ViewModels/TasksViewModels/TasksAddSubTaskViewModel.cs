@@ -1,6 +1,4 @@
-﻿using Organiser.Cores.Models.Enums;
-
-namespace Organiser.Core.Models.ViewModels.TasksViewModels
+﻿namespace Organiser.Core.Models.ViewModels.TasksViewModels
 {
     public class TasksAddSubTaskViewModel
     {

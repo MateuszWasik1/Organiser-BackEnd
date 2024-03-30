@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Organiser.Core.CQRS.Dispatcher;
-using Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Commands;
-using Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Queries;
+using Organiser.Core.CQRS.Resources.Tasks.TasksSubTasks.Queries;
+//using Organiser.Core.CQRS.Resources.Tasks.TasksSubTasks.Commands;
 using Organiser.Core.Models.ViewModels.TasksViewModels;
 
 namespace Organiser.Cores.Controllers
@@ -15,14 +15,19 @@ namespace Organiser.Cores.Controllers
         private readonly IDispatcher dispatcher;
         public TasksSubTasksController(IDispatcher dispatcher) => this.dispatcher = dispatcher;
 
-        //[HttpGet]
-        //public List<TasksNotesViewModel> Get(Guid tGID)
-        //    => dispatcher.DispatchQuery<GetTaskNoteQuery, List<TasksNotesViewModel>>(new GetTaskNoteQuery() { TGID = tGID });
+        [HttpGet]
+        public List<TasksSubTasksViewModel> GetSubTasks(Guid tGID)
+            => dispatcher.DispatchQuery<GetSubTasksQuery, List<TasksSubTasksViewModel>>(new GetSubTasksQuery() { TGID = tGID });
 
         //[HttpPost]
         //[Route("AddTaskNote")]
         //public void AddTaskNote(TasksNotesAddViewModel model)
         //    => dispatcher.DispatchCommand(new AddTaskNoteCommand() { Model = model });
+
+        //[HttpPut]
+        //[Route("ChangeSubTaskStatus")]
+        //public void ChangeSubTaskStatus(TasksNotesAddViewModel model)
+        //    => dispatcher.DispatchCommand(new ChangeSubTaskStatusCommand() { Model = model });
 
         //[HttpDelete]
         //[Route("DeleteTaskNote/{tNGID}")]

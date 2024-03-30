@@ -6,7 +6,9 @@ namespace Organiser.Core.Models.ViewModels.TasksViewModels
     {
         public Guid TSTGID { get; set; }
         public string? TSTTitle { get; set; }
-        public string? TSTNext { get; set; }
+        public string? TSTText { get; set; }
         public SubTasksStatusEnum TSTStatus { get; set; }
+        public DateTime TSTCreationDate { get; set; }
+        public DateTime? TSTModifyDate { get; set; }
     }
 }
