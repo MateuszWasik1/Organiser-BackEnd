@@ -22,17 +22,17 @@ namespace Organiser.Cores.Controllers
 
         [HttpPost]
         [Route("AddTaskSubTask")]
-        public void AddTaskNote(TasksAddSubTaskViewModel model)
+        public void AddTaskSubTask(TasksAddSubTaskViewModel model)
             => dispatcher.DispatchCommand(new AddTaskSubTaskCommand() { Model = model });
 
-        //[HttpPut]
-        //[Route("ChangeSubTaskStatus")]
-        //public void ChangeSubTaskStatus(TasksNotesAddViewModel model)
-        //    => dispatcher.DispatchCommand(new ChangeSubTaskStatusCommand() { Model = model });
+        [HttpPut]
+        [Route("ChangeSubTaskStatus")]
+        public void ChangeSubTaskStatus(TasksSubTasksChangeStatusViewModel model)
+            => dispatcher.DispatchCommand(new ChangeTaskSubTaskStatusCommand() { Model = model });
 
-        //[HttpDelete]
-        //[Route("DeleteTaskNote/{tNGID}")]
-        //public void DeleteTaskNote(Guid tNGID)
-        //    => dispatcher.DispatchCommand(new DeleteTaskNoteCommand() { TNGID = tNGID });
+        [HttpDelete]
+        [Route("DeleteTaskSubTask/{tstGID}")]
+        public void DeleteTaskSubTask(Guid tstGID)
+            => dispatcher.DispatchCommand(new DeleteTaskSubTaskCommand() { TSTGID = tstGID });
     }
 }

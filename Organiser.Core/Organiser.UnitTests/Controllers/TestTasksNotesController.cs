@@ -5,7 +5,6 @@ using Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Commands;
 using Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Queries;
 using Organiser.Core.Models.ViewModels.TasksViewModels;
 using Organiser.Cores.Controllers;
-using Organiser.Cores.Models.ViewModels;
 
 namespace Organiser.UnitTests.Controllers
 {
