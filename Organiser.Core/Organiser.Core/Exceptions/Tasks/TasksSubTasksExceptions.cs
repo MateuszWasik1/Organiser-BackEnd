@@ -7,6 +7,13 @@
         }
     }
 
+    public class TasksSubTasksNotFoundExceptions : TasksSubTasksExceptions
+    {
+        public TasksSubTasksNotFoundExceptions(string message) : base(message)
+        {
+        }
+    }
+
     public class TaskSubTaskTitleRequiredException : TasksSubTasksExceptions
     {
         public TaskSubTaskTitleRequiredException(string message) : base(message)
