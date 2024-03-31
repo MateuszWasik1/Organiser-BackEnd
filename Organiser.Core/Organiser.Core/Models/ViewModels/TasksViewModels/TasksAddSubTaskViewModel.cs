@@ -5,6 +5,6 @@
         public Guid TSTGID { get; set; }
         public Guid TSTTGID { get; set; }
         public string? TSTTitle { get; set; }
-        public string? TSTNext { get; set; }
+        public string? TSTText { get; set; }
     }
 }

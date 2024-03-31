@@ -24,7 +24,7 @@ namespace Organiser.Core.CQRS.Resources.Tasks.TasksSubTasks.Handlers
             if (task == null)
                 throw new TaskNotFoundException("Nie udało się znaleźć podanego zadania!");
 
-            var subtasks = context.TasksSubTasks.Where(x => x.TSTTGID == query.TGID).OrderBy(x => x.TSTStatus).ThenBy(x => x.TSTModifyDate).ToList();
+            var subtasks = context.TasksSubTasks.Where(x => x.TSTTGID == query.TGID).OrderBy(x => x.TSTStatus).ThenBy(x => x.TSTCreationDate).ToList();
 
             var subtasksViewModel = new List<TasksSubTasksViewModel>();
 

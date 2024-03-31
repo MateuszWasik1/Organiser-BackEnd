@@ -13,9 +13,8 @@ namespace Organiser.Cores.Entities
         public Guid TSTTGID { get; set; }
         public int TSTUID { get; set; }
         public string? TSTTitle { get; set; }
-        public string? TSTNext { get; set; }
+        public string? TSTText { get; set; }
         public DateTime TSTCreationDate { get; set; }
-        public DateTime? TSTModifyDate { get; set; }
         public SubTasksStatusEnum TSTStatus { get; set; }
     }
 }
