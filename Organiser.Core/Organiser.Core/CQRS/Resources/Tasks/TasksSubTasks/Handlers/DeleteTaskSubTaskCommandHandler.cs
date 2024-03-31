@@ -17,7 +17,7 @@ namespace Organiser.Core.CQRS.Resources.Tasks.Tasks.Handlers
             if (subtask == null)
                 throw new TasksSubTasksNotFoundExceptions("Nie znaleziono podzadania!");
 
-            context.DeleteTask(subtask);
+            context.DeleteTaskSubTask(subtask);
             context.SaveChanges();
         }
     }

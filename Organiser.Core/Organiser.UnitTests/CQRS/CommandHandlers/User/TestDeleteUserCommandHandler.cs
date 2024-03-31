@@ -4,7 +4,6 @@ using NUnit.Framework.Legacy;
 using Organiser.Core.CQRS.Resources.User.Commands;
 using Organiser.Core.CQRS.Resources.User.Handlers;
 using Organiser.Core.Exceptions;
-using Organiser.Core.Exceptions.Accounts;
 using Organiser.Cores.Context;
 
 namespace Organiser.UnitTests.CQRS.CommandHandlers.User
@@ -18,6 +17,7 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.User
         private List<Cores.Entities.Categories>? categories;
         private List<Cores.Entities.Tasks>? tasks;
         private List<Cores.Entities.TasksNotes>? tasksNotes;
+        private List<Cores.Entities.TasksSubTasks>? tasksSubTasks;
         private List<Cores.Entities.Savings>? savings;
         private List<Cores.Entities.Notes>? notes;
 
@@ -106,6 +106,28 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.User
                 },
             };
 
+            tasksSubTasks = new List<Cores.Entities.TasksSubTasks>()
+            {
+                new Cores.Entities.TasksSubTasks()
+                {
+                    TSTID = 1,
+                    TSTGID = new Guid("12dacc1d-7bee-4635-9c4c-9404a4af80dd"),
+                    TSTUID = 1,
+                },
+                new Cores.Entities.TasksSubTasks()
+                {
+                    TSTID = 2,
+                    TSTGID = new Guid("13dacc1d-7bee-4635-9c4c-9404a4af80dd"),
+                    TSTUID = 1,
+                },
+                new Cores.Entities.TasksSubTasks()
+                {
+                    TSTID = 3,
+                    TSTGID = new Guid("14dacc1d-7bee-4635-9c4c-9404a4af80dd"),
+                    TSTUID = 66,
+                },
+            };
+
             savings = new List<Cores.Entities.Savings>()
             {
                 new Cores.Entities.Savings()
@@ -154,6 +176,7 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.User
             context.Setup(x => x.AllCategories).Returns(categories.AsQueryable());
             context.Setup(x => x.AllTasks).Returns(tasks.AsQueryable());
             context.Setup(x => x.AllTasksNotes).Returns(tasksNotes.AsQueryable());
+            context.Setup(x => x.AllTasksSubTasks).Returns(tasksSubTasks.AsQueryable());
             context.Setup(x => x.AllSavings).Returns(savings.AsQueryable());
             context.Setup(x => x.AllNotes).Returns(notes.AsQueryable());
 
@@ -161,6 +184,7 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.User
             context.Setup(x => x.DeleteCategory(It.IsAny<Cores.Entities.Categories>())).Callback<Cores.Entities.Categories>(category => categories.Remove(category));
             context.Setup(x => x.DeleteTask(It.IsAny<Cores.Entities.Tasks>())).Callback<Cores.Entities.Tasks>(task => tasks.Remove(task));
             context.Setup(x => x.DeleteTaskNotes(It.IsAny<Cores.Entities.TasksNotes>())).Callback<Cores.Entities.TasksNotes>(taskNote => tasksNotes.Remove(taskNote));
+            context.Setup(x => x.DeleteTaskSubTask(It.IsAny<Cores.Entities.TasksSubTasks>())).Callback<Cores.Entities.TasksSubTasks>(tasksSubTask => tasksSubTasks.Remove(tasksSubTask));
             context.Setup(x => x.DeleteSaving(It.IsAny<Cores.Entities.Savings>())).Callback<Cores.Entities.Savings>(saving => savings.Remove(saving));
             context.Setup(x => x.DeleteNote(It.IsAny<Cores.Entities.Notes>())).Callback<Cores.Entities.Notes>(note => notes.Remove(note));
         }
@@ -192,6 +216,7 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.User
             ClassicAssert.AreEqual(1, categories.Count);
             ClassicAssert.AreEqual(1, tasks.Count);
             ClassicAssert.AreEqual(1, tasksNotes.Count);
+            ClassicAssert.AreEqual(1, tasksSubTasks.Count);
             ClassicAssert.AreEqual(1, savings.Count);
             ClassicAssert.AreEqual(1, notes.Count);
 
@@ -199,6 +224,7 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.User
             context.Verify(x => x.DeleteCategory(It.IsAny<Cores.Entities.Categories>()), Times.Exactly(2));
             context.Verify(x => x.DeleteTask(It.IsAny<Cores.Entities.Tasks>()), Times.Exactly(2));
             context.Verify(x => x.DeleteTaskNotes(It.IsAny<Cores.Entities.TasksNotes>()), Times.Exactly(2));
+            context.Verify(x => x.DeleteTaskSubTask(It.IsAny<Cores.Entities.TasksSubTasks>()), Times.Exactly(2));
             context.Verify(x => x.DeleteSaving(It.IsAny<Cores.Entities.Savings>()), Times.Exactly(2));
             context.Verify(x => x.DeleteNote(It.IsAny<Cores.Entities.Notes>()), Times.Exactly(2));
         }
