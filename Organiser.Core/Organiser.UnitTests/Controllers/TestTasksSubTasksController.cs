@@ -1,8 +1,6 @@
 ﻿using Moq;
 using NUnit.Framework;
 using Organiser.Core.CQRS.Dispatcher;
-using Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Commands;
-using Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Queries;
 using Organiser.Core.CQRS.Resources.Tasks.TasksSubTasks.Commands;
 using Organiser.Core.CQRS.Resources.Tasks.TasksSubTasks.Queries;
 using Organiser.Core.Models.ViewModels.TasksViewModels;
