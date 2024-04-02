@@ -28,6 +28,9 @@ using Organiser.Core.CQRS.Resources.Tasks.Tasks.Queries;
 using Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Commands;
 using Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Handlers;
 using Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Queries;
+using Organiser.Core.CQRS.Resources.Tasks.TasksSubTasks.Commands;
+using Organiser.Core.CQRS.Resources.Tasks.TasksSubTasks.Handlers;
+using Organiser.Core.CQRS.Resources.Tasks.TasksSubTasks.Queries;
 using Organiser.Core.CQRS.Resources.User.Commands;
 using Organiser.Core.CQRS.Resources.User.Handlers;
 using Organiser.Core.CQRS.Resources.User.Queries;
@@ -158,6 +161,13 @@ builder.Services.AddScoped<IQueryHandler<GetTaskNoteQuery, List<TasksNotesViewMo
 
 builder.Services.AddScoped<ICommandHandler<AddTaskNoteCommand>, AddTaskNoteCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<DeleteTaskNoteCommand>, DeleteTaskNoteCommandHandler>();
+
+//TaskSubTasks
+builder.Services.AddScoped<IQueryHandler<GetSubTasksQuery, List<TasksSubTasksViewModel>>, GetSubTasksQueryHandler>();
+
+builder.Services.AddScoped<ICommandHandler<AddTaskSubTaskCommand>, AddTaskSubTaskCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<ChangeTaskSubTaskStatusCommand>, ChangeTaskSubTaskStatusCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<DeleteTaskSubTaskCommand>, DeleteTaskSubTaskCommandHandler>();
 
 //User
 builder.Services.AddScoped<IQueryHandler<GetAllUsersQuery, List<UsersAdminViewModel>>, GetAllUsersQueryHandler>();
