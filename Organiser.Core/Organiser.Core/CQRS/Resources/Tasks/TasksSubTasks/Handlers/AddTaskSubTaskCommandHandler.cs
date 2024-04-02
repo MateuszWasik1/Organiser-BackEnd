@@ -22,7 +22,7 @@ namespace Organiser.Core.CQRS.Resources.Tasks.TasksSubTasks.Handlers
             if (command.Model.TSTTitle.Length == 0)
                 throw new TaskSubTaskTitleRequiredException("Tytuł podzadania jest wymagana!");
 
-            if (command.Model.TSTTitle.Length > 2000)
+            if (command.Model.TSTTitle.Length > 200)
                 throw new TaskSubTaskTitleMax200Exception("Tytuł podzadania nie może być dłuższy niż 200 znaków!");
 
             if (command.Model.TSTText.Length == 0)
