@@ -1,7 +1,6 @@
 ﻿using Moq;
 using NUnit.Framework;
 using NUnit.Framework.Legacy;
-using Organiser.Core.CQRS.Resources.Tasks.Tasks.Handlers;
 using Organiser.Core.CQRS.Resources.Tasks.TasksSubTasks.Commands;
 using Organiser.Core.CQRS.Resources.Tasks.TasksSubTasks.Handlers;
 using Organiser.Core.Exceptions.Tasks;

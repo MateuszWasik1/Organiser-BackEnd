@@ -21,8 +21,4 @@
     <ProjectReference Include="..\Organiser.Core\Organiser.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="CQRS\QueryHandler\Tasks\TasksSubTasks\" />
-  </ItemGroup>
-
 </Project>
