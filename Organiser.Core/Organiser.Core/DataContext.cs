@@ -12,6 +12,7 @@ namespace Organiser.Cores
         public DbSet<Categories> Categories => Set<Categories>();
         public DbSet<Tasks> Tasks => Set<Tasks>();
         public DbSet<TasksNotes> TasksNotes => Set<TasksNotes>();
+        public DbSet<TasksSubTasks> TasksSubTasks => Set<TasksSubTasks>();
         public DbSet<Savings> Savings => Set<Savings>();
         public DbSet<Bugs> Bugs => Set<Bugs>();
         public DbSet<BugsNotes> BugsNotes => Set<BugsNotes>();

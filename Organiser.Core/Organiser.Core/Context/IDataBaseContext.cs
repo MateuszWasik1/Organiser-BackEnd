@@ -32,6 +32,12 @@ namespace Organiser.Cores.Context
         void DeleteTaskNotes(TasksNotes taskNotes);
         #endregion
 
+        #region TasksSubTasks
+        IQueryable<TasksSubTasks> TasksSubTasks { get; }
+        void CreateOrUpdate(TasksSubTasks TaskSubTask);
+        void DeleteTaskSubTask(TasksSubTasks TaskSubTask);
+        #endregion
+
         #region Savings
         IQueryable<Savings> Savings { get; }
         void CreateOrUpdate(Savings saving);
@@ -43,6 +49,7 @@ namespace Organiser.Cores.Context
         IQueryable<Categories> AllCategories { get; }
         IQueryable<Tasks> AllTasks { get; }
         IQueryable<TasksNotes> AllTasksNotes { get; }
+        IQueryable<TasksSubTasks> AllTasksSubTasks { get; }
         IQueryable<Savings> AllSavings { get; }
         #endregion
 

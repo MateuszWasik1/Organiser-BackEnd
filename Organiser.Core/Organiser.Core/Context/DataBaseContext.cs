@@ -55,6 +55,18 @@ namespace Organiser.Cores.Context
         public void DeleteTask(Tasks task) => dataContext.Tasks.Remove(task);
         #endregion
 
+        #region TasksSubTasks
+        public IQueryable<TasksSubTasks> TasksSubTasks => dataContext.TasksSubTasks.Where(x => x.TSTUID == user.UID);
+        public void CreateOrUpdate(TasksSubTasks taskSubTask)
+        {
+            if (taskSubTask.TSTID == default)
+                dataContext.TasksSubTasks.Add(taskSubTask);
+            else
+                dataContext.Entry(taskSubTask).State = EntityState.Modified;
+        }
+        public void DeleteTaskSubTask(TasksSubTasks taskSubTask) => dataContext.TasksSubTasks.Remove(taskSubTask);
+        #endregion
+
         #region TasksNotes
         public IQueryable<TasksNotes> TasksNotes => dataContext.TasksNotes.Where(x => x.TNUID == user.UID);
         public void CreateOrUpdate(TasksNotes taskNotes)
@@ -84,6 +96,7 @@ namespace Organiser.Cores.Context
         public IQueryable<Categories> AllCategories => dataContext.Categories;
         public IQueryable<Tasks> AllTasks => dataContext.Tasks;
         public IQueryable<TasksNotes> AllTasksNotes => dataContext.TasksNotes;
+        public IQueryable<TasksSubTasks> AllTasksSubTasks => dataContext.TasksSubTasks;
         public IQueryable<Savings> AllSavings => dataContext.Savings;
         #endregion
 
