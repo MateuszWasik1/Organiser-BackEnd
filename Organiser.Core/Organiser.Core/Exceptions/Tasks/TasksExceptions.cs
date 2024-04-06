@@ -41,4 +41,18 @@
         {
         }
     }
+
+    public class TaskConatinsTaskNotesException : TasksExceptions
+    {
+        public TaskConatinsTaskNotesException(string message) : base(message)
+        {
+        }
+    }
+
+    public class TaskConatinsSubTasksException : TasksExceptions
+    {
+        public TaskConatinsSubTasksException(string message) : base(message)
+        {
+        }
+    }
 }
