@@ -81,5 +81,18 @@ namespace Organiser.UnitTests.Controllers
             //Assert
             dispatcher.Verify(x => x.DispatchCommand(It.IsAny<DeleteTaskCommand>()), Times.Once);
         }
+
+        [Test]
+        public void TestTasksController_DeleteWithRelatedEntities_ShouldDispatch_DeleteTaskRelatedEntitiesCommand()
+        {
+            //Arrange
+            var controller = new TasksController(dispatcher.Object);
+
+            //Act
+            controller.DeleteWithRelatedEntities(new TasksDeleteTaskRelatedEntitiesViewModel());
+
+            //Assert
+            dispatcher.Verify(x => x.DispatchCommand(It.IsAny<DeleteTaskRelatedEntitiesCommand>()), Times.Once);
+        }
     }
 }

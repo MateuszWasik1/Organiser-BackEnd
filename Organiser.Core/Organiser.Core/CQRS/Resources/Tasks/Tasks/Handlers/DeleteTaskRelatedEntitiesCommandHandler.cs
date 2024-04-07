@@ -28,7 +28,7 @@ namespace Organiser.Core.CQRS.Resources.Tasks.Tasks.Handlers
 
             if(command.Model.DeleteTaskSubTasks)
             {
-                var taskSubTasks= context.TasksSubTasks.Where(x => x.TSTTGID == task.TGID);
+                var taskSubTasks= context.TasksSubTasks.Where(x => x.TSTTGID == task.TGID).ToList();
 
                 foreach (var taskSubTask in taskSubTasks)
                     context.DeleteTaskSubTask(taskSubTask);

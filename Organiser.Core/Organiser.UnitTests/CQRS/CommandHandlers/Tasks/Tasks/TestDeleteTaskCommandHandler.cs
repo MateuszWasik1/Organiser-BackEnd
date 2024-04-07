@@ -67,7 +67,7 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Tasks.Tasks
         }
 
         [Test]
-        public void TestTasksController_DeleteTask_TaskNotFound_ShouldThrowTaskNotFoundException()
+        public void TestDeleteTaskCommandHandler_DeleteTask_TaskNotFound_ShouldThrowTaskNotFoundException()
         {
             //Arrange
             var command = new DeleteTaskCommand() { TGID = Guid.Empty };
@@ -79,7 +79,7 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Tasks.Tasks
         }
 
         [Test]
-        public void TestTasksController_DeleteTask_TaskIsFound_ShouldDeleteTask()
+        public void TestDeleteTaskCommandHandler_DeleteTask_TaskIsFound_ShouldDeleteTask()
         {
             //Arrange
             var command = new DeleteTaskCommand() { TGID = tasks[2].TGID };
