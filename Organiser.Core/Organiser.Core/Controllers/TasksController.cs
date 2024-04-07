@@ -39,5 +39,10 @@ namespace Organiser.Cores.Controllers
         [Route("Delete/{tGID}")]
         public void Delete(Guid tGID)
              => dispatcher.DispatchCommand(new DeleteTaskCommand() { TGID = tGID });
+
+        [HttpDelete]
+        [Route("DeleteWithRelatedEntities")]
+        public void DeleteWithRelatedEntities(TasksDeleteTaskRelatedEntitiesViewModel model)
+            => dispatcher.DispatchCommand(new DeleteTaskRelatedEntitiesCommand() { Model = model });
     }
 }
