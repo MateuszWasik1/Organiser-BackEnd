@@ -40,7 +40,7 @@ namespace Organiser.Cores.Controllers
         public void Delete(Guid tGID)
              => dispatcher.DispatchCommand(new DeleteTaskCommand() { TGID = tGID });
 
-        [HttpDelete]
+        [HttpPost]
         [Route("DeleteWithRelatedEntities")]
         public void DeleteWithRelatedEntities(TasksDeleteTaskRelatedEntitiesViewModel model)
             => dispatcher.DispatchCommand(new DeleteTaskRelatedEntitiesCommand() { Model = model });

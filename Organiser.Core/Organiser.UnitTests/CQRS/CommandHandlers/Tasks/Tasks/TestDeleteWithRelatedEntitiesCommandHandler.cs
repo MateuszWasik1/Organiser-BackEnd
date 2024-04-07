@@ -154,15 +154,14 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Tasks.Tasks
             handler.Handle(command);
 
             //Assert
-            ClassicAssert.AreEqual(2, tasks.Count);
+            ClassicAssert.AreEqual(3, tasks.Count);
             ClassicAssert.AreEqual(1, tasksNotes.Count);
             ClassicAssert.AreEqual(3, tasksSubTasks.Count);
 
-            ClassicAssert.IsFalse(tasks.Any(x => x.TGID == new Guid("f5dacc1d-7bee-4635-9c4c-9404a4af80dd")));
             ClassicAssert.IsFalse(tasksNotes.Any(x => x.TNGID == new Guid("f9dacc1d-7bee-4635-9c4c-9404a4af80dd")));
             ClassicAssert.IsFalse(tasksNotes.Any(x => x.TNGID == new Guid("f10acc1d-7bee-4635-9c4c-9404a4af80dd")));
 
-            context.Verify(x => x.DeleteTask(It.IsAny<Cores.Entities.Tasks>()), Times.Once);
+            context.Verify(x => x.DeleteTask(It.IsAny<Cores.Entities.Tasks>()), Times.Never);
             context.Verify(x => x.DeleteTaskNotes(It.IsAny<Cores.Entities.TasksNotes>()), Times.Exactly(2));
             context.Verify(x => x.DeleteTaskSubTask(It.IsAny<Cores.Entities.TasksSubTasks>()), Times.Never);
         }
@@ -185,15 +184,14 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Tasks.Tasks
             handler.Handle(command);
 
             //Assert
-            ClassicAssert.AreEqual(2, tasks.Count);
+            ClassicAssert.AreEqual(3, tasks.Count);
             ClassicAssert.AreEqual(3, tasksNotes.Count);
             ClassicAssert.AreEqual(1, tasksSubTasks.Count);
 
-            ClassicAssert.IsFalse(tasks.Any(x => x.TGID == new Guid("f5dacc1d-7bee-4635-9c4c-9404a4af80dd")));
             ClassicAssert.IsFalse(tasksSubTasks.Any(x => x.TSTGID == new Guid("f12acc1d-7bee-4635-9c4c-9404a4af80dd")));
             ClassicAssert.IsFalse(tasksSubTasks.Any(x => x.TSTGID == new Guid("f13acc1d-7bee-4635-9c4c-9404a4af80dd")));
 
-            context.Verify(x => x.DeleteTask(It.IsAny<Cores.Entities.Tasks>()), Times.Once);
+            context.Verify(x => x.DeleteTask(It.IsAny<Cores.Entities.Tasks>()), Times.Never);
             context.Verify(x => x.DeleteTaskNotes(It.IsAny<Cores.Entities.TasksNotes>()), Times.Never);
             context.Verify(x => x.DeleteTaskSubTask(It.IsAny<Cores.Entities.TasksSubTasks>()), Times.Exactly(2));
         }

@@ -1,7 +1,6 @@
 ﻿using Organiser.Core.CQRS.Resources.Tasks.Tasks.Commands;
 using Organiser.Core.Exceptions.Tasks;
 using Organiser.Cores.Context;
-using Organiser.Cores.Entities;
 using Organiser.CQRS.Abstraction.Commands;
 
 namespace Organiser.Core.CQRS.Resources.Tasks.Tasks.Handlers
@@ -21,20 +20,25 @@ namespace Organiser.Core.CQRS.Resources.Tasks.Tasks.Handlers
             if (command.Model.DeleteTaskNotes)
             {
                 var taskNotes = context.TasksNotes.Where(x => x.TNTGID == task.TGID).ToList();
-
                 foreach (var taskNote in taskNotes)
                     context.DeleteTaskNotes(taskNote);
             }
 
             if(command.Model.DeleteTaskSubTasks)
             {
-                var taskSubTasks= context.TasksSubTasks.Where(x => x.TSTTGID == task.TGID).ToList();
-
+                var taskSubTasks = context.TasksSubTasks.Where(x => x.TSTTGID == task.TGID).ToList();
                 foreach (var taskSubTask in taskSubTasks)
                     context.DeleteTaskSubTask(taskSubTask);
             }
 
-            context.DeleteTask(task);
+            context.SaveChanges();
+
+            var taskNotesCount = context.TasksNotes.Count(x => x.TNTGID == task.TGID);
+            var taskSubTasksCount = context.TasksSubTasks.Count(x => x.TSTTGID == task.TGID);
+
+            if (taskNotesCount == 0 && taskSubTasksCount == 0)
+                context.DeleteTask(task);
+
             context.SaveChanges();
         }
     }

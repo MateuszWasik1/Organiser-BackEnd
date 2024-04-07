@@ -155,6 +155,7 @@ builder.Services.AddScoped<IQueryHandler<GetTasksQuery, List<TasksViewModel>>, G
 builder.Services.AddScoped<ICommandHandler<AddTaskCommand>, AddTaskCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<UpdateTaskCommand>, UpdateTaskCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<DeleteTaskCommand>, DeleteTaskCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<DeleteTaskRelatedEntitiesCommand>, DeleteTaskRelatedEntitiesCommandHandler>();
 
 //TaskNotes
 builder.Services.AddScoped<IQueryHandler<GetTaskNoteQuery, List<TasksNotesViewModel>>, GetTaskNoteQueryHandler>();
