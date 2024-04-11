@@ -6,7 +6,7 @@ using Organiser.CQRS.Resources.Categories.Queries;
 
 namespace Organiser.CQRS.Resources.Categories.Handlers
 {
-    public class GetCategoriesQueryHandler : IQueryHandler<GetCategoriesQuery, List<CategoriesViewModel>>
+    public class GetCategoriesQueryHandler : IQueryHandler<GetCategoriesQuery, GetCategoriesViewModel>
     {
         private readonly IDataBaseContext context;
         private readonly IMapper mapper;
@@ -16,7 +16,7 @@ namespace Organiser.CQRS.Resources.Categories.Handlers
             this.mapper = mapper;
         }
 
-        public List<CategoriesViewModel> Handle(GetCategoriesQuery query)
+        public GetCategoriesViewModel Handle(GetCategoriesQuery query)
         {
             var categories = context.Categories.OrderBy(x => x.CStartDate).ToList();
 
@@ -25,6 +25,10 @@ namespace Organiser.CQRS.Resources.Categories.Handlers
                 var endDate = query.Date.Value.AddMonths(1).AddSeconds(-1);
                 categories = categories.Where(x => x.CStartDate >= query.Date && x.CStartDate <= endDate).ToList();
             }
+
+            var categoriesCount = categories.Count();
+
+            categories = categories.Skip(query.Skip).Take(query.Take).ToList();
 
             var categoriesViewModel = new List<CategoriesViewModel>();
 
@@ -37,7 +41,13 @@ namespace Organiser.CQRS.Resources.Categories.Handlers
                 categoriesViewModel.Add(cVM);
             });
 
-            return categoriesViewModel;
+            var model = new GetCategoriesViewModel()
+            {
+                List = categoriesViewModel,
+                Count = categoriesCount,
+            };
+
+            return model;
         }
     }
 }

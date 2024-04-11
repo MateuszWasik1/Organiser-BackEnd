@@ -22,8 +22,8 @@ namespace Organiser.Cores.Controllers
 
         [HttpGet]
         [Route("GetCategories")]
-        public List<CategoriesViewModel> GetCategories(DateTime? date) 
-            => dispatcher.DispatchQuery<GetCategoriesQuery, List<CategoriesViewModel>>(new GetCategoriesQuery() { Date = date });
+        public GetCategoriesViewModel GetCategories(DateTime? date, int skip, int take) 
+            => dispatcher.DispatchQuery<GetCategoriesQuery, GetCategoriesViewModel>(new GetCategoriesQuery() { Date = date, Skip = skip, Take = take });
 
         [HttpGet]
         [Route("GetCategoriesForFilter")]

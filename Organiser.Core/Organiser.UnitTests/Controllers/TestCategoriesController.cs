@@ -36,10 +36,10 @@ namespace Organiser.UnitTests.Controllers
             var controller = new CategoriesController(dispatcher.Object);
 
             //Act
-            controller.GetCategories(new DateTime());
+            controller.GetCategories(new DateTime(), 0, 0);
 
             //Assert
-            dispatcher.Verify(x => x.DispatchQuery<GetCategoriesQuery, List<CategoriesViewModel>>(It.IsAny<GetCategoriesQuery>()), Times.Once);
+            dispatcher.Verify(x => x.DispatchQuery<GetCategoriesQuery, GetCategoriesViewModel>(It.IsAny<GetCategoriesQuery>()), Times.Once);
         }
 
         [Test]

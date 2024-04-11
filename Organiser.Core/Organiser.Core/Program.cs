@@ -122,7 +122,7 @@ builder.Services.AddScoped<ICommandHandler<SaveBugNoteCommand>, SaveBugNoteComma
 
 //Categories
 builder.Services.AddScoped<IQueryHandler<GetCategoryQuery, CategoryViewModel>, GetCategoryQueryHandler>();
-builder.Services.AddScoped<IQueryHandler<GetCategoriesQuery, List<CategoriesViewModel>>, GetCategoriesQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetCategoriesQuery, GetCategoriesViewModel>, GetCategoriesQueryHandler>();
 builder.Services.AddScoped<IQueryHandler<GetCategoriesForFilterQuery, List<CategoriesForFiltersViewModel>>, GetCategoriesForFilterQueryHandler>();
 
 builder.Services.AddScoped<ICommandHandler<AddCategoryCommand>, AddCategoryCommandHandler>();
