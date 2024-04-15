@@ -23,8 +23,8 @@ namespace Organiser.Cores.Controllers
 
         [HttpGet]
         [Route("GetBugs")]
-        public List<BugsViewModel> GetBugs(BugTypeEnum bugType)
-            => dispatcher.DispatchQuery<GetBugsQuery, List<BugsViewModel>>(new GetBugsQuery() { BugType = bugType });
+        public GetBugsViewModel GetBugs(BugTypeEnum bugType)
+            => dispatcher.DispatchQuery<GetBugsQuery, GetBugsViewModel>(new GetBugsQuery() { BugType = bugType });
 
         [HttpPost]
         [Route("SaveBug")]

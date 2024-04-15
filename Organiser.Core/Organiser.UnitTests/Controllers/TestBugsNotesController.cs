@@ -27,7 +27,7 @@ namespace Organiser.UnitTests.Controllers
 
             //Assert
 
-            dispatcher.Verify(x => x.DispatchQuery<GetBugNotesQuery, List<BugsNotesViewModel>>(It.IsAny<GetBugNotesQuery>()), Times.Once);
+            dispatcher.Verify(x => x.DispatchQuery<GetBugNotesQuery, GetBugsNotesViewModel>(It.IsAny<GetBugNotesQuery>()), Times.Once);
         }
 
         [Test]

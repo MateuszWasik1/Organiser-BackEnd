@@ -110,13 +110,13 @@ builder.Services.AddScoped<ICommandHandler<RegisterUserCommand>, RegisterUserCom
 
 //Bugs
 builder.Services.AddScoped<IQueryHandler<GetBugQuery, BugViewModel>, GetBugQueryHandler>();
-builder.Services.AddScoped<IQueryHandler<GetBugsQuery, List<BugsViewModel>>, GetBugsQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetBugsQuery, GetBugsViewModel>, GetBugsQueryHandler>();
 
 builder.Services.AddScoped<ICommandHandler<SaveBugCommand>, SaveBugsCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<ChangeBugStatusCommand>, ChangeBugStatusCommandHandler>();
 
 //BugsNotes
-builder.Services.AddScoped<IQueryHandler<GetBugNotesQuery, List<BugsNotesViewModel>>, GetBugNotesQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetBugNotesQuery, GetBugsNotesViewModel>, GetBugNotesQueryHandler>();
 
 builder.Services.AddScoped<ICommandHandler<SaveBugNoteCommand>, SaveBugNoteCommandHandler>();
 

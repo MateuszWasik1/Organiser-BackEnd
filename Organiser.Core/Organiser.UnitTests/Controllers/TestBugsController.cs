@@ -42,7 +42,7 @@ namespace Organiser.UnitTests.Controllers
 
             //Assert
 
-            dispatcher.Verify(x => x.DispatchQuery<GetBugsQuery, List<BugsViewModel>>(It.IsAny<GetBugsQuery>()), Times.Once);
+            dispatcher.Verify(x => x.DispatchQuery<GetBugsQuery, GetBugsViewModel>(It.IsAny<GetBugsQuery>()), Times.Once);
         }
 
         [Test]
