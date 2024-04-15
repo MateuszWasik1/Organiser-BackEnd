@@ -22,8 +22,8 @@ namespace Organiser.Cores.Controllers
 
         [HttpGet]
         [Route("GetSavings")]
-        public List<SavingsViewModel> GetSavings()
-            => dispatcher.DispatchQuery<GetSavingsQuery, List<SavingsViewModel>>(new GetSavingsQuery());
+        public GetSavingsViewModel GetSavings(int skip, int take)
+            => dispatcher.DispatchQuery<GetSavingsQuery, GetSavingsViewModel>(new GetSavingsQuery() { Skip = skip, Take = take });
 
         [HttpPost]
         [Route("AddSaving")]
