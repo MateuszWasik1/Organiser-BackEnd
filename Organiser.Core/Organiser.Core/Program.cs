@@ -171,7 +171,7 @@ builder.Services.AddScoped<ICommandHandler<ChangeTaskSubTaskStatusCommand>, Chan
 builder.Services.AddScoped<ICommandHandler<DeleteTaskSubTaskCommand>, DeleteTaskSubTaskCommandHandler>();
 
 //User
-builder.Services.AddScoped<IQueryHandler<GetAllUsersQuery, List<UsersAdminViewModel>>, GetAllUsersQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetAllUsersQuery, GetUsersAdminViewModel>, GetAllUsersQueryHandler>();
 builder.Services.AddScoped<IQueryHandler<GetUserByAdminQuery, UserAdminViewModel>, GetUserByAdminQueryHandler>();
 builder.Services.AddScoped<IQueryHandler<GetUserQuery, UserViewModel>, GetUserQueryHandler>();
 

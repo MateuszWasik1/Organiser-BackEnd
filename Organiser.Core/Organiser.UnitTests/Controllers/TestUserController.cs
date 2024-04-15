@@ -23,10 +23,10 @@ namespace Organiser.UnitTests.Controllers
             var controller = new UserController(dispatcher.Object);
 
             //Act
-            controller.GetAllUsers();
+            controller.GetAllUsers(0, 0);
 
             //Assert
-            dispatcher.Verify(x => x.DispatchQuery<GetAllUsersQuery, List<UsersAdminViewModel>>(It.IsAny<GetAllUsersQuery>()), Times.Once);
+            dispatcher.Verify(x => x.DispatchQuery<GetAllUsersQuery, GetUsersAdminViewModel>(It.IsAny<GetAllUsersQuery>()), Times.Once);
         }
 
         [Test]
