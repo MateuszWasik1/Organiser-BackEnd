@@ -23,7 +23,7 @@ namespace Organiser.UnitTests.Controllers
             var controller = new BugsNotesController(dispatcher.Object);
 
             //Act
-            controller.GetBugNotes(new Guid());
+            controller.GetBugNotes(new Guid(), 0 ,0);
 
             //Assert
 

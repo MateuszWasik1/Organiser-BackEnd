@@ -6,7 +6,7 @@ using Organiser.CQRS.Abstraction.Queries;
 
 namespace Organiser.Core.CQRS.Resources.Notes.Handlers
 {
-    public class GetNotesQueryHandler : IQueryHandler<GetNotesQuery, List<NotesViewModel>>
+    public class GetNotesQueryHandler : IQueryHandler<GetNotesQuery, GetNotesViewModel>
     {
         private readonly IDataBaseContext context;
         private readonly IMapper mapper;
@@ -17,11 +17,14 @@ namespace Organiser.Core.CQRS.Resources.Notes.Handlers
             this.mapper = mapper;
         }
 
-        public List<NotesViewModel> Handle(GetNotesQuery query)
+        public GetNotesViewModel Handle(GetNotesQuery query)
         {
             var notes = context.Notes.ToList();
 
             var notesViewModel = new List<NotesViewModel>();
+
+            var count = notes.Count;
+            notes = notes.Skip(query.Skip).Take(query.Take).ToList();
 
             notes.ForEach(x =>
             {
@@ -30,7 +33,13 @@ namespace Organiser.Core.CQRS.Resources.Notes.Handlers
                 notesViewModel.Add(nVM);
             });
 
-            return notesViewModel;
+            var model = new GetNotesViewModel()
+            {
+                List = notesViewModel,
+                Count = count
+            };
+
+            return model;
         }
     }
 }

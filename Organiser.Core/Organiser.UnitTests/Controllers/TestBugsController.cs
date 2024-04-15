@@ -38,7 +38,7 @@ namespace Organiser.UnitTests.Controllers
             var controller = new BugsController(dispatcher.Object);
 
             //Act
-            controller.GetBugs(BugTypeEnum.My);
+            controller.GetBugs(BugTypeEnum.My, 0 ,0);
 
             //Assert
 
