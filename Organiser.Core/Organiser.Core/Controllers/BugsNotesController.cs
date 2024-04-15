@@ -17,8 +17,8 @@ namespace Organiser.Cores.Controllers
 
         [HttpGet]
         [Route("GetBugNotes")]
-        public GetBugsNotesViewModel GetBugNotes(Guid bgid)
-            => dispatcher.DispatchQuery<GetBugNotesQuery, GetBugsNotesViewModel>(new GetBugNotesQuery() { BGID = bgid });
+        public GetBugsNotesViewModel GetBugNotes(Guid bgid, int skip, int take)
+            => dispatcher.DispatchQuery<GetBugNotesQuery, GetBugsNotesViewModel>(new GetBugNotesQuery() { BGID = bgid, Skip = skip, Take = take });
 
         [HttpPost]
         [Route("SaveBugNote")]
