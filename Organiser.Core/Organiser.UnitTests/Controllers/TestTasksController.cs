@@ -39,7 +39,7 @@ namespace Organiser.UnitTests.Controllers
             controller.GetTasks();
 
             //Assert
-            dispatcher.Verify(x => x.DispatchQuery<GetTasksQuery, List<TasksViewModel>>(It.IsAny<GetTasksQuery>()), Times.Once);
+            dispatcher.Verify(x => x.DispatchQuery<GetTasksQuery, GetTasksViewModel>(It.IsAny<GetTasksQuery>()), Times.Once);
         }
 
         [Test]

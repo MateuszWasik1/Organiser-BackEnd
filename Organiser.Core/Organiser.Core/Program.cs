@@ -150,7 +150,7 @@ builder.Services.AddScoped<IQueryHandler<GetNotesBarChartQuery, StatsBarChartVie
 
 //Tasks
 builder.Services.AddScoped<IQueryHandler<GetTaskQuery, TaskViewModel>, GetTaskQueryHandler>();
-builder.Services.AddScoped<IQueryHandler<GetTasksQuery, List<TasksViewModel>>, GetTasksQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetTasksQuery, GetTasksViewModel>, GetTasksQueryHandler>();
 
 builder.Services.AddScoped<ICommandHandler<AddTaskCommand>, AddTaskCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<UpdateTaskCommand>, UpdateTaskCommandHandler>();
@@ -158,13 +158,13 @@ builder.Services.AddScoped<ICommandHandler<DeleteTaskCommand>, DeleteTaskCommand
 builder.Services.AddScoped<ICommandHandler<DeleteTaskRelatedEntitiesCommand>, DeleteTaskRelatedEntitiesCommandHandler>();
 
 //TaskNotes
-builder.Services.AddScoped<IQueryHandler<GetTaskNoteQuery, List<TasksNotesViewModel>>, GetTaskNoteQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetTaskNoteQuery, GetTasksNotesViewModel>, GetTaskNoteQueryHandler>();
 
 builder.Services.AddScoped<ICommandHandler<AddTaskNoteCommand>, AddTaskNoteCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<DeleteTaskNoteCommand>, DeleteTaskNoteCommandHandler>();
 
 //TaskSubTasks
-builder.Services.AddScoped<IQueryHandler<GetSubTasksQuery, List<TasksSubTasksViewModel>>, GetSubTasksQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetSubTasksQuery, GetTasksSubTasksViewModel>, GetSubTasksQueryHandler>();
 
 builder.Services.AddScoped<ICommandHandler<AddTaskSubTaskCommand>, AddTaskSubTaskCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<ChangeTaskSubTaskStatusCommand>, ChangeTaskSubTaskStatusCommandHandler>();

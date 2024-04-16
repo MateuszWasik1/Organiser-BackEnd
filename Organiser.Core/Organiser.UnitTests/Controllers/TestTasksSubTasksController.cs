@@ -23,10 +23,10 @@ namespace Organiser.UnitTests.Controllers
             var controller = new TasksSubTasksController(dispatcher.Object);
 
             //Act
-            controller.GetSubTasks(new Guid());
+            controller.GetSubTasks(new Guid(), 0, 0);
 
             //Assert
-            dispatcher.Verify(x => x.DispatchQuery<GetSubTasksQuery, List<TasksSubTasksViewModel>> (It.IsAny<GetSubTasksQuery>()), Times.Once);
+            dispatcher.Verify(x => x.DispatchQuery<GetSubTasksQuery, GetTasksSubTasksViewModel> (It.IsAny<GetSubTasksQuery>()), Times.Once);
         }
 
         [Test]

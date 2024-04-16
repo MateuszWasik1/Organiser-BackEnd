@@ -7,7 +7,7 @@ using Organiser.CQRS.Abstraction.Queries;
 
 namespace Organiser.Core.CQRS.Resources.Tasks.TasksSubTasks.Handlers
 {
-    public class GetSubTasksQueryHandler : IQueryHandler<GetSubTasksQuery, List<TasksSubTasksViewModel>>
+    public class GetSubTasksQueryHandler : IQueryHandler<GetSubTasksQuery, GetTasksSubTasksViewModel>
     {
         private readonly IDataBaseContext context;
         private readonly IMapper mapper;
@@ -17,7 +17,7 @@ namespace Organiser.Core.CQRS.Resources.Tasks.TasksSubTasks.Handlers
             this.mapper = mapper;
         }
 
-        public List<TasksSubTasksViewModel> Handle(GetSubTasksQuery query)
+        public GetTasksSubTasksViewModel Handle(GetSubTasksQuery query)
         {
             var task = context.Tasks.FirstOrDefault(x => x.TGID == query.TGID);
 
@@ -28,6 +28,9 @@ namespace Organiser.Core.CQRS.Resources.Tasks.TasksSubTasks.Handlers
 
             var subtasksViewModel = new List<TasksSubTasksViewModel>();
 
+            var count = subtasks.Count;
+            subtasks = subtasks.Skip(query.Skip).Take(query.Take).ToList();
+
             subtasks.ForEach(x =>
             {
                 var tstVM = mapper.Map<Cores.Entities.TasksSubTasks, TasksSubTasksViewModel>(x);
@@ -35,7 +38,13 @@ namespace Organiser.Core.CQRS.Resources.Tasks.TasksSubTasks.Handlers
                 subtasksViewModel.Add(tstVM);
             });
 
-            return subtasksViewModel;
+            var model = new GetTasksSubTasksViewModel()
+            {
+                List = subtasksViewModel,
+                Count = count
+            };
+
+            return model;
 
         }
     }
