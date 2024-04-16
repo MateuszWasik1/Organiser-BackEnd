@@ -8,7 +8,7 @@ using Organiser.CQRS.Abstraction.Queries;
 
 namespace Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Handlers
 {
-    public class GetBugNotesQueryHandler : IQueryHandler<GetBugNotesQuery, List<BugsNotesViewModel>>
+    public class GetBugNotesQueryHandler : IQueryHandler<GetBugNotesQuery, GetBugsNotesViewModel>
     {
         private readonly IDataBaseContext context;
         private readonly IUserContext user;
@@ -20,7 +20,7 @@ namespace Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Handlers
             this.mapper = mapper;
         }
 
-        public List<BugsNotesViewModel> Handle(GetBugNotesQuery query)
+        public GetBugsNotesViewModel Handle(GetBugNotesQuery query)
         {
             var bugNotes = new List<Cores.Entities.BugsNotes>();
             var currentUserRole = context.User.FirstOrDefault(x => x.UID == user.UID)?.URID ?? 1;
@@ -29,6 +29,10 @@ namespace Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Handlers
                 bugNotes = context.AllBugsNotes.Where(x => x.BNBGID == query.BGID).OrderBy(x => x.BNDate).ToList();
             else
                 bugNotes = context.BugsNotes.Where(x => x.BNBGID == query.BGID && !x.BNIsNewVerifier).OrderBy(x => x.BNDate).ToList();
+
+            var count = bugNotes.Count;
+
+            bugNotes = bugNotes.Skip(query.Skip).Take(query.Take).ToList();
 
             var bugNotesViewModel = new List<BugsNotesViewModel>();
 
@@ -39,7 +43,13 @@ namespace Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Handlers
                 bugNotesViewModel.Add(bNVM);
             });
 
-            return bugNotesViewModel;
+            var model = new GetBugsNotesViewModel()
+            {
+                List = bugNotesViewModel,
+                Count = count
+            };
+
+            return model;
         }
     }
 }

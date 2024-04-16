@@ -166,7 +166,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
             //Arrange
             user.Setup(x => x.UID).Returns(userRole);
 
-            var query = new GetBugsQuery() { BugType = BugTypeEnum.My };
+            var query = new GetBugsQuery() { BugType = BugTypeEnum.My, Skip = 0, Take = 10 };
             var handler = new GetBugsQueryHandler(context.Object, user.Object, mapper.Object);
 
             //Act
@@ -174,6 +174,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
 
             //Assert
             ClassicAssert.AreEqual(1, result.Count);
+            ClassicAssert.AreEqual(1, result.List.Count);
 
             ClassicAssert.AreEqual(bugIndex, bugsViewModel[0].BID);
         }
@@ -186,7 +187,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
             user.Setup(x => x.UID).Returns(userRole);
             user.Setup(x => x.UGID).Returns(userGid);
 
-            var query = new GetBugsQuery() { BugType = BugTypeEnum.ImVerificator };
+            var query = new GetBugsQuery() { BugType = BugTypeEnum.ImVerificator, Skip = 0, Take = 10 };
             var handler = new GetBugsQueryHandler(context.Object, user.Object, mapper.Object);
 
             //Act
@@ -194,6 +195,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
 
             //Assert
             ClassicAssert.AreEqual(1, result.Count);
+            ClassicAssert.AreEqual(1, result.List.Count);
 
             ClassicAssert.AreEqual(4, bugsViewModel[0].BID);
         }
@@ -205,7 +207,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
             //Arrange
             user.Setup(x => x.UID).Returns(userRole);
 
-            var query = new GetBugsQuery() { BugType = BugTypeEnum.Closed };
+            var query = new GetBugsQuery() { BugType = BugTypeEnum.Closed, Skip = 0, Take = 10 };
             var handler = new GetBugsQueryHandler(context.Object, user.Object, mapper.Object);
 
             //Act
@@ -213,6 +215,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
 
             //Assert
             ClassicAssert.AreEqual(2, result.Count);
+            ClassicAssert.AreEqual(2, result.List.Count);
 
             ClassicAssert.AreEqual(5, bugsViewModel[0].BID);
             ClassicAssert.AreEqual(6, bugsViewModel[1].BID);
@@ -225,7 +228,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
             //Arrange
             user.Setup(x => x.UID).Returns(userRole);
 
-            var query = new GetBugsQuery() { BugType = BugTypeEnum.New };
+            var query = new GetBugsQuery() { BugType = BugTypeEnum.New, Skip = 0, Take = 10 };
             var handler = new GetBugsQueryHandler(context.Object, user.Object, mapper.Object);
 
             //Act
@@ -233,6 +236,8 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
 
             //Assert
             ClassicAssert.AreEqual(2, bugsViewModel.Count);
+            ClassicAssert.AreEqual(2, result.List.Count);
+            ClassicAssert.AreEqual(2, result.Count);
 
             ClassicAssert.AreEqual(1, bugsViewModel[0].BID);
             ClassicAssert.AreEqual(4, bugsViewModel[1].BID);
@@ -245,13 +250,16 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
             //Arrange
             user.Setup(x => x.UID).Returns(userRole);
 
-            var query = new GetBugsQuery() { BugType = BugTypeEnum.All };
+            var query = new GetBugsQuery() { BugType = BugTypeEnum.All, Skip = 0, Take = 10 };
             var handler = new GetBugsQueryHandler(context.Object, user.Object, mapper.Object);
 
             //Act
             var result = handler.Handle(query);
 
             //Assert
+            ClassicAssert.AreEqual(6, result.List.Count);
+            ClassicAssert.AreEqual(6, result.Count);
+
             ClassicAssert.AreEqual(allBugs.Count, bugsViewModel.Count);
         }
 
@@ -262,13 +270,16 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
             //Arrange
             user.Setup(x => x.UID).Returns(userRole);
 
-            var query = new GetBugsQuery() { BugType = (BugTypeEnum) 5 };
+            var query = new GetBugsQuery() { BugType = (BugTypeEnum) 5, Skip = 0 , Take = 10 };
             var handler = new GetBugsQueryHandler(context.Object, user.Object, mapper.Object);
 
             //Act
             var result = handler.Handle(query);
 
             //Assert
+            ClassicAssert.AreEqual(6, result.List.Count);
+            ClassicAssert.AreEqual(6, result.Count);
+
             ClassicAssert.AreEqual(allBugs.Count, bugsViewModel.Count);
         }
 
@@ -296,7 +307,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
             user.Setup(x => x.UID).Returns(userRole);
             user.Setup(x => x.UGID).Returns(userGid);
 
-            var query = new GetBugsQuery() { BugType = BugTypeEnum.ImVerificator };
+            var query = new GetBugsQuery() { BugType = BugTypeEnum.ImVerificator, Skip = 0, Take = 10 };
             var handler = new GetBugsQueryHandler(context.Object, user.Object, mapper.Object);
 
             //Act
@@ -304,16 +315,57 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
 
             //Assert
             ClassicAssert.AreEqual(1, result.Count);
+            ClassicAssert.AreEqual(1, result.List.Count);
 
-            ClassicAssert.IsTrue(result.Any(x => x.BVerifiers.Contains($"{users[1].UFirstName} {users[1].ULastName} {users[1].UGID}")));
-            ClassicAssert.IsTrue(result.Any(x => x.BVerifiers.Contains($"{users[2].UFirstName} {users[2].ULastName} {users[2].UGID}")));
+            ClassicAssert.IsTrue(result.List.Any(x => x.BVerifiers.Contains($"{users[1].UFirstName} {users[1].ULastName} {users[1].UGID}")));
+            ClassicAssert.IsTrue(result.List.Any(x => x.BVerifiers.Contains($"{users[2].UFirstName} {users[2].ULastName} {users[2].UGID}")));
+        }
+
+        [TestCase(2, 1)]
+        [TestCase(3, 1)]
+        public void TestGetBugsQueryHandler_UserIsAdminOrSupport_BugType_Is_All_Skip0_Take1_ShouldReturn_OneUserBugs(int userRole, int bugIndex)
+        {
+            //Arrange
+            user.Setup(x => x.UID).Returns(userRole);
+
+            var query = new GetBugsQuery() { BugType = BugTypeEnum.All, Skip = 0, Take = 1 };
+            var handler = new GetBugsQueryHandler(context.Object, user.Object, mapper.Object);
+
+            //Act
+            var result = handler.Handle(query);
+
+            //Assert
+            ClassicAssert.AreEqual(6, result.Count);
+            ClassicAssert.AreEqual(1, result.List.Count);
+
+            ClassicAssert.AreEqual(bugIndex, bugsViewModel[0].BID);
+        }
+
+        [TestCase(2, 2)]
+        [TestCase(3, 2)]
+        public void TestGetBugsQueryHandler_UserIsAdminOrSupport_BugType_Is_All_Skip1_Take1_ShouldReturn_OneUserBugs(int userRole, int bugIndex)
+        {
+            //Arrange
+            user.Setup(x => x.UID).Returns(userRole);
+
+            var query = new GetBugsQuery() { BugType = BugTypeEnum.All, Skip = 1, Take = 1 };
+            var handler = new GetBugsQueryHandler(context.Object, user.Object, mapper.Object);
+
+            //Act
+            var result = handler.Handle(query);
+
+            //Assert
+            ClassicAssert.AreEqual(6, result.Count);
+            ClassicAssert.AreEqual(1, result.List.Count);
+
+            ClassicAssert.AreEqual(bugIndex, bugsViewModel[0].BID);
         }
 
         [Test]
         public void TestGetBugsQueryHandler_UserIsUser_BugType_Is_Unknown_ShouldReturnAllBugs()
         {
             //Arrange
-            var query = new GetBugsQuery() { BugType = BugTypeEnum.My };
+            var query = new GetBugsQuery() { BugType = BugTypeEnum.My, Skip = 0, Take = 10 };
             var handler = new GetBugsQueryHandler(context.Object, user.Object, mapper.Object);
 
             //Act

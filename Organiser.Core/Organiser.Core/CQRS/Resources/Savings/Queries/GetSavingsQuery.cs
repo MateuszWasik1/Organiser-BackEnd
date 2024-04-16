@@ -3,7 +3,9 @@ using Organiser.CQRS.Abstraction.Queries;
 
 namespace Organiser.Core.CQRS.Resources.Savings.Queries
 {
-    public class GetSavingsQuery : IQuery<List<SavingsViewModel>>
+    public class GetSavingsQuery : IQuery<GetSavingsViewModel>
     {
+        public int Skip { get; set; }
+        public int Take { get; set; }
     }
 }

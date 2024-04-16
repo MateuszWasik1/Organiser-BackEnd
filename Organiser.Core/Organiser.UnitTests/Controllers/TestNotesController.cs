@@ -23,10 +23,10 @@ namespace Organiser.UnitTests.Controllers
             var controller = new NotesController(dispatcher.Object);
 
             //Act
-            controller.GetNotes();
+            controller.GetNotes(0, 0);
 
             //Assert
-            dispatcher.Verify(x => x.DispatchQuery<GetNotesQuery, List<NotesViewModel>>(It.IsAny<GetNotesQuery>()), Times.Once);
+            dispatcher.Verify(x => x.DispatchQuery<GetNotesQuery, GetNotesViewModel>(It.IsAny<GetNotesQuery>()), Times.Once);
         }
 
         [Test]

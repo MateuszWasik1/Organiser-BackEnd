@@ -36,10 +36,10 @@ namespace Organiser.UnitTests.Controllers
             var controller = new SavingsController(dispatcher.Object);
 
             //Act
-            controller.GetSavings();
+            controller.GetSavings(0, 0);
 
             //Assert
-            dispatcher.Verify(x => x.DispatchQuery<GetSavingsQuery, List<SavingsViewModel>>(It.IsAny<GetSavingsQuery>()), Times.Once);
+            dispatcher.Verify(x => x.DispatchQuery<GetSavingsQuery, GetSavingsViewModel>(It.IsAny<GetSavingsQuery>()), Times.Once);
         }
 
         [Test]

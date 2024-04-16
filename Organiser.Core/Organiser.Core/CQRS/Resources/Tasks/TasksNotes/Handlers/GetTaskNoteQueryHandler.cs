@@ -7,7 +7,7 @@ using Organiser.CQRS.Abstraction.Queries;
 
 namespace Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Handlers
 {
-    public class GetTaskNoteQueryHandler : IQueryHandler<GetTaskNoteQuery, List<TasksNotesViewModel>>
+    public class GetTaskNoteQueryHandler : IQueryHandler<GetTaskNoteQuery, GetTasksNotesViewModel>
     {
         private readonly IDataBaseContext context;
         private readonly IMapper mapper;
@@ -17,7 +17,7 @@ namespace Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Handlers
             this.mapper = mapper;
         }
 
-        public List<TasksNotesViewModel> Handle(GetTaskNoteQuery query)
+        public GetTasksNotesViewModel Handle(GetTaskNoteQuery query)
         {
             var task = context.Tasks.FirstOrDefault(x => x.TGID == query.TGID);
 
@@ -28,12 +28,21 @@ namespace Organiser.Core.CQRS.Resources.Tasks.TasksNotes.Handlers
 
             var taskNotesViewModel = new List<TasksNotesViewModel>();
 
+            var count = taskNotes.Count;
+            taskNotes = taskNotes.Skip(query.Skip).Take(query.Take).ToList();
+
             taskNotes.ForEach(x =>
             {
                 taskNotesViewModel.Add(mapper.Map<Cores.Entities.TasksNotes, TasksNotesViewModel>(x));
             });
 
-            return taskNotesViewModel;
+            var model = new GetTasksNotesViewModel()
+            {
+                List = taskNotesViewModel,
+                Count = count
+            };
+
+            return model;
         }
     }
 }

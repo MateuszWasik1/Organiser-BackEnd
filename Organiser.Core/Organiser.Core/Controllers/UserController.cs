@@ -18,8 +18,8 @@ namespace Organiser.Cores.Controllers
         [HttpGet]
         [Route("GetAllUsers")]
         [Authorize(Roles = "Admin")]
-        public List<UsersAdminViewModel> GetAllUsers(string text = "")
-            => dispatcher.DispatchQuery<GetAllUsersQuery, List<UsersAdminViewModel>>(new GetAllUsersQuery());
+        public GetUsersAdminViewModel GetAllUsers(int skip, int take)
+            => dispatcher.DispatchQuery<GetAllUsersQuery, GetUsersAdminViewModel>(new GetAllUsersQuery() { Skip = skip, Take = take });
 
         [HttpGet]
         [Route("GetUserByAdmin/{ugid}")]

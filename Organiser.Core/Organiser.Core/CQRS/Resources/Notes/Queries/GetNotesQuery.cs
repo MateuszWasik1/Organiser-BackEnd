@@ -3,7 +3,9 @@ using Organiser.CQRS.Abstraction.Queries;
 
 namespace Organiser.Core.CQRS.Resources.Notes.Queries
 {
-    public class GetNotesQuery : IQuery<List<NotesViewModel>>
+    public class GetNotesQuery : IQuery<GetNotesViewModel>
     {
+        public int Skip { get; set; }
+        public int Take { get; set; }
     }
 }

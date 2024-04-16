@@ -16,8 +16,8 @@ namespace Organiser.Cores.Controllers
         public TasksNotesController(IDispatcher dispatcher) => this.dispatcher = dispatcher;
 
         [HttpGet]
-        public List<TasksNotesViewModel> Get(Guid tGID)
-            => dispatcher.DispatchQuery<GetTaskNoteQuery, List<TasksNotesViewModel>>(new GetTaskNoteQuery() { TGID = tGID });
+        public GetTasksNotesViewModel Get(Guid tGID, int skip, int take)
+            => dispatcher.DispatchQuery<GetTaskNoteQuery, GetTasksNotesViewModel>(new GetTaskNoteQuery() { TGID = tGID, Skip = skip, Take = take });
 
         [HttpPost]
         [Route("AddTaskNote")]

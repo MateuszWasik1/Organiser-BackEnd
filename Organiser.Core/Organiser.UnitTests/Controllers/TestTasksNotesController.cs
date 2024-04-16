@@ -23,10 +23,10 @@ namespace Organiser.UnitTests.Controllers
             var controller = new TasksNotesController(dispatcher.Object);
 
             //Act
-            controller.Get(new Guid());
+            controller.Get(new Guid(), 0 ,0);
 
             //Assert
-            dispatcher.Verify(x => x.DispatchQuery<GetTaskNoteQuery, List<TasksNotesViewModel>> (It.IsAny<GetTaskNoteQuery>()), Times.Once);
+            dispatcher.Verify(x => x.DispatchQuery<GetTaskNoteQuery, GetTasksNotesViewModel> (It.IsAny<GetTaskNoteQuery>()), Times.Once);
         }
 
         [Test]

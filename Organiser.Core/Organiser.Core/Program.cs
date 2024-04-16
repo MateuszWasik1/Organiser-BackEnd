@@ -110,19 +110,19 @@ builder.Services.AddScoped<ICommandHandler<RegisterUserCommand>, RegisterUserCom
 
 //Bugs
 builder.Services.AddScoped<IQueryHandler<GetBugQuery, BugViewModel>, GetBugQueryHandler>();
-builder.Services.AddScoped<IQueryHandler<GetBugsQuery, List<BugsViewModel>>, GetBugsQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetBugsQuery, GetBugsViewModel>, GetBugsQueryHandler>();
 
 builder.Services.AddScoped<ICommandHandler<SaveBugCommand>, SaveBugsCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<ChangeBugStatusCommand>, ChangeBugStatusCommandHandler>();
 
 //BugsNotes
-builder.Services.AddScoped<IQueryHandler<GetBugNotesQuery, List<BugsNotesViewModel>>, GetBugNotesQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetBugNotesQuery, GetBugsNotesViewModel>, GetBugNotesQueryHandler>();
 
 builder.Services.AddScoped<ICommandHandler<SaveBugNoteCommand>, SaveBugNoteCommandHandler>();
 
 //Categories
 builder.Services.AddScoped<IQueryHandler<GetCategoryQuery, CategoryViewModel>, GetCategoryQueryHandler>();
-builder.Services.AddScoped<IQueryHandler<GetCategoriesQuery, List<CategoriesViewModel>>, GetCategoriesQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetCategoriesQuery, GetCategoriesViewModel>, GetCategoriesQueryHandler>();
 builder.Services.AddScoped<IQueryHandler<GetCategoriesForFilterQuery, List<CategoriesForFiltersViewModel>>, GetCategoriesForFilterQueryHandler>();
 
 builder.Services.AddScoped<ICommandHandler<AddCategoryCommand>, AddCategoryCommandHandler>();
@@ -136,7 +136,7 @@ builder.Services.AddScoped<IQueryHandler<GetIsUserSupportQuery, bool>, GetIsUser
 
 //Savings
 builder.Services.AddScoped<IQueryHandler<GetSavingQuery, SavingViewModel>, GetSavingQueryHandler>();
-builder.Services.AddScoped<IQueryHandler<GetSavingsQuery, List<SavingsViewModel>>, GetSavingsQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetSavingsQuery, GetSavingsViewModel>, GetSavingsQueryHandler>();
 
 builder.Services.AddScoped<ICommandHandler<AddSavingCommand>, AddSavingCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<UpdateSavingCommand>, UpdateSavingCommandHandler>();
@@ -150,7 +150,7 @@ builder.Services.AddScoped<IQueryHandler<GetNotesBarChartQuery, StatsBarChartVie
 
 //Tasks
 builder.Services.AddScoped<IQueryHandler<GetTaskQuery, TaskViewModel>, GetTaskQueryHandler>();
-builder.Services.AddScoped<IQueryHandler<GetTasksQuery, List<TasksViewModel>>, GetTasksQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetTasksQuery, GetTasksViewModel>, GetTasksQueryHandler>();
 
 builder.Services.AddScoped<ICommandHandler<AddTaskCommand>, AddTaskCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<UpdateTaskCommand>, UpdateTaskCommandHandler>();
@@ -158,20 +158,20 @@ builder.Services.AddScoped<ICommandHandler<DeleteTaskCommand>, DeleteTaskCommand
 builder.Services.AddScoped<ICommandHandler<DeleteTaskRelatedEntitiesCommand>, DeleteTaskRelatedEntitiesCommandHandler>();
 
 //TaskNotes
-builder.Services.AddScoped<IQueryHandler<GetTaskNoteQuery, List<TasksNotesViewModel>>, GetTaskNoteQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetTaskNoteQuery, GetTasksNotesViewModel>, GetTaskNoteQueryHandler>();
 
 builder.Services.AddScoped<ICommandHandler<AddTaskNoteCommand>, AddTaskNoteCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<DeleteTaskNoteCommand>, DeleteTaskNoteCommandHandler>();
 
 //TaskSubTasks
-builder.Services.AddScoped<IQueryHandler<GetSubTasksQuery, List<TasksSubTasksViewModel>>, GetSubTasksQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetSubTasksQuery, GetTasksSubTasksViewModel>, GetSubTasksQueryHandler>();
 
 builder.Services.AddScoped<ICommandHandler<AddTaskSubTaskCommand>, AddTaskSubTaskCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<ChangeTaskSubTaskStatusCommand>, ChangeTaskSubTaskStatusCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<DeleteTaskSubTaskCommand>, DeleteTaskSubTaskCommandHandler>();
 
 //User
-builder.Services.AddScoped<IQueryHandler<GetAllUsersQuery, List<UsersAdminViewModel>>, GetAllUsersQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetAllUsersQuery, GetUsersAdminViewModel>, GetAllUsersQueryHandler>();
 builder.Services.AddScoped<IQueryHandler<GetUserByAdminQuery, UserAdminViewModel>, GetUserByAdminQueryHandler>();
 builder.Services.AddScoped<IQueryHandler<GetUserQuery, UserViewModel>, GetUserQueryHandler>();
 
@@ -181,7 +181,7 @@ builder.Services.AddScoped<ICommandHandler<DeleteUserCommand>, DeleteUserCommand
 
 //Notes
 builder.Services.AddScoped<IQueryHandler<GetNoteQuery, NotesViewModel>, GetNoteQueryHandler>();
-builder.Services.AddScoped<IQueryHandler<GetNotesQuery, List<NotesViewModel>>, GetNotesQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetNotesQuery, GetNotesViewModel>, GetNotesQueryHandler>();
 
 builder.Services.AddScoped<ICommandHandler<AddNoteCommand>, AddNoteCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<UpdateNoteCommand>, UpdateNoteCommandHandler>();

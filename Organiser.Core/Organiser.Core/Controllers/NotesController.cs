@@ -22,8 +22,8 @@ namespace Organiser.Cores.Controllers
 
         [HttpGet]
         [Route("GetNotes")]
-        public List<NotesViewModel> GetNotes()
-            => dispatcher.DispatchQuery<GetNotesQuery, List<NotesViewModel>>(new GetNotesQuery());
+        public GetNotesViewModel GetNotes(int skip, int take)
+            => dispatcher.DispatchQuery<GetNotesQuery, GetNotesViewModel>(new GetNotesQuery() { Skip = skip, Take = take });
 
         [HttpPost]
         [Route("AddNote")]

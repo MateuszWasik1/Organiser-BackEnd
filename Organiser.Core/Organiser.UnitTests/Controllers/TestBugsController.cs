@@ -38,11 +38,11 @@ namespace Organiser.UnitTests.Controllers
             var controller = new BugsController(dispatcher.Object);
 
             //Act
-            controller.GetBugs(BugTypeEnum.My);
+            controller.GetBugs(BugTypeEnum.My, 0 ,0);
 
             //Assert
 
-            dispatcher.Verify(x => x.DispatchQuery<GetBugsQuery, List<BugsViewModel>>(It.IsAny<GetBugsQuery>()), Times.Once);
+            dispatcher.Verify(x => x.DispatchQuery<GetBugsQuery, GetBugsViewModel>(It.IsAny<GetBugsQuery>()), Times.Once);
         }
 
         [Test]

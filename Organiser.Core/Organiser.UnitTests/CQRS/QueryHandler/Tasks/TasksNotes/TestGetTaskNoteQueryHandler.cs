@@ -50,11 +50,16 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Tasks.TasksNotes
                     TNGID = new Guid("99dacc1d-7bee-4635-9c4c-9404a4af80dd"),
                     TNTGID = tasks[0].TGID
                 },
-
                 new Cores.Entities.TasksNotes()
                 {
-                    TNID = 2,
-                    TNGID = new Guid("99dacc1d-7bee-4635-9c4c-9404a4af80dd"),
+                    TNID = 3,
+                    TNGID = new Guid("10dacc1d-7bee-4635-9c4c-9404a4af80dd"),
+                    TNTGID = tasks[0].TGID
+                },
+                new Cores.Entities.TasksNotes()
+                {
+                    TNID = 4,
+                    TNGID = new Guid("11dacc1d-7bee-4635-9c4c-9404a4af80dd"),
                     TNTGID = new Guid("67dacc1d-7bee-4635-9c4c-9404a4af80dd")
                 },
             };
@@ -89,20 +94,56 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Tasks.TasksNotes
         }
 
         [Test]
-        public void TestGetTaskNoteQueryHandler_TaskFound_ShouldReturnTaskNotesForTask()
+        public void TestGetTaskNoteQueryHandler_TaskFound_Skip0_Take1_ShouldReturn_OneTaskNotesForTask()
         {
             //Arrange
-            var query = new GetTaskNoteQuery() { TGID = tasks[0].TGID };
+            var query = new GetTaskNoteQuery() { TGID = tasks[0].TGID, Skip = 0, Take = 1 };
             var handler = new GetTaskNoteQueryHandler(context.Object, mapper.Object);
 
             //Act
-            handler.Handle(query);
+            var result = handler.Handle(query);
 
             //Assert
-            ClassicAssert.AreEqual(2, tasksNotesViewModel.Count);
+            ClassicAssert.AreEqual(1, tasksNotesViewModel.Count);
+            ClassicAssert.AreEqual(3, result.Count);
+
+            ClassicAssert.IsTrue(tasksNotes[0].TNGID == tasksNotesViewModel[0].TNGID);
+        }
+
+        [Test]
+        public void TestGetTaskNoteQueryHandler_TaskFound_Skip1_Take1_ShouldReturn_OneTaskNotesForTask()
+        {
+            //Arrange
+            var query = new GetTaskNoteQuery() { TGID = tasks[0].TGID, Skip = 1, Take = 1 };
+            var handler = new GetTaskNoteQueryHandler(context.Object, mapper.Object);
+
+            //Act
+            var result = handler.Handle(query);
+
+            //Assert
+            ClassicAssert.AreEqual(1, tasksNotesViewModel.Count);
+            ClassicAssert.AreEqual(3, result.Count);
+
+            ClassicAssert.IsTrue(tasksNotes[1].TNGID == tasksNotesViewModel[0].TNGID);
+        }
+
+        [Test]
+        public void TestGetTaskNoteQueryHandler_TaskFound_Skip0_Take_10_ShouldReturn_ThreeTaskNotesForTask()
+        {
+            //Arrange
+            var query = new GetTaskNoteQuery() { TGID = tasks[0].TGID, Skip = 0, Take = 10 };
+            var handler = new GetTaskNoteQueryHandler(context.Object, mapper.Object);
+
+            //Act
+            var result = handler.Handle(query);
+
+            //Assert
+            ClassicAssert.AreEqual(3, tasksNotesViewModel.Count);
+            ClassicAssert.AreEqual(3, result.Count);
 
             ClassicAssert.IsTrue(tasksNotes[0].TNGID == tasksNotesViewModel[0].TNGID);
             ClassicAssert.IsTrue(tasksNotes[1].TNGID == tasksNotesViewModel[1].TNGID);
+            ClassicAssert.IsTrue(tasksNotes[2].TNGID == tasksNotesViewModel[2].TNGID);
         }
     }
 }

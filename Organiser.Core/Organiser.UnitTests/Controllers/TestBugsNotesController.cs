@@ -23,11 +23,11 @@ namespace Organiser.UnitTests.Controllers
             var controller = new BugsNotesController(dispatcher.Object);
 
             //Act
-            controller.GetBugNotes(new Guid());
+            controller.GetBugNotes(new Guid(), 0 ,0);
 
             //Assert
 
-            dispatcher.Verify(x => x.DispatchQuery<GetBugNotesQuery, List<BugsNotesViewModel>>(It.IsAny<GetBugNotesQuery>()), Times.Once);
+            dispatcher.Verify(x => x.DispatchQuery<GetBugNotesQuery, GetBugsNotesViewModel>(It.IsAny<GetBugNotesQuery>()), Times.Once);
         }
 
         [Test]

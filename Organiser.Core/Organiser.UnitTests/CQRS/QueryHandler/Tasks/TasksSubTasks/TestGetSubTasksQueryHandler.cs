@@ -56,7 +56,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Tasks.TasksSubTasks
                 new Cores.Entities.TasksSubTasks()
                 {
                     TSTID = 2,
-                    TSTGID = new Guid("32dd879c-ee2f-11db-8314-0800200c9a66"),
+                    TSTGID = new Guid("31dd879c-ee2f-11db-8314-0800200c9a66"),
                     TSTTGID = tasks[0].TGID,
                     TSTUID = 1,
                     TSTStatus = SubTasksStatusEnum.Done,
@@ -64,6 +64,14 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Tasks.TasksSubTasks
                 new Cores.Entities.TasksSubTasks()
                 {
                     TSTID = 3,
+                    TSTGID = new Guid("32dd879c-ee2f-11db-8314-0800200c9a66"),
+                    TSTTGID = tasks[0].TGID,
+                    TSTUID = 1,
+                    TSTStatus = SubTasksStatusEnum.Done,
+                },
+                new Cores.Entities.TasksSubTasks()
+                {
+                    TSTID = 4,
                     TSTGID = new Guid("34dd879c-ee2f-11db-8314-0800200c9a66"),
                     TSTTGID = new Guid("35dd879c-ee2f-11db-8314-0800200c9a66"),
                     TSTUID = 1,
@@ -101,23 +109,63 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Tasks.TasksSubTasks
         }
 
         [Test]
-        public void TestGetSubTasksQueryHandler_GetSubTaskForTask_ShouldReturn_All()
+        public void TestGetSubTasksQueryHandler_GetSubTaskForTask_Skip0_Take1_ShouldReturn_OneTasksSubTasks()
         {
             //Arrange
-            var query = new GetSubTasksQuery() { TGID = tasks[0].TGID };
+            var query = new GetSubTasksQuery() { TGID = tasks[0].TGID, Skip = 0, Take = 1 };
             var handler = new GetSubTasksQueryHandler(context.Object, mapper.Object);
 
             //Act
-            handler.Handle(query);
+            var result = handler.Handle(query);
 
             //Assert
-            ClassicAssert.AreEqual(2, tasksSubTasksViewModel.Count);
+            ClassicAssert.AreEqual(1, tasksSubTasksViewModel.Count);
+            ClassicAssert.AreEqual(3, result.Count);
+
+            ClassicAssert.AreEqual(subTasks[0].TSTGID, tasksSubTasksViewModel[0].TSTGID);
+            ClassicAssert.AreEqual(subTasks[0].TSTStatus, tasksSubTasksViewModel[0].TSTStatus);
+        }
+
+        [Test]
+        public void TestGetSubTasksQueryHandler_GetSubTaskForTask_Skip1_Take1_ShouldReturn_OneTasksSubTasks()
+        {
+            //Arrange
+            var query = new GetSubTasksQuery() { TGID = tasks[0].TGID, Skip = 1, Take = 1 };
+            var handler = new GetSubTasksQueryHandler(context.Object, mapper.Object);
+
+            //Act
+            var result = handler.Handle(query);
+
+            //Assert
+            ClassicAssert.AreEqual(1, tasksSubTasksViewModel.Count);
+            ClassicAssert.AreEqual(3, result.Count);
+
+            ClassicAssert.AreEqual(subTasks[1].TSTGID, tasksSubTasksViewModel[0].TSTGID);
+            ClassicAssert.AreEqual(subTasks[1].TSTStatus, tasksSubTasksViewModel[0].TSTStatus);
+        }
+
+        [Test]
+        public void TestGetSubTasksQueryHandler_GetSubTaskForTask_Skip0_Take10_ShouldReturn_ThreeTasksSubTasks()
+        {
+            //Arrange
+            var query = new GetSubTasksQuery() { TGID = tasks[0].TGID, Skip = 0, Take = 10 };
+            var handler = new GetSubTasksQueryHandler(context.Object, mapper.Object);
+
+            //Act
+            var result = handler.Handle(query);
+
+            //Assert
+            ClassicAssert.AreEqual(3, tasksSubTasksViewModel.Count);
+            ClassicAssert.AreEqual(3, result.Count);
 
             ClassicAssert.AreEqual(subTasks[0].TSTGID, tasksSubTasksViewModel[0].TSTGID);
             ClassicAssert.AreEqual(subTasks[0].TSTStatus, tasksSubTasksViewModel[0].TSTStatus);
 
             ClassicAssert.AreEqual(subTasks[1].TSTGID, tasksSubTasksViewModel[1].TSTGID);
             ClassicAssert.AreEqual(subTasks[1].TSTStatus, tasksSubTasksViewModel[1].TSTStatus);
+
+            ClassicAssert.AreEqual(subTasks[2].TSTGID, tasksSubTasksViewModel[2].TSTGID);
+            ClassicAssert.AreEqual(subTasks[2].TSTStatus, tasksSubTasksViewModel[2].TSTStatus);
         }
     }
 }

@@ -22,8 +22,8 @@ namespace Organiser.Cores.Controllers
 
         [HttpGet]
         [Route("GetTasks")]
-        public List<TasksViewModel> GetTasks(string cGID = "", int status = 3)
-            => dispatcher.DispatchQuery<GetTasksQuery, List<TasksViewModel>>(new GetTasksQuery() { CGID = cGID, Status = status });
+        public GetTasksViewModel GetTasks(string cGID = "", int status = 3, int skip = 0, int take = 10)
+            => dispatcher.DispatchQuery<GetTasksQuery, GetTasksViewModel>(new GetTasksQuery() { CGID = cGID, Status = status, Skip = skip, Take = take });
 
         [HttpPost]
         [Route("AddTask")]

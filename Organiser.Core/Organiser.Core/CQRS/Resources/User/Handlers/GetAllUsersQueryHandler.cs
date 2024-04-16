@@ -6,7 +6,7 @@ using Organiser.CQRS.Abstraction.Queries;
 
 namespace Organiser.Core.CQRS.Resources.User.Handlers
 {
-    public class GetAllUsersQueryHandler : IQueryHandler<GetAllUsersQuery, List<UsersAdminViewModel>>
+    public class GetAllUsersQueryHandler : IQueryHandler<GetAllUsersQuery, GetUsersAdminViewModel>
     {
 
         private readonly IDataBaseContext context;
@@ -17,18 +17,27 @@ namespace Organiser.Core.CQRS.Resources.User.Handlers
             this.mapper = mapper;
         }
 
-        public List<UsersAdminViewModel> Handle(GetAllUsersQuery query)
+        public GetUsersAdminViewModel Handle(GetAllUsersQuery query)
         {
             var usersData = context.AllUsers.ToList();
 
             var usersAdmViewModel = new List<UsersAdminViewModel>();
+
+            var count = usersData.Count;
+            usersData = usersData.Skip(query.Skip).Take(query.Take).ToList();
 
             usersData.ForEach(x => {
                 var model = mapper.Map<Cores.Entities.User, UsersAdminViewModel>(x);
                 usersAdmViewModel.Add(model);
             });
 
-            return usersAdmViewModel;
+            var model = new GetUsersAdminViewModel()
+            {
+                List = usersAdmViewModel,
+                Count = count,
+            };
+
+            return model;
         }
     }
 }

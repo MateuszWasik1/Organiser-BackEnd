@@ -8,7 +8,7 @@ using Organiser.CQRS.Abstraction.Queries;
 
 namespace Organiser.Core.CQRS.Resources.Bugs.Bugs.Handlers
 {
-    public class GetBugsQueryHandler : IQueryHandler<GetBugsQuery, List<BugsViewModel>>
+    public class GetBugsQueryHandler : IQueryHandler<GetBugsQuery, GetBugsViewModel>
     {
         private readonly IDataBaseContext context;
         private readonly IUserContext user;
@@ -20,11 +20,13 @@ namespace Organiser.Core.CQRS.Resources.Bugs.Bugs.Handlers
             this.mapper = mapper;
         }
 
-        public List<BugsViewModel> Handle(GetBugsQuery query)
+        public GetBugsViewModel Handle(GetBugsQuery query)
         {
             var bugs = new List<Cores.Entities.Bugs>();
             var bugsViewModel = new List<BugsViewModel>();
             var currentUserRole = context.User.FirstOrDefault(x => x.UID == user.UID)?.URID ?? 1;
+
+            var count = 0;
 
             if (currentUserRole == (int) RoleEnum.Admin || currentUserRole == (int) RoleEnum.Support)
             {
@@ -49,6 +51,9 @@ namespace Organiser.Core.CQRS.Resources.Bugs.Bugs.Handlers
                 var supportGIDs = bugs.Where(x => x.BAUIDS != null).SelectMany(x => x.BAUIDS?.Split(',')).Distinct().ToList();
                 var supportUsers = context.AllUsers.Where(x => supportGIDs.Contains(x.UGID.ToString())).Select(x => new { x.UFirstName, x.ULastName, x.UGID }).ToList();
 
+                count = bugs.Count;
+                bugs = bugs.Skip(query.Skip).Take(query.Take).ToList();
+
                 bugs.ForEach(x =>
                 {
                     var bVM = mapper.Map<Cores.Entities.Bugs, BugsViewModel>(x);
@@ -67,6 +72,9 @@ namespace Organiser.Core.CQRS.Resources.Bugs.Bugs.Handlers
             {
                 bugs = context.Bugs.OrderBy(x => x.BDate).ToList();
 
+                count = bugs.Count;
+                bugs = bugs.Skip(query.Skip).Take(query.Take).ToList();
+
                 bugs.ForEach(x =>
                 {
                     var bVM = mapper.Map<Cores.Entities.Bugs, BugsViewModel>(x);
@@ -75,7 +83,13 @@ namespace Organiser.Core.CQRS.Resources.Bugs.Bugs.Handlers
                 });
             }
 
-            return bugsViewModel;
+            var model = new GetBugsViewModel()
+            {
+                List = bugsViewModel,
+                Count = count
+            };
+
+            return model;
         }
     }
 }

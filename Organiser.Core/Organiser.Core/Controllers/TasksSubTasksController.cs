@@ -17,8 +17,8 @@ namespace Organiser.Cores.Controllers
 
         [HttpGet]
         [Route("GetSubTasks")]
-        public List<TasksSubTasksViewModel> GetSubTasks(Guid tGID)
-            => dispatcher.DispatchQuery<GetSubTasksQuery, List<TasksSubTasksViewModel>>(new GetSubTasksQuery() { TGID = tGID });
+        public GetTasksSubTasksViewModel GetSubTasks(Guid tGID, int skip, int take)
+            => dispatcher.DispatchQuery<GetSubTasksQuery, GetTasksSubTasksViewModel>(new GetSubTasksQuery() { TGID = tGID, Skip = skip, Take = take });
 
         [HttpPost]
         [Route("AddTaskSubTask")]

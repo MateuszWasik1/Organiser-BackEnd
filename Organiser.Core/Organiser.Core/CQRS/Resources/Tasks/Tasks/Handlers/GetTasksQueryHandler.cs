@@ -6,7 +6,7 @@ using Organiser.CQRS.Abstraction.Queries;
 
 namespace Organiser.Core.CQRS.Resources.Tasks.Tasks.Handlers
 {
-    public class GetTasksQueryHandler : IQueryHandler<GetTasksQuery, List<TasksViewModel>>
+    public class GetTasksQueryHandler : IQueryHandler<GetTasksQuery, GetTasksViewModel>
     {
         private readonly IDataBaseContext context;
         private readonly IMapper mapper;
@@ -16,7 +16,7 @@ namespace Organiser.Core.CQRS.Resources.Tasks.Tasks.Handlers
             this.mapper = mapper;
         }
 
-        public List<TasksViewModel> Handle(GetTasksQuery query)
+        public GetTasksViewModel Handle(GetTasksQuery query)
         {
             List<Cores.Entities.Tasks> tasks = context.Tasks.OrderBy(x => x.TTime).ToList();
 
@@ -28,6 +28,9 @@ namespace Organiser.Core.CQRS.Resources.Tasks.Tasks.Handlers
 
             var tasksViewModel = new List<TasksViewModel>();
 
+            var count = tasks.Count;
+            tasks = tasks.Skip(query.Skip).Take(query.Take).ToList();
+
             tasks.ForEach(x =>
             {
                 var tVM = mapper.Map<Cores.Entities.Tasks, TasksViewModel>(x);
@@ -35,7 +38,13 @@ namespace Organiser.Core.CQRS.Resources.Tasks.Tasks.Handlers
                 tasksViewModel.Add(tVM);
             });
 
-            return tasksViewModel;
+            var model = new GetTasksViewModel()
+            {
+                List = tasksViewModel,
+                Count = count
+            };
+
+            return model;
         }
     }
 }

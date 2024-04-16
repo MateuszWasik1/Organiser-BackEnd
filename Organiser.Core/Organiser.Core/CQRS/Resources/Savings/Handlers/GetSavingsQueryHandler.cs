@@ -6,7 +6,7 @@ using Organiser.CQRS.Abstraction.Queries;
 
 namespace Organiser.Core.CQRS.Resources.Savings.Handlers
 {
-    public class GetSavingsQueryHandler : IQueryHandler<GetSavingsQuery, List<SavingsViewModel>>
+    public class GetSavingsQueryHandler : IQueryHandler<GetSavingsQuery, GetSavingsViewModel>
     {
         private readonly IDataBaseContext context;
         private readonly IMapper mapper;
@@ -16,11 +16,14 @@ namespace Organiser.Core.CQRS.Resources.Savings.Handlers
             this.mapper = mapper;
         }
 
-        public List<SavingsViewModel> Handle(GetSavingsQuery query)
+        public GetSavingsViewModel Handle(GetSavingsQuery query)
         {
             var savings = context.Savings.OrderBy(x => x.STime).ToList();
 
             var savingsViewModel = new List<SavingsViewModel>();
+
+            var count = savings.Count;
+            savings = savings.Skip(query.Skip).Take(query.Take).ToList();
 
             savings.ForEach(x =>
             {
@@ -28,7 +31,13 @@ namespace Organiser.Core.CQRS.Resources.Savings.Handlers
                 savingsViewModel.Add(sVM);
             });
 
-            return savingsViewModel;
+            var model = new GetSavingsViewModel()
+            {
+                List = savingsViewModel,
+                Count = count
+            };
+
+            return model;
         }
     }
 }
