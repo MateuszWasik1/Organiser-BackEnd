@@ -80,5 +80,5 @@ https://github.com/MateuszWasik1/Organizer-Web/blob/master/Dokumentacja%20-%20We
 
 ### Aplikacja 
 
-Aplikacja również jest dostępna online, na portalu Azure:\ 
+Aplikacja również jest dostępna online, na portalu Azure:\
 https://organiserweb.azurewebsites.net/login  
