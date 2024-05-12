@@ -22,20 +22,6 @@ namespace Organiser.Cores
         {
             base.OnModelCreating(builder);
 
-            //builder.Entity<IdentityRole>().HasData(
-            //    new IdentityRole
-            //    {
-            //        Id = Guid.NewGuid().ToString(),
-            //        Name = "User",
-            //        NormalizedName = "USER"
-            //    },
-            //    new IdentityRole
-            //    {
-            //        Id = Guid.NewGuid().ToString(),
-            //        Name = "Administrator",
-            //        NormalizedName = "ADMINISTRATOR"
-            //    }
-            //);
             builder.Entity<Categories>().Property(f => f.CID).ValueGeneratedOnAdd();
         }
     }
