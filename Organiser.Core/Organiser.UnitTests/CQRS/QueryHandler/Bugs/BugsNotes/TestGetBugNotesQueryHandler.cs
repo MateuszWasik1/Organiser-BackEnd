@@ -112,19 +112,25 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.BugsNotes
                 {
                     UID = 1,
                     UGID = new Guid("00dd879c-ee2f-11db-8314-0800200c9a66"),
-                    URID = 1
+                    URID = (int) RoleEnum.User
                 },
                 new Cores.Entities.User()
                 {
                     UID = 2,
                     UGID = new Guid("01dd879c-ee2f-11db-8314-0800200c9a66"),
-                    URID = 2
+                    URID = (int) RoleEnum.User
                 },
                 new Cores.Entities.User()
                 {
                     UID = 3,
                     UGID = new Guid("02dd879c-ee2f-11db-8314-0800200c9a66"),
-                    URID = 3
+                    URID = (int) RoleEnum.Support
+                },
+                new Cores.Entities.User()
+                {
+                    UID = 4,
+                    UGID = new Guid("03dd879c-ee2f-11db-8314-0800200c9a66"),
+                    URID = (int) RoleEnum.Admin
                 },
             };
 
@@ -156,8 +162,8 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.BugsNotes
                 );
         }
 
-        [TestCase(2)]
         [TestCase(3)]
+        [TestCase(4)]
         public void TestGetBugNotesQueryHandler_UserIsAdminOrSupport_ShouldReturn_OneUserBugsNotes(int userRole)
         {
             //Arrange
@@ -175,8 +181,8 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.BugsNotes
             ClassicAssert.AreEqual("Text 4", bugsNotesViewModel[0].BNText);
         }
 
-        [TestCase(2)]
         [TestCase(3)]
+        [TestCase(4)]
         public void TestGetBugNotesQueryHandler_UserIsAdminOrSupport_ShouldReturn_ThreeUserBugsNotes(int userRole)
         {
             //Arrange
@@ -195,8 +201,8 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.BugsNotes
             ClassicAssert.AreEqual("Text 1", bugsNotesViewModel[0].BNText);
         }
 
-        [TestCase(2)]
         [TestCase(3)]
+        [TestCase(4)]
         public void TestGetBugNotesQueryHandler_UserIsAdminOrSupport_Skip0_Take1_ShouldReturn_OneUserBugsNotes(int userRole)
         {
             //Arrange
@@ -215,8 +221,8 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.BugsNotes
             ClassicAssert.AreEqual("Text 1", bugsNotesViewModel[0].BNText);
         }
 
-        [TestCase(2)]
         [TestCase(3)]
+        [TestCase(4)]
         public void TestGetBugNotesQueryHandler_UserIsAdminOrSupport_Skip1_Take1_ShouldReturn_OneUserBugsNotes(int userRole)
         {
             //Arrange

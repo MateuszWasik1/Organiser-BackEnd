@@ -51,7 +51,7 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Bugs.Bugs
                 {
                     UID = 1,
                     UGID = new Guid("00dd879c-ee2f-11db-8314-0800200c9a66"),
-                    URID = 1,
+                    URID = (int) RoleEnum.User,
                     UFirstName = "FirstName1",
                     ULastName = "LastName1",
                 },
@@ -59,15 +59,23 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Bugs.Bugs
                 {
                     UID = 2,
                     UGID = new Guid("01dd879c-ee2f-11db-8314-0800200c9a66"),
-                    URID = 2,
-                    UFirstName = "NameS",
-                    ULastName = "Support",
+                    URID = (int) RoleEnum.Premium,
+                    UFirstName = "FirstName2",
+                    ULastName = "LastName2",
                 },
                 new Cores.Entities.User()
                 {
                     UID = 3,
                     UGID = new Guid("02dd879c-ee2f-11db-8314-0800200c9a66"),
-                    URID = 3,
+                    URID = (int) RoleEnum.Support,
+                    UFirstName = "NameS",
+                    ULastName = "Support",
+                },
+                new Cores.Entities.User()
+                {
+                    UID = 4,
+                    UGID = new Guid("03dd879c-ee2f-11db-8314-0800200c9a66"),
+                    URID = (int) RoleEnum.Admin,
                     UFirstName = "NameA",
                     ULastName = "Admin",
                 },
@@ -105,7 +113,7 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Bugs.Bugs
         public void TestChangeBugStatusCommandHandler_UserNotFound_ShouldThrowUserNotFoundExceptions()
         {
             //Arrange 
-            user.Setup(x => x.UID).Returns(4);
+            user.Setup(x => x.UID).Returns(5);
 
             var model = new ChangeBugStatusViewModel()
             {
@@ -120,11 +128,15 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Bugs.Bugs
             //Assert
             Assert.Throws<UserNotFoundExceptions>(() => handler.Handle(command));
         }
-
-        [Test]
-        public void TestChangeBugStatusCommandHandler_BugFound_ShouldChangeBugStatus_And_AddNewBugNote()
+        [TestCase(1, "FirstName1", "LastName1", 1)]
+        [TestCase(2, "FirstName2", "LastName2", 1)]
+        [TestCase(3, "NameS", "Support", 2)]
+        [TestCase(4, "NameA", "Admin", 2)]
+        public void TestChangeBugStatusCommandHandler_BugFound_ShouldChangeBugStatus_And_AddNewBugNote(int userRole, string name, string surname, int bnCount)
         {
             //Arrange 
+            user.Setup(x => x.UID).Returns(userRole);
+
             var model = new ChangeBugStatusViewModel()
             {
                 BGID = new Guid("30dd879c-ee2f-11db-8314-0800200c9a66"),
@@ -139,19 +151,19 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Bugs.Bugs
 
             //Assert
             ClassicAssert.AreEqual(1, bugs.Count);
-            ClassicAssert.AreEqual(1, bugsNotes.Count);
+            ClassicAssert.AreEqual(bnCount, bugsNotes.Count);
 
             ClassicAssert.AreEqual(BugStatusEnum.Rejected, bugs[0].BStatus);
 
-            ClassicAssert.AreEqual(1, bugsNotes[0].BNUID);
-            ClassicAssert.AreEqual($"Status został zmieniony na: \"Odrzucony\" przez użytkownika: FirstName1 LastName1", bugsNotes[0].BNText);
+            ClassicAssert.AreEqual(userRole, bugsNotes[0].BNUID);
+            ClassicAssert.AreEqual($"Status został zmieniony na: \"Odrzucony\" przez użytkownika: {name} {surname}", bugsNotes[0].BNText);
             ClassicAssert.AreEqual(false, bugsNotes[0].BNIsNewVerifier);
             ClassicAssert.AreEqual(true, bugsNotes[0].BNIsStatusChange);
             ClassicAssert.AreEqual(BugStatusEnum.Rejected, bugsNotes[0].BNChangedStatus);
         }
 
-        [TestCase(2, "01dd879c-ee2f-11db-8314-0800200c9a66", "NameS", "Support")]
-        [TestCase(3, "02dd879c-ee2f-11db-8314-0800200c9a66", "NameA", "Admin")]
+        [TestCase(3, "02dd879c-ee2f-11db-8314-0800200c9a66", "NameS", "Support")]
+        [TestCase(4, "03dd879c-ee2f-11db-8314-0800200c9a66", "NameA", "Admin")]
         public void TestChangeBugStatusCommandHandler_UserIsNotVerifier_UserIsAdminOrSupport_ShouldAddTwoBugsNotesAndCreateBugBAUIDS(int userRole, string ugid, string name, string surname)
         {
             //Arrange
@@ -184,8 +196,8 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Bugs.Bugs
             ClassicAssert.AreEqual($"Status został zmieniony na: \"Zaakceptowany\" przez użytkownika: {name} {surname}", bugsNotes[1].BNText);
         }
 
-        [TestCase(2, "01dd879c-ee2f-11db-8314-0800200c9a66")]
         [TestCase(3, "02dd879c-ee2f-11db-8314-0800200c9a66")]
+        [TestCase(4, "03dd879c-ee2f-11db-8314-0800200c9a66")]
         public void TestChangeBugStatusCommandHandler_UserIsNotVerifier_UserIsAdminOrSupport_ShouldAddTwoBugsNotesAndUpdateBugBAUIDS(int userRole, string ugid)
         {
             //Arrange
