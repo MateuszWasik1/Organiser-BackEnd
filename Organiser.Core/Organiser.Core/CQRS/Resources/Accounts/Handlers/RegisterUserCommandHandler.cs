@@ -2,6 +2,7 @@
 using Organiser.Core.CQRS.Resources.Accounts.Commands;
 using Organiser.Core.Exceptions.Accounts;
 using Organiser.Cores.Context;
+using Organiser.Cores.Models.Enums;
 using Organiser.Cores.Services.EmailSender;
 using Organiser.CQRS.Abstraction.Commands;
 using System.Text.RegularExpressions;
@@ -58,7 +59,7 @@ namespace Organiser.Core.CQRS.Resources.Accounts.Handlers
             if (userNameExist)
                 throw new RegisterUserNameIsFoundException("Podana nazwa użytkownika występuje w systemie");
 
-            var roleID = context.Roles.FirstOrDefault(x => x.RName == "user")?.RID ?? 1;
+            var roleID = context.Roles.FirstOrDefault(x => x.RName == "user")?.RID ?? (int) RoleEnum.User;
 
             var newUser = new Cores.Entities.User()
             {
