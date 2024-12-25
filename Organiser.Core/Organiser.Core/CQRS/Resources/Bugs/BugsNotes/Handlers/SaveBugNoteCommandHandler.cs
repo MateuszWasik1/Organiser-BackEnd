@@ -48,7 +48,7 @@ namespace Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Handlers
                 throw new BugNotFoundExceptions("Nie znaleziono wskazanego błędu!");
 
             var isUserVerifier = bug?.BAUIDS?.Contains(currentUser.UGID.ToString()) ?? false;
-            var isUserSupportOrAdmin = (currentUser?.URID == (int)RoleEnum.Admin || currentUser?.URID == (int)RoleEnum.Support);
+            var isUserSupportOrAdmin = (currentUser?.URID == (int) RoleEnum.Admin || currentUser?.URID == (int) RoleEnum.Support);
 
             if (!isUserVerifier && isUserSupportOrAdmin)
             {

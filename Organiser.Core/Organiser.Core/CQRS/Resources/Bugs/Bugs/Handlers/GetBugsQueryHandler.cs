@@ -24,7 +24,7 @@ namespace Organiser.Core.CQRS.Resources.Bugs.Bugs.Handlers
         {
             var bugs = new List<Cores.Entities.Bugs>();
             var bugsViewModel = new List<BugsViewModel>();
-            var currentUserRole = context.User.FirstOrDefault(x => x.UID == user.UID)?.URID ?? 1;
+            var currentUserRole = context.User.FirstOrDefault(x => x.UID == user.UID)?.URID ?? (int) RoleEnum.User;
 
             var count = 0;
 

@@ -23,7 +23,7 @@ namespace Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Handlers
         public GetBugsNotesViewModel Handle(GetBugNotesQuery query)
         {
             var bugNotes = new List<Cores.Entities.BugsNotes>();
-            var currentUserRole = context.User.FirstOrDefault(x => x.UID == user.UID)?.URID ?? 1;
+            var currentUserRole = context.User.FirstOrDefault(x => x.UID == user.UID)?.URID ?? (int) RoleEnum.User;
 
             if (currentUserRole == (int) RoleEnum.Admin || currentUserRole == (int) RoleEnum.Support)
                 bugNotes = context.AllBugsNotes.Where(x => x.BNBGID == query.BGID).OrderBy(x => x.BNDate).ToList();

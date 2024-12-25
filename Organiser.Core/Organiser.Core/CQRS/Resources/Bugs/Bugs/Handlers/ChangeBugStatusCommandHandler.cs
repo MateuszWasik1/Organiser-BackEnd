@@ -34,7 +34,7 @@ namespace Organiser.Core.CQRS.Resources.Bugs.Bugs.Handlers
                 throw new UserNotFoundExceptions("Nie udało się odnaleźć użytkownika! Aktualizacja błędu się nie powiodła.");
 
             var isUserVerifier = bug?.BAUIDS?.Contains(currentUser.UGID.ToString()) ?? false;
-            var isUserSupportOrAdmin = (currentUser?.URID == (int)RoleEnum.Admin || currentUser?.URID == (int)RoleEnum.Support);
+            var isUserSupportOrAdmin = (currentUser?.URID == (int) RoleEnum.Admin || currentUser?.URID == (int) RoleEnum.Support);
 
             if (!isUserVerifier && isUserSupportOrAdmin)
             {
