@@ -10,7 +10,7 @@ using Organiser.Cores.Services;
 namespace Organiser.UnitTests.CQRS.QueryHandler.Roles
 {
     [TestFixture]
-    public class TestGetUserRolesQueryHandler
+    public class TestGetIsAnyUserQueryHandler
     {
         private Mock<IDataBaseContext> context;
         private Mock<IUserContext> user;
@@ -51,98 +51,83 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Roles
         }
 
         [Test]
-        public void TestGetUserRolesQueryHandler_UserNotFound_ShouldActAsNormalUser()
+        public void TestGetIsAnyUserQueryHandler_UserNotFound_ShouldReturnTrue()
         {
             //Arrange
             user.Setup(x => x.UID).Returns(9);
 
-            var query = new GetUserRolesQuery();
-            var handler = new GetUserRolesQueryHandler(context.Object, user.Object);
+            var query = new GetIsAnyUserQuery();
+            var handler = new GetIsAnyUserQueryHandler(context.Object, user.Object);
 
             //Act
             var result = handler.Handle(query);
 
             //Assert
-            ClassicAssert.IsTrue(result.IsUser);
-            ClassicAssert.IsFalse(result.IsPremium);
-            ClassicAssert.IsFalse(result.IsSupport);
-            ClassicAssert.IsFalse(result.IsAdmin);
+            ClassicAssert.IsTrue(result);
         }
 
         [Test]
-        public void TestGetUserRolesQueryHandler_UserIsUser_ShouldActAsNormalUser()
+        public void TestGetIsAnyUserQueryHandler_UserIsUser_ShouldReturnTrue()
         {
             //Arrange
             user.Setup(x => x.UID).Returns(1);
 
-            var query = new GetUserRolesQuery();
-            var handler = new GetUserRolesQueryHandler(context.Object, user.Object);
+            var query = new GetIsAnyUserQuery();
+            var handler = new GetIsAnyUserQueryHandler(context.Object, user.Object);
 
             //Act
             var result = handler.Handle(query);
 
             //Assert
-            ClassicAssert.IsTrue(result.IsUser);
-            ClassicAssert.IsFalse(result.IsPremium);
-            ClassicAssert.IsFalse(result.IsSupport);
-            ClassicAssert.IsFalse(result.IsAdmin);
+            ClassicAssert.IsTrue(result);
         }
 
         [Test]
-        public void TestGetUserRolesQueryHandler_UserIsPremium_ShouldActAsPremium()
+        public void TestGetIsAnyUserQueryHandler_UserIsPremium_ShouldReturnTrue()
         {
             //Arrange
             user.Setup(x => x.UID).Returns(2);
 
-            var query = new GetUserRolesQuery();
-            var handler = new GetUserRolesQueryHandler(context.Object, user.Object);
+            var query = new GetIsAnyUserQuery();
+            var handler = new GetIsAnyUserQueryHandler(context.Object, user.Object);
 
             //Act
             var result = handler.Handle(query);
 
             //Assert
-            ClassicAssert.IsFalse(result.IsUser);
-            ClassicAssert.IsTrue(result.IsPremium);
-            ClassicAssert.IsFalse(result.IsSupport);
-            ClassicAssert.IsFalse(result.IsAdmin);
+            ClassicAssert.IsTrue(result);
         }
 
         [Test]
-        public void TestGetUserRolesQueryHandler_UserIsSupport_ShouldActAsSupport()
+        public void TestGetIsAnyUserQueryHandler_UserIsSupport_ShouldReturnFalse()
         {
             //Arrange
             user.Setup(x => x.UID).Returns(3);
 
-            var query = new GetUserRolesQuery();
-            var handler = new GetUserRolesQueryHandler(context.Object, user.Object);
+            var query = new GetIsAnyUserQuery();
+            var handler = new GetIsAnyUserQueryHandler(context.Object, user.Object);
 
             //Act
             var result = handler.Handle(query);
 
             //Assert
-            ClassicAssert.IsTrue(result.IsUser);
-            ClassicAssert.IsTrue(result.IsPremium);
-            ClassicAssert.IsTrue(result.IsSupport);
-            ClassicAssert.IsFalse(result.IsAdmin);
+            ClassicAssert.IsFalse(result);
         }
 
         [Test]
-        public void TestGetUserRolesQueryHandler_UserIsAdmin_ShouldActAsAdmin()
+        public void TestGetIsAnyUserQueryHandler_UserIsAdmin_ShouldReturnFalse()
         {
             //Arrange
             user.Setup(x => x.UID).Returns(4);
 
-            var query = new GetUserRolesQuery();
-            var handler = new GetUserRolesQueryHandler(context.Object, user.Object);
+            var query = new GetIsAnyUserQuery();
+            var handler = new GetIsAnyUserQueryHandler(context.Object, user.Object);
 
             //Act
             var result = handler.Handle(query);
 
             //Assert
-            ClassicAssert.IsTrue(result.IsUser);
-            ClassicAssert.IsTrue(result.IsPremium);
-            ClassicAssert.IsTrue(result.IsSupport);
-            ClassicAssert.IsTrue(result.IsAdmin);
+            ClassicAssert.IsFalse(result);
         }
     }
 }

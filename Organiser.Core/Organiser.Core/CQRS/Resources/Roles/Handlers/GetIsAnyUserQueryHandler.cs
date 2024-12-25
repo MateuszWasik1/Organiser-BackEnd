@@ -17,7 +17,7 @@ namespace Organiser.Core.CQRS.Resources.Roles.Handlers
         }
 
         public bool Handle(GetIsAnyUserQuery query) {
-            var urid = context.User.FirstOrDefault(x => x.UID == user.UID)?.URID;
+            var urid = context.User.FirstOrDefault(x => x.UID == user.UID)?.URID ?? (int)RoleEnum.User;
             return urid == (int) RoleEnum.User || urid == (int) RoleEnum.Premium;
         }
     }

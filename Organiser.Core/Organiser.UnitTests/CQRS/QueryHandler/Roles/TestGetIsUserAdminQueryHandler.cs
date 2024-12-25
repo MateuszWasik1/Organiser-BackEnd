@@ -4,7 +4,7 @@ using NUnit.Framework.Legacy;
 using Organiser.Core.CQRS.Resources.Roles.Handlers;
 using Organiser.Core.CQRS.Resources.Roles.Queries;
 using Organiser.Cores.Context;
-using Organiser.Cores.Entities;
+using Organiser.Cores.Models.Enums;
 using Organiser.Cores.Services;
 
 namespace Organiser.UnitTests.CQRS.QueryHandler.Roles
@@ -28,17 +28,22 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Roles
                 new Cores.Entities.User()
                 {
                     UID = 1,
-                    URID = 1,
+                    URID = (int) RoleEnum.User,
                 },
                 new Cores.Entities.User()
                 {
                     UID = 2,
-                    URID = 2,
-                },  
+                    URID = (int) RoleEnum.Premium,
+                },
                 new Cores.Entities.User()
                 {
                     UID = 3,
-                    URID = 3,
+                    URID = (int) RoleEnum.Support,
+                },
+                new Cores.Entities.User()
+                {
+                    UID = 4,
+                    URID = (int) RoleEnum.Admin,
                 },
             };
 
@@ -78,7 +83,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Roles
         }
 
         [Test]
-        public void TestGetIsUserAdminQueryHandler_UserIsSupport_ShouldReturnFalse()
+        public void TestGetIsUserAdminQueryHandler_UserIsPremium_ShouldReturnFalse()
         {
             //Arrange
             user.Setup(x => x.UID).Returns(2);
@@ -94,10 +99,26 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Roles
         }
 
         [Test]
-        public void TestGetIsUserAdminQueryHandler_UserIsAdmin_ShouldReturnTrue()
+        public void TestGetIsUserAdminQueryHandler_UserIsSupport_ShouldReturnFalse()
         {
             //Arrange
             user.Setup(x => x.UID).Returns(3);
+
+            var query = new GetIsUserAdminQuery();
+            var handler = new GetIsUserAdminQueryHandler(context.Object, user.Object);
+
+            //Act
+            var result = handler.Handle(query);
+
+            //Assert
+            ClassicAssert.IsFalse(result);
+        }
+
+        [Test]
+        public void TestGetIsUserAdminQueryHandler_UserIsAdmin_ShouldReturnTrue()
+        {
+            //Arrange
+            user.Setup(x => x.UID).Returns(4);
 
             var query = new GetIsUserAdminQuery();
             var handler = new GetIsUserAdminQueryHandler(context.Object, user.Object);

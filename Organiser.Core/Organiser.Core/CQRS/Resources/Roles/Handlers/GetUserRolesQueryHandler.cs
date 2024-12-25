@@ -25,7 +25,7 @@ namespace Organiser.Core.CQRS.Resources.Roles.Handlers
             {
                 IsAdmin = userRole == (int) RoleEnum.Admin,
                 IsSupport = userRole == (int) RoleEnum.Admin || userRole == (int) RoleEnum.Support,
-                IsPremium = userRole == (int) RoleEnum.Admin || userRole == (int) RoleEnum.Support || userRole == (int)RoleEnum.Premium,
+                IsPremium = userRole == (int) RoleEnum.Admin || userRole == (int) RoleEnum.Support || userRole == (int) RoleEnum.Premium,
                 IsUser = userRole == (int) RoleEnum.Admin || userRole == (int) RoleEnum.Support || userRole == (int) RoleEnum.User,
             };
 
