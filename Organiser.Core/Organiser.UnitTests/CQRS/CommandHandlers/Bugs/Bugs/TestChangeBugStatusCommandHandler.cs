@@ -156,10 +156,10 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Bugs.Bugs
             ClassicAssert.AreEqual(BugStatusEnum.Rejected, bugs[0].BStatus);
 
             ClassicAssert.AreEqual(userRole, bugsNotes[0].BNUID);
-            ClassicAssert.AreEqual($"Status został zmieniony na: \"Odrzucony\" przez użytkownika: {name} {surname}", bugsNotes[0].BNText);
-            ClassicAssert.AreEqual(false, bugsNotes[0].BNIsNewVerifier);
-            ClassicAssert.AreEqual(true, bugsNotes[0].BNIsStatusChange);
-            ClassicAssert.AreEqual(BugStatusEnum.Rejected, bugsNotes[0].BNChangedStatus);
+            ClassicAssert.AreEqual($"Status został zmieniony na: \"Odrzucony\" przez użytkownika: {name} {surname}", bugsNotes[bnCount - 1].BNText);
+            ClassicAssert.AreEqual(false, bugsNotes[bnCount - 1].BNIsNewVerifier);
+            ClassicAssert.AreEqual(true, bugsNotes[bnCount - 1].BNIsStatusChange);
+            ClassicAssert.AreEqual(BugStatusEnum.Rejected, bugsNotes[bnCount - 1].BNChangedStatus);
         }
 
         [TestCase(3, "02dd879c-ee2f-11db-8314-0800200c9a66", "NameS", "Support")]
