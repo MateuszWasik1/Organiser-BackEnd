@@ -66,17 +66,22 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
                 new Cores.Entities.User()
                 {
                     UID = 1,
-                    URID = 1
+                    URID = (int) RoleEnum.User
                 },
                 new Cores.Entities.User()
                 {
                     UID = 2,
-                    URID = 2
+                    URID = (int) RoleEnum.Premium
                 },
                 new Cores.Entities.User()
                 {
                     UID = 3,
-                    URID = 3
+                    URID = (int) RoleEnum.Support
+                },
+                new Cores.Entities.User()
+                {
+                    UID = 4,
+                    URID = (int) RoleEnum.Admin
                 },
             };
 
@@ -135,7 +140,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
         public void TestGetBugQueryHandler_UserTriedToLookInNotHisBug_UserIsSupport_ShouldReturnBug()
         {
             //Arrange
-            user.Setup(x => x.UID).Returns(2);
+            user.Setup(x => x.UID).Returns(3);
 
             var query = new GetBugQuery() { BGID = allBugs[0].BGID };
             var handler = new GetBugQueryHandler(context.Object, user.Object, mapper.Object);

@@ -19,12 +19,13 @@ namespace Organiser.Core.CQRS.Resources.Roles.Handlers
 
         public RolesViewModel Handle(GetUserRolesQuery query) 
         {
-            var userRole = context.User.FirstOrDefault(x => x.UID == user.UID)?.URID ?? 1;
+            var userRole = context.User.FirstOrDefault(x => x.UID == user.UID)?.URID ?? (int) RoleEnum.User;
 
             var model = new RolesViewModel()
             {
                 IsAdmin = userRole == (int) RoleEnum.Admin,
                 IsSupport = userRole == (int) RoleEnum.Admin || userRole == (int) RoleEnum.Support,
+                IsPremium = userRole == (int) RoleEnum.Admin || userRole == (int) RoleEnum.Support || userRole == (int) RoleEnum.Premium,
                 IsUser = userRole == (int) RoleEnum.Admin || userRole == (int) RoleEnum.Support || userRole == (int) RoleEnum.User,
             };
 

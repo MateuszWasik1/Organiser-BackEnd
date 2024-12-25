@@ -24,7 +24,7 @@ namespace Organiser.Core.CQRS.Resources.Bugs.Bugs.Handlers
         public BugViewModel Handle(GetBugQuery query)
         {
             var bug = new Cores.Entities.Bugs();
-            var currentUserRole = context.User.FirstOrDefault(x => x.UID == user.UID)?.URID ?? 1;
+            var currentUserRole = context.User.FirstOrDefault(x => x.UID == user.UID)?.URID ?? (int) RoleEnum.User;
 
             if (currentUserRole == (int) RoleEnum.Admin || currentUserRole == (int) RoleEnum.Support)
                 bug = context.AllBugs.FirstOrDefault(x => x.BGID == query.BGID);

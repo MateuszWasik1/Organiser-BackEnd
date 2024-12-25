@@ -20,13 +20,23 @@ namespace Organiser.Cores.Controllers
             => dispatcher.DispatchQuery<GetUserRolesQuery, RolesViewModel>(new GetUserRolesQuery());
 
         [HttpGet]
-        [Route("GetIsUserAdmin")]
-        public bool GetIsUserAdmin() 
-            => dispatcher.DispatchQuery<GetIsUserAdminQuery, bool>(new GetIsUserAdminQuery());
+        [Route("GetIsPremiumUser")]
+        public bool GetIsPremiumUser()
+            => dispatcher.DispatchQuery<GetIsPremiumUserQuery, bool>(new GetIsPremiumUserQuery());
+
+        [HttpGet]
+        [Route("GetIsAnyUser")]
+        public bool GetIsAnyUser()
+            => dispatcher.DispatchQuery<GetIsAnyUserQuery, bool>(new GetIsAnyUserQuery());
 
         [HttpGet]
         [Route("GetIsUserSupport")]
         public bool GetIsUserSupport() 
             => dispatcher.DispatchQuery<GetIsUserSupportQuery, bool>(new GetIsUserSupportQuery());
+
+        [HttpGet]
+        [Route("GetIsUserAdmin")]
+        public bool GetIsUserAdmin()
+            => dispatcher.DispatchQuery<GetIsUserAdminQuery, bool>(new GetIsUserAdminQuery());
     }
 }

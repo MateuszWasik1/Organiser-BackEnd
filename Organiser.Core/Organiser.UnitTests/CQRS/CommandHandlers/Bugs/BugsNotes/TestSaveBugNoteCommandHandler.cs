@@ -62,21 +62,27 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Bugs.BugsNotes
                 {
                     UID = 1,
                     UGID = new Guid("00dd879c-ee2f-11db-8314-0800200c9a66"),
-                    URID = 1
+                    URID = (int) RoleEnum.User
                 },
                 new Cores.Entities.User()
                 {
                     UID = 2,
+                    UGID = new Guid("00dd879c-ee2f-11db-8314-0800200c9a66"),
+                    URID = (int) RoleEnum.Premium
+                },
+                new Cores.Entities.User()
+                {
+                    UID = 3,
                     UGID = new Guid("01dd879c-ee2f-11db-8314-0800200c9a66"),
-                    URID = 2,
+                    URID = (int) RoleEnum.Support,
                     UFirstName = "NameS",
                     ULastName = "Support",
                 },
                 new Cores.Entities.User()
                 {
-                    UID = 3,
+                    UID = 4,
                     UGID = new Guid("02dd879c-ee2f-11db-8314-0800200c9a66"),
-                    URID = 3,
+                    URID = (int) RoleEnum.Admin,
                     UFirstName = "NameA",
                     ULastName = "Admin",
                 },
@@ -176,8 +182,8 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Bugs.BugsNotes
             Assert.Throws<BugNotFoundExceptions>(() => handler.Handle(command));
         }
 
-        [TestCase(2, "01dd879c-ee2f-11db-8314-0800200c9a66", "NameS", "Support")]
-        [TestCase(3, "02dd879c-ee2f-11db-8314-0800200c9a66", "NameA", "Admin")]
+        [TestCase(3, "01dd879c-ee2f-11db-8314-0800200c9a66", "NameS", "Support")]
+        [TestCase(4, "02dd879c-ee2f-11db-8314-0800200c9a66", "NameA", "Admin")]
         public void TestSaveBugNoteCommandHandler_UserIsNotVerifier_UserIsAdminOrSupport_ShouldAddTwoBugsNotesAndCreateBugBAUIDS(int userRole, string ugid, string name, string surname)
         {
             //Arrange
@@ -209,8 +215,8 @@ namespace Organiser.UnitTests.CQRS.CommandHandlers.Bugs.BugsNotes
             ClassicAssert.AreEqual("NewText", bugsNotes[1].BNText);
         }
 
-        [TestCase(2, "01dd879c-ee2f-11db-8314-0800200c9a66")]
-        [TestCase(3, "02dd879c-ee2f-11db-8314-0800200c9a66")]
+        [TestCase(3, "01dd879c-ee2f-11db-8314-0800200c9a66")]
+        [TestCase(4, "02dd879c-ee2f-11db-8314-0800200c9a66")]
         public void TestSaveBugNoteCommandHandler_UserIsNotVerifier_UserIsAdminOrSupport_ShouldAddTwoBugsNotesAndUpdateBugBAUIDS(int userRole, string ugid)
         {
             //Arrange

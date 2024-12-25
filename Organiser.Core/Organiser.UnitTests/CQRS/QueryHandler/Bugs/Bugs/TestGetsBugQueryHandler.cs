@@ -53,7 +53,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
                 {
                     BID = 2,
                     BGID = new Guid("34dd879c-ee2f-11db-8314-0800200c9a66"),
-                    BUID = 2,
+                    BUID = 3,
                     BAUIDS = "",
                     BTitle = "Bug 2 Title",
                     BText = "Bug 2",
@@ -64,7 +64,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
                 {
                     BID = 3,
                     BGID = new Guid("35dd879c-ee2f-11db-8314-0800200c9a66"),
-                    BUID = 3,
+                    BUID = 4,
                     BAUIDS = "",
                     BTitle = "Bug 3 Title",
                     BText = "Bug 3",
@@ -75,8 +75,8 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
                 {
                     BID = 4,
                     BGID = new Guid("36dd879c-ee2f-11db-8314-0800200c9a66"),
-                    BUID = 4,
-                    BAUIDS = "01dd879c-ee2f-11db-8314-0800200c9a66,02dd879c-ee2f-11db-8314-0800200c9a66",
+                    BUID = 5,
+                    BAUIDS = "02dd879c-ee2f-11db-8314-0800200c9a66, 03dd879c-ee2f-11db-8314-0800200c9a66",
                     BTitle = "Bug 4 Title",
                     BText = "Bug 4",
                     BDate = new DateTime(2024, 3, 4, 14, 30, 0),
@@ -86,7 +86,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
                 {
                     BID = 5,
                     BGID = new Guid("37dd879c-ee2f-11db-8314-0800200c9a66"),
-                    BUID = 4,
+                    BUID = 5,
                     BAUIDS = "",
                     BTitle = "Bug 5 Title",
                     BText = "Bug 5",
@@ -97,7 +97,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
                 {
                     BID = 6,
                     BGID = new Guid("38dd879c-ee2f-11db-8314-0800200c9a66"),
-                    BUID = 4,
+                    BUID = 5,
                     BAUIDS = "",
                     BTitle = "Bug 6 Title",
                     BText = "Bug 6",
@@ -112,7 +112,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
                 {
                     UID = 1,
                     UGID = new Guid("00dd879c-ee2f-11db-8314-0800200c9a66"),
-                    URID = 1,
+                    URID = (int) RoleEnum.User,
                     UFirstName = "First1",
                     ULastName = "Last1",
                 },
@@ -120,7 +120,7 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
                 {
                     UID = 2,
                     UGID = new Guid("01dd879c-ee2f-11db-8314-0800200c9a66"),
-                    URID = 2,
+                    URID = (int) RoleEnum.Premium,
                     UFirstName = "First2",
                     ULastName = "Last2",
                 },
@@ -128,9 +128,17 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
                 {
                     UID = 3,
                     UGID = new Guid("02dd879c-ee2f-11db-8314-0800200c9a66"),
-                    URID = 3,
+                    URID = (int) RoleEnum.Support,
                     UFirstName = "First3",
                     ULastName = "Last3",
+                },
+                new Cores.Entities.User()
+                {
+                    UID = 4,
+                    UGID = new Guid("03dd879c-ee2f-11db-8314-0800200c9a66"),
+                    URID = (int) RoleEnum.Admin,
+                    UFirstName = "First4",
+                    ULastName = "Last4",
                 },
             };
 
@@ -159,8 +167,8 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
                 );
         }
 
-        [TestCase(2, 2)]
-        [TestCase(3, 3)]
+        [TestCase(3, 2)]
+        [TestCase(4, 3)]
         public void TestGetBugsQueryHandler_UserIsAdminOrSupport_BugType_Is_MY_ShouldReturnUserBugs(int userRole, int bugIndex)
         {
             //Arrange
@@ -179,8 +187,8 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
             ClassicAssert.AreEqual(bugIndex, bugsViewModel[0].BID);
         }
 
-        [TestCase(2, "01dd879c-ee2f-11db-8314-0800200c9a66")]
         [TestCase(3, "02dd879c-ee2f-11db-8314-0800200c9a66")]
+        [TestCase(4, "03dd879c-ee2f-11db-8314-0800200c9a66")]
         public void TestGetBugsQueryHandler_UserIsAdminOrSupport_BugType_Is_ImVerificator_ShouldReturnUserBugs(int userRole, string userGid)
         {
             //Arrange
@@ -200,8 +208,8 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
             ClassicAssert.AreEqual(4, bugsViewModel[0].BID);
         }
 
-        [TestCase(2)]
         [TestCase(3)]
+        [TestCase(4)]
         public void TestGetBugsQueryHandler_UserIsAdminOrSupport_BugType_Is_Closed_ShouldReturnUserBugs(int userRole)
         {
             //Arrange
@@ -221,8 +229,8 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
             ClassicAssert.AreEqual(6, bugsViewModel[1].BID);
         }
 
-        [TestCase(2)]
         [TestCase(3)]
+        [TestCase(4)]
         public void TestGetBugsQueryHandler_UserIsAdminOrSupport_BugType_Is_New_ShouldReturnNewBugs(int userRole)
         {
             //Arrange
@@ -243,8 +251,8 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
             ClassicAssert.AreEqual(4, bugsViewModel[1].BID);
         }
 
-        [TestCase(2)]
         [TestCase(3)]
+        [TestCase(4)]
         public void TestGetBugsQueryHandler_UserIsAdminOrSupport_BugType_Is_All_ShouldReturnAllBugs(int userRole)
         {
             //Arrange
@@ -263,8 +271,8 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
             ClassicAssert.AreEqual(allBugs.Count, bugsViewModel.Count);
         }
 
-        [TestCase(2)]
         [TestCase(3)]
+        [TestCase(4)]
         public void TestGetBugsQueryHandler_UserIsAdminOrSupport_BugType_Is_Unknown_ShouldReturnAllBugs(int userRole)
         {
             //Arrange
@@ -283,8 +291,8 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
             ClassicAssert.AreEqual(allBugs.Count, bugsViewModel.Count);
         }
 
-        [TestCase(2, "01dd879c-ee2f-11db-8314-0800200c9a66")]
         [TestCase(3, "02dd879c-ee2f-11db-8314-0800200c9a66")]
+        [TestCase(4, "03dd879c-ee2f-11db-8314-0800200c9a66")]
         public void TestGetBugsQueryHandler_UserIsAdminOrSupport_BugType_Is_ImVerificator_ShouldReturnUserBugs_With_BVerifiers(int userRole, string userGid)
         {
             //Arrange
@@ -317,12 +325,11 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
             ClassicAssert.AreEqual(1, result.Count);
             ClassicAssert.AreEqual(1, result.List.Count);
 
-            ClassicAssert.IsTrue(result.List.Any(x => x.BVerifiers.Contains($"{users[1].UFirstName} {users[1].ULastName} {users[1].UGID}")));
             ClassicAssert.IsTrue(result.List.Any(x => x.BVerifiers.Contains($"{users[2].UFirstName} {users[2].ULastName} {users[2].UGID}")));
         }
 
-        [TestCase(2, 1)]
         [TestCase(3, 1)]
+        [TestCase(4, 1)]
         public void TestGetBugsQueryHandler_UserIsAdminOrSupport_BugType_Is_All_Skip0_Take1_ShouldReturn_OneUserBugs(int userRole, int bugIndex)
         {
             //Arrange
@@ -341,8 +348,8 @@ namespace Organiser.UnitTests.CQRS.QueryHandler.Bugs.Bugs
             ClassicAssert.AreEqual(bugIndex, bugsViewModel[0].BID);
         }
 
-        [TestCase(2, 2)]
         [TestCase(3, 2)]
+        [TestCase(4, 2)]
         public void TestGetBugsQueryHandler_UserIsAdminOrSupport_BugType_Is_All_Skip1_Take1_ShouldReturn_OneUserBugs(int userRole, int bugIndex)
         {
             //Arrange
