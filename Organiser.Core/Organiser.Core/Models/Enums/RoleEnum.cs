@@ -3,7 +3,8 @@
     public enum RoleEnum
     {
         User = 1,
-        Support = 2,
-        Admin = 3,
+        Premium = 2,
+        Support = 3,
+        Admin = 4,
     }
 }

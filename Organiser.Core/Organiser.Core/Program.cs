@@ -131,8 +131,10 @@ builder.Services.AddScoped<ICommandHandler<DeleteCategoriesCommand>, DeleteCateg
 
 //Roles
 builder.Services.AddScoped<IQueryHandler<GetUserRolesQuery, RolesViewModel>, GetUserRolesQueryHandler>();
-builder.Services.AddScoped<IQueryHandler<GetIsUserAdminQuery, bool>, GetIsUserAdminQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetIsPremiumUserQuery, bool>, GetIsPremiumUserQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetIsAnyUserQuery, bool>, GetIsAnyUserQueryHandler>();
 builder.Services.AddScoped<IQueryHandler<GetIsUserSupportQuery, bool>, GetIsUserSupportQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetIsUserAdminQuery, bool>, GetIsUserAdminQueryHandler>();
 
 //Savings
 builder.Services.AddScoped<IQueryHandler<GetSavingQuery, SavingViewModel>, GetSavingQueryHandler>();
