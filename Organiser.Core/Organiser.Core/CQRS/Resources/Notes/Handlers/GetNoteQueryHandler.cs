@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Organiser.Core.CQRS.Resources.Notes.Queries;
 using Organiser.Core.Exceptions.Notes;
 using Organiser.Core.Models.ViewModels.NotesViewModels;
@@ -20,7 +21,7 @@ namespace Organiser.Core.CQRS.Resources.Notes.Handlers
 
         public NotesViewModel Handle(GetNoteQuery query)
         {
-            var note = context.Notes.FirstOrDefault(x => x.NGID == query.NGID);
+            var note = context.Notes.AsNoTracking().FirstOrDefault(x => x.NGID == query.NGID);
 
             if (note == null)
                 throw new NoteNotFoundException("Nie udało znaleźć się notatki!");

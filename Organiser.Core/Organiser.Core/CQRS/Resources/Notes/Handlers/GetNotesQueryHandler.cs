@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Organiser.Core.CQRS.Resources.Notes.Queries;
 using Organiser.Core.Models.ViewModels.NotesViewModels;
 using Organiser.Cores.Context;
@@ -19,7 +20,7 @@ namespace Organiser.Core.CQRS.Resources.Notes.Handlers
 
         public GetNotesViewModel Handle(GetNotesQuery query)
         {
-            var notes = context.Notes.ToList();
+            var notes = context.Notes.AsNoTracking().ToList();
 
             var notesViewModel = new List<NotesViewModel>();
 
