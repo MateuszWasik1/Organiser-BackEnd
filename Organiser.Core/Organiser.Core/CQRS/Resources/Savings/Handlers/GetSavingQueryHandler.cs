@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Organiser.Core.CQRS.Resources.Savings.Queries;
 using Organiser.Core.Exceptions.Savings;
 using Organiser.Cores.Context;
@@ -19,7 +20,7 @@ namespace Organiser.Core.CQRS.Resources.Savings.Handlers
 
         public SavingViewModel Handle(GetSavingQuery query)
         {
-            var saving = context.Savings.FirstOrDefault(x => x.SGID == query.SGID);
+            var saving = context.Savings.AsNoTracking().FirstOrDefault(x => x.SGID == query.SGID);
 
             if (saving == null)
                 throw new SavingNotFoundException("Nie udało się znaleźć oszczędności!");
