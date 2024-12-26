@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Organiser.Core.CQRS.Resources.User.Queries;
 using Organiser.Core.Exceptions;
 using Organiser.Cores.Context;
@@ -20,7 +21,7 @@ namespace Organiser.Core.CQRS.Resources.User.Handlers
 
         public UserAdminViewModel Handle(GetUserByAdminQuery query)
         {
-            var userData = context.AllUsers.FirstOrDefault(x => x.UGID == query.UGID);
+            var userData = context.AllUsers.AsNoTracking().FirstOrDefault(x => x.UGID == query.UGID);
 
             if (userData == null)
                 throw new UserNotFoundExceptions("Nie znaleziono użytkownika!");
