@@ -1,4 +1,5 @@
-﻿using Organiser.Cores.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using Organiser.Cores.Context;
 using Organiser.Cores.Models.ViewModels.CategoriesViewModel;
 using Organiser.CQRS.Abstraction.Queries;
 using Organiser.CQRS.Resources.Categories.Queries;
@@ -12,7 +13,7 @@ namespace Organiser.CQRS.Resources.Categories.Handlers
 
         public List<CategoriesForFiltersViewModel> Handle(GetCategoriesForFilterQuery query)
         {
-            var categories = context.Categories.OrderBy(x => x.CStartDate).ToList();
+            var categories = context.Categories.OrderBy(x => x.CStartDate).AsNoTracking().ToList();
 
             var viewModel = new List<CategoriesForFiltersViewModel>();
 

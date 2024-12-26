@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Organiser.Core.Exceptions.Categories;
 using Organiser.Cores.Context;
 using Organiser.Cores.Models.ViewModels.CategoriesViewModel;
@@ -19,7 +20,7 @@ namespace Organiser.CQRS.Resources.Categories.Handlers
 
         public CategoryViewModel Handle(GetCategoryQuery query)
         {
-            var category = context.Categories.FirstOrDefault(x => x.CGID == query.CGID);
+            var category = context.Categories.AsNoTracking().FirstOrDefault(x => x.CGID == query.CGID);
 
             if (category == null)
                 throw new CategoryNotFoundException("Nie udało się znaleźć kategorii");
