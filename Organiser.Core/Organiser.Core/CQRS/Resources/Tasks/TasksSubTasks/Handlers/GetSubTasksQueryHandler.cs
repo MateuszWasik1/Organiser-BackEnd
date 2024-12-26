@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Organiser.Core.CQRS.Resources.Tasks.TasksSubTasks.Queries;
 using Organiser.Core.Exceptions.Tasks;
 using Organiser.Core.Models.ViewModels.TasksViewModels;
@@ -19,12 +20,12 @@ namespace Organiser.Core.CQRS.Resources.Tasks.TasksSubTasks.Handlers
 
         public GetTasksSubTasksViewModel Handle(GetSubTasksQuery query)
         {
-            var task = context.Tasks.FirstOrDefault(x => x.TGID == query.TGID);
+            var task = context.Tasks.AsNoTracking().FirstOrDefault(x => x.TGID == query.TGID);
 
             if (task == null)
                 throw new TaskNotFoundException("Nie udało się znaleźć podanego zadania!");
 
-            var subtasks = context.TasksSubTasks.Where(x => x.TSTTGID == query.TGID).OrderBy(x => x.TSTStatus).ThenBy(x => x.TSTCreationDate).ToList();
+            var subtasks = context.TasksSubTasks.Where(x => x.TSTTGID == query.TGID).OrderBy(x => x.TSTStatus).ThenBy(x => x.TSTCreationDate).AsNoTracking().ToList();
 
             var subtasksViewModel = new List<TasksSubTasksViewModel>();
 

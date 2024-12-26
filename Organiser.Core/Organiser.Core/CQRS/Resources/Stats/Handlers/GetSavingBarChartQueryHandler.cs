@@ -1,4 +1,5 @@
-﻿using Organiser.Core.CQRS.Resources.Stats.Queries;
+﻿using Microsoft.EntityFrameworkCore;
+using Organiser.Core.CQRS.Resources.Stats.Queries;
 using Organiser.Cores.Context;
 using Organiser.Cores.Models.Helpers;
 using Organiser.Cores.Models.ViewModels.StatsViewModels;
@@ -13,7 +14,11 @@ namespace Organiser.Core.CQRS.Resources.Stats.Handlers
 
         public StatsBarChartViewModel Handle(GetSavingBarChartQuery query)
         {
-            var savingsForPeriod = context.Savings.Where(x => query.StartDate <= x.STime && x.STime <= query.EndDate).OrderBy(x => x.STime).ToList();
+            var savingsForPeriod = context.Savings
+                .Where(x => query.StartDate <= x.STime && x.STime <= query.EndDate)
+                .OrderBy(x => x.STime)
+                .AsNoTracking()
+                .ToList();
 
             var timeSpanBetweenStartAndEndDate = MonthsBetweenDatesHelper.MonthsBetween(query.StartDate, query.EndDate);
 

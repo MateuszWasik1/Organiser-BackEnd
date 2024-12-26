@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Organiser.Core.CQRS.Resources.Tasks.Tasks.Queries;
 using Organiser.Core.Models.ViewModels.TasksViewModels;
 using Organiser.Cores.Context;
@@ -18,7 +19,7 @@ namespace Organiser.Core.CQRS.Resources.Tasks.Tasks.Handlers
 
         public GetTasksViewModel Handle(GetTasksQuery query)
         {
-            List<Cores.Entities.Tasks> tasks = context.Tasks.OrderBy(x => x.TTime).ToList();
+           var tasks = context.Tasks.OrderBy(x => x.TTime).AsNoTracking().ToList();
 
             if (!string.IsNullOrEmpty(query.CGID))
                 tasks = tasks.Where(x => x.TCGID == Guid.Parse(query.CGID)).ToList();

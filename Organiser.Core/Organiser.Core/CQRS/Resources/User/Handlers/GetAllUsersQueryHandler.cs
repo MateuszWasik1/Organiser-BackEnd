@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Organiser.Core.CQRS.Resources.User.Queries;
 using Organiser.Cores.Context;
 using Organiser.Cores.Models.ViewModels.UserViewModels;
@@ -19,7 +20,7 @@ namespace Organiser.Core.CQRS.Resources.User.Handlers
 
         public GetUsersAdminViewModel Handle(GetAllUsersQuery query)
         {
-            var usersData = context.AllUsers.ToList();
+            var usersData = context.AllUsers.AsNoTracking().ToList();
 
             var usersAdmViewModel = new List<UsersAdminViewModel>();
 

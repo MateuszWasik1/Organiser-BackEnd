@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Organiser.Cores.Context;
 using Organiser.Cores.Models.ViewModels.CategoriesViewModel;
 using Organiser.CQRS.Abstraction.Queries;
@@ -18,7 +19,7 @@ namespace Organiser.CQRS.Resources.Categories.Handlers
 
         public GetCategoriesViewModel Handle(GetCategoriesQuery query)
         {
-            var categories = context.Categories.OrderBy(x => x.CStartDate).ToList();
+            var categories = context.Categories.OrderBy(x => x.CStartDate).AsNoTracking().ToList();
 
             if (query.Date != null)
             {

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Organiser.Core.CQRS.Resources.Tasks.Tasks.Queries;
 using Organiser.Core.Exceptions.Tasks;
 using Organiser.Core.Models.ViewModels.TasksViewModels;
@@ -19,7 +20,7 @@ namespace Organiser.Core.CQRS.Resources.Tasks.Tasks.Handlers
 
         public TaskViewModel Handle(GetTaskQuery query)
         {
-            var task = context.Tasks.FirstOrDefault(x => x.TGID == query.TGID);
+            var task = context.Tasks.AsNoTracking().FirstOrDefault(x => x.TGID == query.TGID);
 
             if (task == null)
                 throw new TaskNotFoundException("Nie udało się znaleźć zadania!");

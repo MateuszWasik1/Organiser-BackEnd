@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Queries;
 using Organiser.Core.Models.ViewModels.BugsViewModels;
 using Organiser.Cores.Context;
@@ -23,12 +24,12 @@ namespace Organiser.Core.CQRS.Resources.Bugs.BugsNotes.Handlers
         public GetBugsNotesViewModel Handle(GetBugNotesQuery query)
         {
             var bugNotes = new List<Cores.Entities.BugsNotes>();
-            var currentUserRole = context.User.FirstOrDefault(x => x.UID == user.UID)?.URID ?? (int) RoleEnum.User;
+            var currentUserRole = context.User.AsNoTracking().FirstOrDefault(x => x.UID == user.UID)?.URID ?? (int) RoleEnum.User;
 
             if (currentUserRole == (int) RoleEnum.Admin || currentUserRole == (int) RoleEnum.Support)
-                bugNotes = context.AllBugsNotes.Where(x => x.BNBGID == query.BGID).OrderBy(x => x.BNDate).ToList();
+                bugNotes = context.AllBugsNotes.Where(x => x.BNBGID == query.BGID).OrderBy(x => x.BNDate).AsNoTracking().ToList();
             else
-                bugNotes = context.BugsNotes.Where(x => x.BNBGID == query.BGID && !x.BNIsNewVerifier).OrderBy(x => x.BNDate).ToList();
+                bugNotes = context.BugsNotes.Where(x => x.BNBGID == query.BGID && !x.BNIsNewVerifier).OrderBy(x => x.BNDate).AsNoTracking().ToList();
 
             var count = bugNotes.Count;
 

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Organiser.Core.CQRS.Resources.Savings.Queries;
 using Organiser.Cores.Context;
 using Organiser.Cores.Models.ViewModels.SavingsViewModels;
@@ -18,7 +19,7 @@ namespace Organiser.Core.CQRS.Resources.Savings.Handlers
 
         public GetSavingsViewModel Handle(GetSavingsQuery query)
         {
-            var savings = context.Savings.OrderBy(x => x.STime).ToList();
+            var savings = context.Savings.OrderBy(x => x.STime).AsNoTracking().ToList();
 
             var savingsViewModel = new List<SavingsViewModel>();
 

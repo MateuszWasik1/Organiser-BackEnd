@@ -1,4 +1,5 @@
-﻿using Organiser.Core.CQRS.Resources.Stats.Queries;
+﻿using Microsoft.EntityFrameworkCore;
+using Organiser.Core.CQRS.Resources.Stats.Queries;
 using Organiser.Core.Exceptions.Categories;
 using Organiser.Cores.Context;
 using Organiser.Cores.Models.Helpers;
@@ -17,12 +18,16 @@ namespace Organiser.Core.CQRS.Resources.Stats.Handlers
             if (query.CGID == Guid.Empty)
                 return new StatsBarChartViewModel();
 
-            var category = context.Categories.FirstOrDefault(x => x.CGID == query.CGID);
+            var category = context.Categories.AsNoTracking().FirstOrDefault(x => x.CGID == query.CGID);
 
             if (category == null)
                 throw new CategoryNotFoundException("Nie znaleziono kategorii");
 
-            var tasksForPeriod = context.Tasks.Where(x => category.CGID == x.TCGID && query.StartDate <= x.TTime && x.TTime <= query.EndDate).OrderBy(x => x.TTime).ToList();
+            var tasksForPeriod = context.Tasks
+                .Where(x => category.CGID == x.TCGID && query.StartDate <= x.TTime && x.TTime <= query.EndDate)
+                .OrderBy(x => x.TTime)
+                .AsNoTracking()
+                .ToList();
 
             var timeSpanBetweenStartAndEndDate = MonthsBetweenDatesHelper.MonthsBetween(query.StartDate, query.EndDate);
 
